@@ -314,6 +314,26 @@
       border-bottom: 1px solid #333;
       color: #c0f7c0;
     }
+
+    .ficha-container.morrendo {
+  animation: pulsarVermelho 1s infinite;
+  box-shadow: 0 0 15px #a00;
+  border: 2px solid #a00;
+}
+
+@keyframes pulsarVermelho {
+  0%, 100% { box-shadow: 0 0 10px #a00; }
+  50% { box-shadow: 0 0 25px #f00; }
+}
+
+#barra-sanidade.insano .preenchimento {
+  animation: pulsarRoxo 1s infinite;
+}
+
+@keyframes pulsarRoxo {
+  0%, 100% { background-color: #7a4fff; }
+  50% { background-color: #c0a0ff; }
+}
   </style>
 </head>
 <body>
@@ -600,6 +620,25 @@
       document.getElementById('lista-inventario').appendChild(div);
     }
 
+// ===== EFEITOS VISUAIS INSANIDADE / MORRENDO ===== //
+document.getElementById('insanidade').addEventListener('change', function() {
+  const barra = document.getElementById('barra-sanidade');
+  if (this.checked) {
+    barra.classList.add('insano');
+  } else {
+    barra.classList.remove('insano');
+  }
+});
+
+document.getElementById('morrendo').addEventListener('change', function() {
+  const ficha = document.querySelector('.ficha-container');
+  if (this.checked) {
+    ficha.classList.add('morrendo');
+  } else {
+    ficha.classList.remove('morrendo');
+  }
+});
+    
     // Inicializar
     window.onload = function() {
       atualizarBarra('vida');
