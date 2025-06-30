@@ -576,17 +576,18 @@
     let sanidadeAtual = 80;
     let sanidadeMaxima = 80;
 
-    function atualizarBarra(tipo) {
-      if (tipo === 'vida') {
-        const porcentagem = (vidaAtual / vidaMaxima) * 100;
-        document.querySelector('#barra-vida .preenchimento').style.width = `${Math.min(100, porcentagem)}%`;
-        document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
-      } else {
-        const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
-        document.querySelector('#barra-sanidade .preenchimento').style.width = `${Math.min(100, porcentagem)}%`;
-        document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
-      }
-    }
+function atualizarBarra(tipo) {
+  if (tipo === 'vida') {
+    const porcentagem = (vidaAtual / vidaMaxima) * 100;
+    document.querySelector('#barra-vida .preenchimento').style.width = `${Math.min(100, porcentagem)}%`;
+    document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
+  } else {
+    const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
+    document.querySelector('#barra-sanidade .preenchimento').style.width = `${Math.min(100, porcentagem)}%`;
+    document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
+  }
+  salvarDados();
+}
 
     function mudarStatus(tipo, valor) {
       if (tipo === 'vida') {
@@ -639,6 +640,8 @@ window.onload = function() {
 
     // Inicializar
     window.onload = function() {
+      vidaAtual = parseInt(d.vidaAtual) || parseInt(d.vidaMax) || 100;
+sanidadeAtual = parseInt(d.sanidadeAtual) || parseInt(d.sanidadeMax) || 80;
       atualizarBarra('vida');
       atualizarBarra('sanidade');
     };
