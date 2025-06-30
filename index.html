@@ -25,6 +25,7 @@
       border-radius: 10px;
       box-shadow: 0 0 15px #333;
       transition: all 0.3s;
+      position: relative;
     }
     
     /* Sistema de Abas */
@@ -310,6 +311,18 @@
       box-shadow: 0 0 15px #a00;
       border: 2px solid #a00;
     }
+    .ficha-container.inconsciente::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 1;
+    }
     @keyframes pulsarVermelho {
       0%, 100% { box-shadow: 0 0 10px #a00; }
       50% { box-shadow: 0 0 25px #f00; }
@@ -328,6 +341,7 @@
       display: flex;
       gap: 20px;
       align-items: center;
+      flex-wrap: wrap;
     }
     .status-checkboxes label {
       display: flex;
@@ -352,9 +366,56 @@
       margin-top: 15px;
       font-family: 'Share Tech Mono', monospace;
       transition: background 0.3s;
+      position: relative;
+      z-index: 2;
     }
     .btn-salvar:hover {
       background: #0055aa;
+    }
+    
+    /* Tabela de danos */
+    .tabela-danos {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    .tabela-danos th, .tabela-danos td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: left;
+    }
+    .tabela-danos th {
+      background: #222;
+    }
+    .tabela-danos tr:nth-child(even) {
+      background: #1a1a1a;
+    }
+    .tabela-danos input, .tabela-danos textarea {
+      width: 100%;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #333;
+      padding: 5px;
+    }
+    .tabela-danos textarea {
+      min-height: 60px;
+    }
+    .btn-adicionar-dano {
+      background: #006600;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-remover-dano {
+      background: #990000;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -364,6 +425,7 @@
     <div class="tabs">
       <button class="active" data-tab="ficha">Ficha</button>
       <button data-tab="inventario">Inventário</button>
+      <button data-tab="danos">Registro de Danos</button>
       <button data-tab="anotacoes">Anotações</button>
     </div>
 
@@ -473,6 +535,10 @@
           <input type="checkbox" id="morrendo">
           <span>Morrendo</span>
         </label>
+        <label>
+          <input type="checkbox" id="inconsciente">
+          <span>Inconsciente</span>
+        </label>
       </div>
 
       <h3>Perícias</h3>
@@ -569,6 +635,32 @@
       <button id="btn-adicionar-item" onclick="adicionarItem()">+ Adicionar Item</button>
     </div>
 
+    <!-- Aba Registro de Danos -->
+    <div id="danos" class="tab-content">
+      <h3>Registro de Danos</h3>
+      <table class="tabela-danos">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Dano</th>
+            <th>Descrição</th>
+            <th>Efeitos</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="lista-danos">
+          <tr>
+            <td><input type="text" placeholder="DD/MM/AAAA"></td>
+            <td><input type="text" placeholder="Ex: -10 HP"></td>
+            <td><textarea placeholder="Como ocorreu o dano"></textarea></td>
+            <td><textarea placeholder="Efeitos/Consequências"></textarea></td>
+            <td><button class="btn-remover-dano" onclick="this.parentElement.parentElement.remove(); salvarDados();">Remover</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn-adicionar-dano" onclick="adicionarDano()">+ Adicionar Registro</button>
+    </div>
+
     <!-- Aba Anotações -->
     <div id="anotacoes" class="tab-content">
       <h3>Anotações</h3>
@@ -634,6 +726,25 @@
       document.getElementById('lista-inventario').appendChild(div);
     }
 
+    // ===== REGISTRO DE DANOS ===== //
+    function adicionarDano() {
+      const tbody = document.getElementById('lista-danos');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" placeholder="DD/MM/AAAA"></td>
+        <td><input type="text" placeholder="Ex: -10 HP"></td>
+        <td><textarea placeholder="Como ocorreu o dano"></textarea></td>
+        <td><textarea placeholder="Efeitos/Consequências"></textarea></td>
+        <td><button class="btn-remover-dano" onclick="this.parentElement.parentElement.remove(); salvarDados();">Remover</button></td>
+      `;
+      tbody.appendChild(tr);
+      
+      // Adiciona listeners para salvar automaticamente
+      tr.querySelectorAll('input, textarea').forEach(el => {
+        el.addEventListener('input', salvarDados);
+      });
+    }
+
     // ===== SISTEMA DE SALVAMENTO ===== //
     function salvarDados() {
       const dados = {
@@ -662,6 +773,7 @@
         sanidadeAtual: sanidadeAtual,
         insanidade: document.getElementById('insanidade').checked,
         morrendo: document.getElementById('morrendo').checked,
+        inconsciente: document.getElementById('inconsciente').checked,
 
         // Perícias
         pericias: Array.from(document.querySelectorAll('.pericia-input')).map(el => el.value),
@@ -672,6 +784,17 @@
           return {
             nome: inputs[0].value,
             quantidade: inputs[1].value
+          };
+        }),
+
+        // Danos
+        danos: Array.from(document.querySelectorAll('#lista-danos tr')).map(linha => {
+          const inputs = linha.querySelectorAll('input, textarea');
+          return {
+            data: inputs[0].value,
+            dano: inputs[1].value,
+            descricao: inputs[2].value,
+            efeitos: inputs[3].value
           };
         }),
 
@@ -713,6 +836,7 @@
       sanidadeAtual = parseInt(dados.sanidadeAtual) || parseInt(dados.sanidadeMax) || 80;
       document.getElementById('insanidade').checked = dados.insanidade || false;
       document.getElementById('morrendo').checked = dados.morrendo || false;
+      document.getElementById('inconsciente').checked = dados.inconsciente || false;
 
       // Perícias
       if (dados.pericias) {
@@ -741,6 +865,26 @@
         adicionarItem();
       }
 
+      // Danos
+      const listaDanos = document.getElementById('lista-danos');
+      listaDanos.innerHTML = '';
+      if (dados.danos && dados.danos.length > 0) {
+        dados.danos.forEach(dano => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><input type="text" placeholder="DD/MM/AAAA" value="${dano.data || ''}"></td>
+            <td><input type="text" placeholder="Ex: -10 HP" value="${dano.dano || ''}"></td>
+            <td><textarea placeholder="Como ocorreu o dano">${dano.descricao || ''}</textarea></td>
+            <td><textarea placeholder="Efeitos/Consequências">${dano.efeitos || ''}</textarea></td>
+            <td><button class="btn-remover-dano" onclick="this.parentElement.parentElement.remove(); salvarDados();">Remover</button></td>
+          `;
+          listaDanos.appendChild(tr);
+        });
+      } else {
+        // Adiciona uma linha vazia se não houver danos salvos
+        adicionarDano();
+      }
+
       // Anotações
       document.getElementById('anotacoes-texto').value = dados.anotacoes || '';
 
@@ -749,6 +893,7 @@
       atualizarBarra('sanidade');
       document.getElementById('barra-sanidade').classList.toggle('insano', dados.insanidade);
       document.querySelector('.ficha-container').classList.toggle('morrendo', dados.morrendo);
+      document.querySelector('.ficha-container').classList.toggle('inconsciente', dados.inconsciente);
     }
 
     // ===== INICIALIZAÇÃO ===== //
@@ -769,6 +914,11 @@
 
       document.getElementById('morrendo').addEventListener('change', function() {
         document.querySelector('.ficha-container').classList.toggle('morrendo', this.checked);
+        salvarDados();
+      });
+
+      document.getElementById('inconsciente').addEventListener('change', function() {
+        document.querySelector('.ficha-container').classList.toggle('inconsciente', this.checked);
         salvarDados();
       });
 
