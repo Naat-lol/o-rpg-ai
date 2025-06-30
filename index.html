@@ -155,6 +155,7 @@
       overflow: hidden;
       display: flex;
       align-items: center;
+      padding: 0 40px;
     }
     .preenchimento {
       height: 100%;
@@ -181,6 +182,8 @@
       position: absolute;
       height: 100%;
       display: flex;
+      align-items: center;
+      background: transparent;
     }
     .controles-esquerda {
       left: 0;
@@ -189,20 +192,22 @@
       right: 0;
     }
     .controles-barra button {
-      background: rgba(0,0,0,0.5);
+      background: transparent;
       color: #fff;
       border: none;
       width: 40px;
       height: 100%;
       cursor: pointer;
-      font-size: 16px;
-      transition: background 0.3s;
+      font-size: 24px;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 0;
     }
     .controles-barra button:hover {
-      background: rgba(255,255,255,0.2);
+      color: #c0f7c0;
+      transform: scale(1.2);
     }
     .barra-max {
       width: 60px;
