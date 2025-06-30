@@ -223,9 +223,946 @@
 
     // Inicializa as barras
     window.onload = function() {
+      atualiz<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ficha RPG Funcional</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: #222;
+      color: #eee;
+      padding: 20px;
+    }
+    .ficha-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #555;
+    }
+    .tabs button {
+      background: none;
+      border: none;
+      color: #eee;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .tabs button.active {
+      border-bottom: 2px solid #4CAF50;
+    }
+    .tab-content {
+      display: none;
+      padding: 15px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .barra-container {
+      margin: 20px 0;
+    }
+    .barra-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .barra {
+      height: 30px;
+      background: #444;
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+    .preenchimento {
+      height: 100%;
+      background: #4CAF50;
+      transition: width 0.3s;
+    }
+    .barra-texto {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .controles-barra {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .controles-barra button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="ficha-container">
+    <!-- Abas -->
+    <div class="tabs">
+      <button class="tab-button active" data-tab="ficha">Ficha</button>
+      <button class="tab-button" data-tab="inventario">Inventário</button>
+      <button class="tab-button" data-tab="anotacoes">Anotações</button>
+    </div>
+
+    <!-- Conteúdo das Abas -->
+    <div id="ficha" class="tab-content active">
+      <h2>Status do Personagem</h2>
+      
+      <!-- Barra de Vida -->
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Vida</span>
+          <span id="vida-texto">100/100</span>
+        </div>
+        <div class="barra">
+          <div class="preenchimento" id="barra-vida" style="width: 100%"></div>
+          <div class="barra-texto" id="vida-texto-numero">100 / 100</div>
+        </div>
+        <div class="controles-barra">
+          <input type="number" id="vida-max" value="100" min="1" style="width: 60px;">
+          <button onclick="alterarVida(-10)">-10</button>
+          <button onclick="alterarVida(-1)">-1</button>
+          <button onclick="alterarVida(1)">+1</button>
+          <button onclick="alterarVida(10)">+10</button>
+        </div>
+      </div>
+
+      <!-- Barra de Sanidade -->
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Sanidade</span>
+          <span id="sanidade-texto">100/100</span>
+        </div>
+        <div class="barra">
+          <div class="preenchimento" id="barra-sanidade" style="width: 100%"></div>
+          <div class="barra-texto" id="sanidade-texto-numero">100 / 100</div>
+        </div>
+        <div class="controles-barra">
+          <input type="number" id="sanidade-max" value="100" min="1" style="width: 60px;">
+          <button onclick="alterarSanidade(-10)">-10</button>
+          <button onclick="alterarSanidade(-1)">-1</button>
+          <button onclick="alterarSanidade(1)">+1</button>
+          <button onclick="alterarSanidade(10)">+10</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="inventario" class="tab-content">
+      <h2>Inventário</h2>
+      <p>Conteúdo do inventário aqui...</p>
+    </div>
+
+    <div id="anotacoes" class="tab-content">
+      <h2>Anotações</h2>
+      <p>Anotações do jogador aqui...</p>
+    </div>
+  </div>
+
+  <script>
+    // Sistema de Abas - FUNCIONANDO
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove a classe active de todos os botões e conteúdos
+        document.querySelectorAll('.tab-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Adiciona a classe active apenas no botão e conteúdo clicados
+        button.classList.add('active');
+        const tabId = button.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // Sistema de Barras - FUNCIONANDO
+    let vidaAtual = 100;
+    let vidaMaxima = 100;
+    let sanidadeAtual = 100;
+    let sanidadeMaxima = 100;
+
+    // Atualiza a barra de vida
+    function atualizarVida() {
+      const porcentagem = (vidaAtual / vidaMaxima) * 100;
+      document.getElementById('barra-vida').style.width = ${porcentagem}%;
+      document.getElementById('vida-texto-numero').textContent = ${vidaAtual} / ${vidaMaxima};
+    }
+
+    // Atualiza a barra de sanidade
+    function atualizarSanidade() {
+      const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
+      document.getElementById('barra-sanidade').style.width = ${porcentagem}%;
+      document.getElementById('sanidade-texto-numero').textContent = ${sanidadeAtual} / ${sanidadeMaxima};
+    }
+
+    // Altera o valor da vida
+    function alterarVida(valor) {
+      vidaAtual += valor;
+      
+      // Garante que a vida não ultrapasse os limites
+      vidaAtual = Math.max(0, Math.min(vidaAtual, vidaMaxima));
+      
       atualizarVida();
+    }
+
+    // Altera o valor da sanidade
+    function alterarSanidade(valor) {
+      sanidadeAtual += valor;
+      
+      // Garante que a sanidade não ultrapasse os limites
+      sanidadeAtual = Math.max(0, Math.min(sanidadeAtual, sanidadeMaxima));
+      
       atualizarSanidade();
-    };
+    }
+
+    // Atualiza o máximo de vida quando o input é alterado
+    document.getElementById('vida-max').addEventListener('change', function() {
+      vidaMaxima = parseInt(this.value) || 100;
+      vidaAtual = Math.min(vidaAtual, vidaMaxima);
+      atualizarVida();
+    });
+
+    // Atualiza o máximo de sanidade quando o input é alterado
+    document.getElementById('sanidade-max').addEventListener('change', function() {
+      sanidadeMaxima = parseInt(this.value) || 100;
+      sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
+      atualizarSanidade();
+    });
+
+    // Inicializa as barras
+    window.onload = function() {
+      atualizarVida();
+      atualizarSan<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ficha RPG Funcional</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: #222;
+      color: #eee;
+      padding: 20px;
+    }
+    .ficha-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #555;
+    }
+    .tabs button {
+      background: none;
+      border: none;
+      color: #eee;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .tabs button.active {
+      border-bottom: 2px solid #4CAF50;
+    }
+    .tab-content {
+      display: none;
+      padding: 15px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .barra-container {
+      margin: 20px 0;
+    }
+    .barra-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .barra {
+      height: 30px;
+      background: #444;
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+    .preenchimento {
+      height: 100%;
+      background: #4CAF50;
+      transition: width 0.3s;
+    }
+    .barra-texto {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .controles-barra {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .controles-barra button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="ficha-container">
+    <!-- Abas -->
+    <div class="tabs">
+      <button class="tab-button active" data-tab="ficha">Ficha</button>
+      <button class="tab-button" data-tab="inventario">Inventário</button>
+      <button class="tab-button" data-tab="anotacoes">Anotações</button>
+    </div>
+
+    <!-- Conteúdo das Abas -->
+    <div id="ficha" class="tab-content active">
+      <h2>Status do Personagem</h2>
+      
+      <!-- Barra de Vida -->
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Vida</span>
+          <span id="vida-texto">100/100</span>
+        </div>
+        <div class="barra">
+          <div class="preenchimento" id="barra-vida" style="width: 100%"></div>
+          <div class="barra-texto" id="vida-texto-numero">100 / 100</div>
+        </div>
+        <div class="controles-barra">
+          <input type="number" id="vida-max" value="100" min="1" style="width: 60px;">
+          <button onclick="alterarVida(-10)">-10</button>
+          <button onclick="alterarVida(-1)">-1</button>
+          <button onclick="alterarVida(1)">+1</button>
+          <button onclick="alterarVida(10)">+10</button>
+        </div>
+      </div>
+
+      <!-- Barra de Sanidade -->
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Sanidade</span>
+          <span id="sanidade-texto">100/100</span>
+        </div>
+        <div class="barra">
+          <div class="preenchimento" id="barra-sanidade" style="width: 100%"></div>
+          <div class="barra-texto" id="sanidade-texto-numero">100 / 100</div>
+        </div>
+        <div class="controles-barra">
+          <input type="number" id="sanidade-max" value="100" min="1" style="width: 60px;">
+          <button onclick="alterarSanidade(-10)">-10</button>
+          <button onclick="alterarSanidade(-1)">-1</button>
+          <button onclick="alterarSanidade(1)">+1</button>
+          <button onclick="alterarSanidade(10)">+10</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="inventario" class="tab-content">
+      <h2>Inventário</h2>
+      <p>Conteúdo do inventário aqui...</p>
+    </div>
+
+    <div id="anotacoes" class="tab-content">
+      <h2>Anotações</h2>
+      <p>Anotações do jogador aqui...</p>
+    </div>
+  </div>
+
+  <script>
+    // Sistema de Abas - FUNCIONANDO
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove a classe active de todos os botões e conteúdos
+        document.querySelectorAll('.tab-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Adiciona a classe active apenas no botão e conteúdo clicados
+        button.classList.add('active');
+        const tabId = button.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // Sistema de Barras - FUNCIONANDO
+    let vidaAtual = 100;
+    let vidaMaxima = 100;
+    let sanidadeAtual = 100;
+    let sanidadeMaxima = 100;
+
+    // Atualiza a barra de vida
+    function atualizarVida() {
+      const porcentagem = (vidaAtual / vidaMaxima) * 100;
+      document.getElementById('barra-vida').style.width = ${porcentagem}%;
+      document.getElementById('vida-texto-numero').textContent = ${vidaAtual} / ${vidaMaxima};
+    }
+
+    // Atualiza a barra de sanidade
+    function atualizarSanidade() {
+      const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
+      document.getElementById('barra-sanidade').style.width = ${porcentagem}%;
+      document.getElementById('sanidade-texto-numero').textContent = ${sanidadeAtual} / ${sanidadeMaxima};
+    }
+
+    // Altera o valor da vida
+    function alterarVida(valor) {
+      vidaAtual += valor;
+      
+      // Garante que a vida não ultrapasse os limites
+      vidaAtual = Math.max(0, Math.min(vidaAtual, vidaMaxima));
+      
+      atualizarVida();
+    }
+
+    // Altera o valor da sanidade
+    function alterarSanidade(valor) {
+      sanidadeAtual += valor;
+      
+      // Garante que a sanidade não ultrapasse os limites
+      sanidadeAtual = Math.max(0, Math.min(sanidadeAtual, sanidadeMaxima));
+      
+      atualizarSanidade();
+    }
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ficha RPG Completa Funcional</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #0a0a0a;
+      color: #c0f7c0;
+      font-family: 'Share Tech Mono', monospace;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .ficha-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #111;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #333;
+    }
+    /* Sistema de Abas */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+    .tabs button {
+      background: transparent;
+      border: none;
+      color: #c0f7c0;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    .tabs button:hover {
+      color: #fff;
+    }
+    .tabs button.active {
+      border-bottom: 2px solid #c0f7c0;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    /* Seção Foto e Nome */
+    .foto-nome {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .foto-nome img {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      border: 2px solid #c0f7c0;
+      object-fit: cover;
+    }
+    .foto-nome input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px dashed #c0f7c0;
+      color: #c0f7c0;
+      font-size: 18px;
+      padding: 5px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    /* Atributos */
+    .atributos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .atributo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .atributo-item input {
+      width: 50px;
+      text-align: center;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 5px;
+    }
+    /* Barras de Status */
+    .barra-container {
+      margin: 20px 0;
+    }
+    .barra-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .barra-label input {
+      width: 60px;
+      text-align: center;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 5px;
+    }
+    .barra {
+      height: 30px;
+      background: #222;
+      border-radius: 5px;
+      border: 1px solid #444;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .preenchimento {
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: width 0.3s;
+    }
+    #barra-vida .preenchimento {
+      background: linear-gradient(to right, #ff3333, #990000);
+    }
+    #barra-sanidade .preenchimento {
+      background: linear-gradient(to right, #9933ff, #330066);
+    }
+    .barra-texto {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+    }
+    .controles-barra {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .controles-barra button {
+      background: #333;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .controles-barra button:hover {
+      background: #444;
+    }
+    /* Perícias */
+    .pericias {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .linha-pericia {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .linha-pericia input {
+      width: 50px;
+      text-align: center;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 5px;
+    }
+    /* Abas de texto */
+    textarea {
+      width: 100%;
+      height: 300px;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #444;
+      padding: 15px;
+      border-radius: 5px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    /* Inventário */
+    .inventario-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .inventario-item input {
+      flex: 1;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #444;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    .btn-remover {
+      background: #990000 !important;
+      color: white !important;
+      border: none !important;
+    }
+    #btn-adicionar-item {
+      background: #006600;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="ficha-container">
+    <!-- Abas -->
+    <div class="tabs">
+      <button class="tab-button active" data-tab="aba-ficha">Ficha</button>
+      <button class="tab-button" data-tab="aba-inventario">Inventário</button>
+      <button class="tab-button" data-tab="aba-anotacoes">Anotações</button>
+      <button class="tab-button" data-tab="aba-habilidades">Habilidades</button>
+      <button class="tab-button" data-tab="aba-historico">Histórico</button>
+    </div>
+
+    <!-- Aba Ficha -->
+    <div id="aba-ficha" class="tab-content active">
+      <div class="foto-nome">
+        <img src="https://via.placeholder.com/120" alt="Foto do Personagem">
+        <div style="flex: 1;">
+          <input type="text" id="nome-personagem" placeholder="Nome do Personagem">
+          <input type="text" id="nome-jogador" placeholder="Nome do Jogador">
+        </div>
+      </div>
+
+      <h2 class="titulo-secao">Atributos</h2>
+      <div class="atributos">
+        <div class="atributo-item"><span>Força:</span> <input type="number" id="forca" value="5" min="0"></div>
+        <div class="atributo-item"><span>Destreza:</span> <input type="number" id="destreza" value="5" min="0"></div>
+        <div class="atributo-item"><span>Inteligência:</span> <input type="number" id="inteligencia" value="5" min="0"></div>
+        <div class="atributo-item"><span>Constituição:</span> <input type="number" id="constituicao" value="5" min="0"></div>
+        <div class="atributo-item"><span>Poder:</span> <input type="number" id="poder" value="5" min="0"></div>
+        <div class="atributo-item"><span>Presença:</span> <input type="number" id="presenca" value="5" min="0"></div>
+      </div>
+
+      <h2 class="titulo-secao">Status</h2>
+      
+      <!-- Barra de Vida -->
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Vida</span>
+          <input type="number" id="vida-max" value="100" min="1" placeholder="Máx.">
+        </div>
+        <div class="barra" id="barra-vida">
+          <div class="preenchimento" style="width: 100%"></div>
+          <div class="barra-texto" id="texto-vida">100 / 100</div>
+        </div>
+        <div class="controles-barra">
+          <button onclick="mudarVida(-10)">-10</button>
+          <button onclick="mudarVida(-1)">-1</button>
+          <button onclick="mudarVida(1)">+1</button>
+          <button onclick="mudarVida(10)">+10</button>
+        </div>
+      </div>
+      
+      <!-- Barra de Sanidade -->
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Sanidade</span>
+          <input type="number" id="sanidade-max" value="100" min="1" placeholder="Máx.">
+        </div>
+        <div class="barra" id="barra-sanidade">
+          <div class="preenchimento" style="width: 100%"></div>
+          <div class="barra-texto" id="texto-sanidade">100 / 100</div>
+        </div>
+        <div class="controles-barra">
+          <button onclick="mudarSanidade(-10)">-10</button>
+          <button onclick="mudarSanidade(-1)">-1</button>
+          <button onclick="mudarSanidade(1)">+1</button>
+          <button onclick="mudarSanidade(10)">+10</button>
+        </div>
+      </div>
+
+      <h2 class="titulo-secao">Perícias</h2>
+      <div class="pericias">
+        <div>
+          <div class="linha-pericia"><span>Atuação:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Ciência:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Disfarce:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Furtividade:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Informática:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Intimidação:</span> <input type="number" value="0" min="0"></div>
+        </div>
+        <div>
+          <div class="linha-pericia"><span>Investigação:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Lábia:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Luta:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Medicina:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Ouvir:</span> <input type="number" value="0" min="0"></div>
+          <div class="linha-pericia"><span>Tiro:</span> <input type="number" value="0" min="0"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aba Inventário -->
+    <div id="aba-inventario" class="tab-content">
+      <h2>Inventário</h2>
+      <div id="lista-inventario">
+        <!-- Itens serão adicionados aqui -->
+      </div>
+      <button id="btn-adicionar-item" onclick="adicionarItem()">+ Adicionar Item</button>
+    </div>
+
+    <!-- Aba Anotações -->
+    <div id="aba-anotacoes" class="tab-content">
+      <h2>Anotações</h2>
+      <textarea id="anotacoes-texto" placeholder="Anotações sobre a campanha..."></textarea>
+    </div>
+
+    <!-- Aba Habilidades -->
+    <div id="aba-habilidades" class="tab-content">
+      <h2>Habilidades</h2>
+      <textarea id="habilidades-texto" placeholder="Habilidades especiais do personagem..."></textarea>
+    </div>
+
+    <!-- Aba Histórico -->
+    <div id="aba-historico" class="tab-content">
+      <h2>Histórico</h2>
+      <textarea id="historico-texto" placeholder="História do personagem..."></textarea>
+    </div>
+  </div>
+
+  <script>
+    // ========== SISTEMA DE ABAS ========== //
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove 'active' de todos os botões e conteúdos
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Adiciona 'active' no botão clicado e na aba correspondente
+        this.classList.add('active');
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // ========== SISTEMA DE BARRAS ========== //
+    let vidaAtual = 100;
+    let vidaMaxima = 100;
+    let sanidadeAtual = 100;
+    let sanidadeMaxima = 100;
+
+    // Atualiza a barra de vida
+    function atualizarVida() {
+      const porcentagem = (vidaAtual / vidaMaxima) * 100;
+      document.querySelector('#barra-vida .preenchimento').style.width = `${porcentagem}%`;
+      document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
+    }
+
+    // Atualiza a barra de sanidade
+    function atualizarSanidade() {
+      const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
+      document.querySelector('#barra-sanidade .preenchimento').style.width = `${porcentagem}%`;
+      document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
+    }
+
+    // Altera o valor da vida
+    function mudarVida(quantidade) {
+      vidaAtual += quantidade;
+      vidaAtual = Math.max(0, Math.min(vidaAtual, vidaMaxima));
+      atualizarVida();
+    }
+
+    // Altera o valor da sanidade
+    function mudarSanidade(quantidade) {
+      sanidadeAtual += quantidade;
+      sanidadeAtual = Math.max(0, Math.min(sanidadeAtual, sanidadeMaxima));
+      atualizarSanidade();
+    }
+
+    // Atualiza o máximo de vida
+    document.getElementById('vida-max').addEventListener('change', function() {
+      vidaMaxima = parseInt(this.value) || 1;
+      vidaAtual = Math.min(vidaAtual, vidaMaxima);
+      atualizarVida();
+    });
+
+    // Atualiza o máximo de sanidade
+    document.getElementById('sanidade-max').addEventListener('change', function() {
+      sanidadeMaxima = parseInt(this.value) || 1;
+      sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
+      atualizarSanidade();
+    });
+
+    // ========== SISTEMA DE INVENTÁRIO ========== //
+    function adicionarItem() {
+      const itemHTML = `
+        <div class="inventario-item">
+          <input type="text" placeholder="Nome do item">
+          <input type="number" placeholder="Qtd." min="1" value="1">
+          <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
+        </div>
+      `;
+      document.getElementById('lista-inventario').insertAdjacentHTML('beforeend', itemHTML);
+    }
+
+    // Adiciona um item inicial
+    adicionarItem();
+
+    // ========== SALVAR DADOS ========== //
+    function salvarDados() {
+      const dados = {
+        nomePersonagem: document.getElementById('nome-personagem').value,
+        nomeJogador: document.getElementById('nome-jogador').value,
+        atributos: {
+          forca: document.getElementById('forca').value,
+          destreza: document.getElementById('destreza').value,
+          inteligencia: document.getElementById('inteligencia').value,
+          constituicao: document.getElementById('constituicao').value,
+          poder: document.getElementById('poder').value,
+          presenca: document.getElementById('presenca').value
+        },
+        status: {
+          vidaAtual,
+          vidaMaxima,
+          sanidadeAtual,
+          sanidadeMaxima
+        },
+        anotacoes: document.getElementById('anotacoes-texto').value,
+        habilidades: document.getElementById('habilidades-texto').value,
+        historico: document.getElementById('historico-texto').value
+      };
+      localStorage.setItem('fichaRPG', JSON.stringify(dados));
+    }
+
+    // Carrega os dados salvos
+    function carregarDados() {
+      const dadosSalvos = localStorage.getItem('fichaRPG');
+      if (dadosSalvos) {
+        const dados = JSON.parse(dadosSalvos);
+        
+        // Dados básicos
+        document.getElementById('nome-personagem').value = dados.nomePersonagem || '';
+        document.getElementById('nome-jogador').value = dados.nomeJogador || '';
+        
+        // Atributos
+        if (dados.atributos) {
+          document.getElementById('forca').value = dados.atributos.forca || 5;
+          document.getElementById('destreza').value = dados.atributos.destreza || 5;
+          document.getElementById('inteligencia').value = dados.atributos.inteligencia || 5;
+          document.getElementById('constituicao').value = dados.atributos.constituicao || 5;
+          document.getElementById('poder').value = dados.atributos.poder || 5;
+          document.getElementById('presenca').value = dados.atributos.presenca || 5;
+        }
+        
+        // Status
+        if (dados.status) {
+          vidaAtual = dados.status.vidaAtual || 100;
+          vidaMaxima = dados.status.vidaMaxima || 100;
+          sanidadeAtual = dados.status.sanidadeAtual || 100;
+          sanidadeMaxima = dados.status.sanidadeMaxima || 100;
+          
+          document.getElementById('vida-max').value = vidaMaxima;
+          document.getElementById('sanidade-max').value = sanidadeMaxima;
+          atualizarVida();
+          atualizarSanidade();
+        }
+        
+        // Textos
+        document.getElementById('anotacoes-texto').value = dados.anotacoes || '';
+        document.getElementById('habilidades-texto').value = dados.habilidades || '';
+        document.getElementById('historico-texto').value = dados.historico || '';
+      }
+    }
+
+    // Salva automaticamente quando há mudanças
+    document.querySelectorAll('input, textarea').forEach(element => {
+      element.addEventListener('change', salvarDados);
+    });
+
+    // Carrega os dados quando a página é aberta
+    window.addEventListener('load', carregarDados);
   </script>
 </body>
 </html>
