@@ -110,6 +110,10 @@
       border-radius: 4px;
       padding: 5px;
     }
+    .atributo-nome {
+      display: flex;
+      gap: 5px;
+    }
     
     /* Barras de Status */
     .barra-container {
@@ -127,6 +131,8 @@
       border: 1px solid #444;
       position: relative;
       overflow: hidden;
+      display: flex;
+      align-items: center;
     }
     .preenchimento {
       height: 100%;
@@ -142,17 +148,17 @@
       background: linear-gradient(to right, #9933ff, #330066);
     }
     .barra-texto {
-      position: absolute;
+      position: relative;
+      z-index: 2;
       width: 100%;
       text-align: center;
-      line-height: 30px;
       font-weight: bold;
-      z-index: 2;
     }
     .controles-barra {
       display: flex;
-      gap: 10px;
+      gap: 5px;
       margin-top: 10px;
+      justify-content: center;
     }
     .controles-barra button {
       background: #333;
@@ -161,6 +167,16 @@
       border-radius: 4px;
       padding: 5px 10px;
       cursor: pointer;
+      min-width: 40px;
+    }
+    .barra-max {
+      width: 60px;
+      text-align: center;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 5px;
     }
     
     /* Perícias */
@@ -183,6 +199,11 @@
       border: 1px solid #444;
       border-radius: 4px;
       padding: 5px;
+    }
+    .pericia-atributo {
+      font-size: 0.8em;
+      color: #777;
+      margin-left: 5px;
     }
     
     /* Abas de Texto */
@@ -238,7 +259,6 @@
       <button class="active" data-tab="ficha">Ficha</button>
       <button data-tab="inventario">Inventário</button>
       <button data-tab="anotacoes">Anotações</button>
-      <button data-tab="habilidades">Habilidades</button>
     </div>
 
     <!-- Aba Ficha -->
@@ -253,12 +273,30 @@
 
       <h3>Atributos</h3>
       <div class="atributos">
-        <div class="atributo-item"><span>Força</span> <input type="number" value="5"></div>
-        <div class="atributo-item"><span>Destreza</span> <input type="number" value="5"></div>
-        <div class="atributo-item"><span>Constituição</span> <input type="number" value="5"></div>
-        <div class="atributo-item"><span>Inteligência</span> <input type="number" value="5"></div>
-        <div class="atributo-item"><span>Sabedoria</span> <input type="number" value="5"></div>
-        <div class="atributo-item"><span>Carisma</span> <input type="number" value="5"></div>
+        <div class="atributo-item">
+          <div class="atributo-nome"><span>Força</span><span>(STR)</span></div>
+          <input type="number" value="5">
+        </div>
+        <div class="atributo-item">
+          <div class="atributo-nome"><span>Destreza</span><span>(DEX)</span></div>
+          <input type="number" value="5">
+        </div>
+        <div class="atributo-item">
+          <div class="atributo-nome"><span>Inteligência</span><span>(INT)</span></div>
+          <input type="number" value="5">
+        </div>
+        <div class="atributo-item">
+          <div class="atributo-nome"><span>Constituição</span><span>(CON)</span></div>
+          <input type="number" value="5">
+        </div>
+        <div class="atributo-item">
+          <div class="atributo-nome"><span>Poder</span><span>(POW)</span></div>
+          <input type="number" value="5">
+        </div>
+        <div class="atributo-item">
+          <div class="atributo-nome"><span>Presença</span><span>(CAR)</span></div>
+          <input type="number" value="5">
+        </div>
       </div>
 
       <h3>Status</h3>
@@ -266,17 +304,17 @@
       <div class="barra-container">
         <div class="barra-label">
           <span>Vida</span>
-          <input type="number" id="vida-max" value="100" min="1">
+          <input type="number" class="barra-max" id="vida-max" value="100">
         </div>
         <div class="barra" id="barra-vida">
           <div class="preenchimento" style="width: 100%"></div>
           <div class="barra-texto" id="texto-vida">100 / 100</div>
         </div>
         <div class="controles-barra">
-          <button onclick="mudarVida(-10)">-10</button>
-          <button onclick="mudarVida(-1)">-1</button>
-          <button onclick="mudarVida(1)">+1</button>
-          <button onclick="mudarVida(10)">+10</button>
+          <button onclick="mudarStatus('vida', -10)">«</button>
+          <button onclick="mudarStatus('vida', -1)">‹</button>
+          <button onclick="mudarStatus('vida', 1)">›</button>
+          <button onclick="mudarStatus('vida', 10)">»</button>
         </div>
       </div>
       
@@ -284,37 +322,97 @@
       <div class="barra-container">
         <div class="barra-label">
           <span>Sanidade</span>
-          <input type="number" id="sanidade-max" value="80" min="1">
+          <input type="number" class="barra-max" id="sanidade-max" value="80">
         </div>
         <div class="barra" id="barra-sanidade">
           <div class="preenchimento" style="width: 100%"></div>
           <div class="barra-texto" id="texto-sanidade">80 / 80</div>
         </div>
         <div class="controles-barra">
-          <button onclick="mudarSanidade(-10)">-10</button>
-          <button onclick="mudarSanidade(-1)">-1</button>
-          <button onclick="mudarSanidade(1)">+1</button>
-          <button onclick="mudarSanidade(10)">+10</button>
+          <button onclick="mudarStatus('sanidade', -10)">«</button>
+          <button onclick="mudarStatus('sanidade', -1)">‹</button>
+          <button onclick="mudarStatus('sanidade', 1)">›</button>
+          <button onclick="mudarStatus('sanidade', 10)">»</button>
         </div>
       </div>
 
       <h3>Perícias</h3>
       <div class="pericias">
         <div>
-          <div class="linha-pericia"><span>Acrobacia</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Arcanismo</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Atletismo</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Atuação</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Enganação</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>História</span><input type="number" value="0"></div>
+          <div class="linha-pericia">
+            <span>Atuação <span class="pericia-atributo">(CAR)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Ciência <span class="pericia-atributo">(INT)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Disfarce <span class="pericia-atributo">(CAR)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Furtividade <span class="pericia-atributo">(DEX)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Informática <span class="pericia-atributo">(INT)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Intimidação <span class="pericia-atributo">(CAR)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Investigação <span class="pericia-atributo">(INT)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Lábia <span class="pericia-atributo">(CAR)</span></span>
+            <input type="number" value="0">
+          </div>
         </div>
         <div>
-          <div class="linha-pericia"><span>Intimidação</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Intuição</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Investigação</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Luta</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Medicina</span><input type="number" value="0"></div>
-          <div class="linha-pericia"><span>Furtividade</span><input type="number" value="0"></div>
+          <div class="linha-pericia">
+            <span>Luta <span class="pericia-atributo">(STR)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Medicina <span class="pericia-atributo">(INT)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Ouvir <span class="pericia-atributo">(CAR)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Pilotar <span class="pericia-atributo">(DEX)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Psicologia <span class="pericia-atributo">(INT)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Reparação <span class="pericia-atributo">(INT)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Rastrear <span class="pericia-atributo">(INT)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Saltar <span class="pericia-atributo">(DEX)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Sobrevivência <span class="pericia-atributo">(INT)</span></span>
+            <input type="number" value="0">
+          </div>
+          <div class="linha-pericia">
+            <span>Tiro <span class="pericia-atributo">(DEX)</span></span>
+            <input type="number" value="0">
+          </div>
         </div>
       </div>
     </div>
@@ -324,7 +422,7 @@
       <h3>Inventário</h3>
       <div id="lista-inventario">
         <div class="inventario-item">
-          <input type="text" placeholder="Nome do item" value="Espada Longa">
+          <input type="text" placeholder="Nome do item">
           <input type="number" placeholder="Quantidade" value="1" min="1">
           <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         </div>
@@ -336,12 +434,6 @@
     <div id="anotacoes" class="tab-content">
       <h3>Anotações</h3>
       <textarea placeholder="Anotações sobre a campanha..."></textarea>
-    </div>
-
-    <!-- Aba Habilidades -->
-    <div id="habilidades" class="tab-content">
-      <h3>Habilidades</h3>
-      <textarea placeholder="Habilidades especiais do personagem..."></textarea>
     </div>
   </div>
 
@@ -377,29 +469,35 @@
       }
     }
 
-    function mudarVida(valor) {
-      vidaAtual += valor;
-      vidaAtual = Math.max(0, Math.min(vidaAtual, vidaMaxima));
-      atualizarBarra('vida');
-    }
-
-    function mudarSanidade(valor) {
-      sanidadeAtual += valor;
-      sanidadeAtual = Math.max(0, Math.min(sanidadeAtual, sanidadeMaxima));
-      atualizarBarra('sanidade');
+    function mudarStatus(tipo, valor) {
+      if (tipo === 'vida') {
+        vidaAtual += valor;
+        // Permite valores negativos e acima do máximo
+        document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
+        const porcentagem = Math.max(0, (vidaAtual / vidaMaxima) * 100);
+        document.querySelector('#barra-vida .preenchimento').style.width = `${porcentagem}%`;
+      } else {
+        sanidadeAtual += valor;
+        // Permite valores negativos e acima do máximo
+        document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
+        const porcentagem = Math.max(0, (sanidadeAtual / sanidadeMaxima) * 100);
+        document.querySelector('#barra-sanidade .preenchimento').style.width = `${porcentagem}%`;
+      }
     }
 
     // Atualizar máximos
     document.getElementById('vida-max').addEventListener('change', function() {
       vidaMaxima = parseInt(this.value) || 1;
-      vidaAtual = Math.min(vidaAtual, vidaMaxima);
-      atualizarBarra('vida');
+      document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
+      const porcentagem = Math.max(0, (vidaAtual / vidaMaxima) * 100);
+      document.querySelector('#barra-vida .preenchimento').style.width = `${porcentagem}%`;
     });
 
     document.getElementById('sanidade-max').addEventListener('change', function() {
       sanidadeMaxima = parseInt(this.value) || 1;
-      sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
-      atualizarBarra('sanidade');
+      document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
+      const porcentagem = Math.max(0, (sanidadeAtual / sanidadeMaxima) * 100);
+      document.querySelector('#barra-sanidade .preenchimento').style.width = `${porcentagem}%`;
     });
 
     // ===== INVENTÁRIO ===== //
