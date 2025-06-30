@@ -177,29 +177,32 @@
       font-weight: bold;
       font-size: 18px;
     }
-    .controles-esquerda {
+    .controles-barra {
       position: absolute;
-      left: 0;
-      display: flex;
       height: 100%;
+      display: flex;
+    }
+    .controles-esquerda {
+      left: 0;
     }
     .controles-direita {
-      position: absolute;
       right: 0;
-      display: flex;
-      height: 100%;
     }
     .controles-barra button {
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.5);
       color: #fff;
       border: none;
       width: 40px;
+      height: 100%;
       cursor: pointer;
       font-size: 16px;
       transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .controles-barra button:hover {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.2);
     }
     .barra-max {
       width: 60px;
@@ -367,13 +370,13 @@
           </div>
         </div>
         <div class="barra" id="barra-vida">
-          <div class="controles-esquerda">
+          <div class="controles-barra controles-esquerda">
             <button onclick="mudarStatus('vida', -10)">«</button>
             <button onclick="mudarStatus('vida', -1)">‹</button>
           </div>
           <div class="preenchimento" style="width: 100%"></div>
           <div class="barra-texto" id="texto-vida">100 / 100</div>
-          <div class="controles-direita">
+          <div class="controles-barra controles-direita">
             <button onclick="mudarStatus('vida', 1)">›</button>
             <button onclick="mudarStatus('vida', 10)">»</button>
           </div>
@@ -389,13 +392,13 @@
           </div>
         </div>
         <div class="barra" id="barra-sanidade">
-          <div class="controles-esquerda">
+          <div class="controles-barra controles-esquerda">
             <button onclick="mudarStatus('sanidade', -10)">«</button>
             <button onclick="mudarStatus('sanidade', -1)">‹</button>
           </div>
           <div class="preenchimento" style="width: 100%"></div>
           <div class="barra-texto" id="texto-sanidade">80 / 80</div>
-          <div class="controles-direita">
+          <div class="controles-barra controles-direita">
             <button onclick="mudarStatus('sanidade', 1)">›</button>
             <button onclick="mudarStatus('sanidade', 10)">»</button>
           </div>
