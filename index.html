@@ -457,28 +457,28 @@
         <h3>Atributos</h3>
         <div class="atributos">
           <div class="atributo-item">
-            <div class="atributo-nome"><span>Força</span><span>(STR)</span></div>
-            <input type="number" id="atributo-forca" class="atributo-valor" value="5">
+            <div class="atributo-nome"><span>Força</span><span>(FOR)</span></div>
+            <input type="number" id="atributo-forca" class="atributo-valor" value="0">
           </div>
           <div class="atributo-item">
-            <div class="atributo-nome"><span>Destreza</span><span>(DEX)</span></div>
-            <input type="number" id="atributo-destreza" class="atributo-valor" value="5">
+            <div class="atributo-nome"><span>Destreza</span><span>(DES)</span></div>
+            <input type="number" id="atributo-destreza" class="atributo-valor" value="0">
           </div>
           <div class="atributo-item">
             <div class="atributo-nome"><span>Inteligência</span><span>(INT)</span></div>
-            <input type="number" id="atributo-inteligencia" class="atributo-valor" value="5">
+            <input type="number" id="atributo-inteligencia" class="atributo-valor" value="0">
           </div>
           <div class="atributo-item">
             <div class="atributo-nome"><span>Constituição</span><span>(CON)</span></div>
-            <input type="number" id="atributo-constituicao" class="atributo-valor" value="5">
+            <input type="number" id="atributo-constituicao" class="atributo-valor" value="0">
           </div>
           <div class="atributo-item">
-            <div class="atributo-nome"><span>Poder</span><span>(POW)</span></div>
-            <input type="number" id="atributo-poder" class="atributo-valor" value="5">
+            <div class="atributo-nome"><span>Poder</span><span>(POD)</span></div>
+            <input type="number" id="atributo-poder" class="atributo-valor" value="0">
           </div>
           <div class="atributo-item">
             <div class="atributo-nome"><span>Presença</span><span>(CAR)</span></div>
-            <input type="number" id="atributo-presenca" class="atributo-valor" value="5">
+            <input type="number" id="atributo-presenca" class="atributo-valor" value="0">
           </div>
         </div>
       </div>
@@ -498,7 +498,7 @@
             <button onclick="mudarStatus('vida', -1)">‹</button>
           </div>
           <div class="preenchimento" style="width: 100%"></div>
-          <div class="barra-texto" id="texto-vida">100 / 100</div>
+          <div class="barra-texto" id="texto-vida">20 / 20</div>
           <div class="controles-barra controles-direita">
             <button onclick="mudarStatus('vida', 1)">›</button>
             <button onclick="mudarStatus('vida', 10)">»</button>
@@ -520,7 +520,7 @@
             <button onclick="mudarStatus('sanidade', -1)">‹</button>
           </div>
           <div class="preenchimento" style="width: 100%"></div>
-          <div class="barra-texto" id="texto-sanidade">80 / 80</div>
+          <div class="barra-texto" id="texto-sanidade">50 / 50</div>
           <div class="controles-barra controles-direita">
             <button onclick="mudarStatus('sanidade', 1)">›</button>
             <button onclick="mudarStatus('sanidade', 10)">»</button>
@@ -673,10 +673,10 @@
 
   <script>
     // ===== VARIÁVEIS GLOBAIS ===== //
-    let vidaAtual = 100;
-    let vidaMaxima = 100;
-    let sanidadeAtual = 80;
-    let sanidadeMaxima = 80;
+    let vidaAtual = 20;
+    let vidaMaxima = 20;
+    let sanidadeAtual = 50;
+    let sanidadeMaxima = 50;
 
     // ===== SISTEMA DE ABAS ===== //
     function configurarAbas() {
@@ -692,18 +692,20 @@
     }
 
     // ===== SISTEMA DE BARRAS ===== //
-    function atualizarBarra(tipo) {
-      if (tipo === 'vida') {
-        const porcentagem = (vidaAtual / vidaMaxima) * 100;
-        document.querySelector('#barra-vida .preenchimento').style.width = `${Math.min(100, Math.max(0, porcentagem))}%`;
-        document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
-      } else {
-        const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
-        document.querySelector('#barra-sanidade .preenchimento').style.width = `${Math.min(100, Math.max(0, porcentagem))}%`;
-        document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
-      }
-      salvarDados();
-    }
+function atualizarBarra(tipo) {
+  if (tipo === 'vida') {
+    const max = vidaMaxima || 1; // Evita divisão por zero
+    const porcentagem = (vidaAtual / max) * 100;
+    document.querySelector('#barra-vida .preenchimento').style.width = `${Math.min(100, Math.max(0, porcentagem))}%`;
+    document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
+  } else {
+    const max = sanidadeMaxima || 1; // Evita divisão por zero
+    const porcentagem = (sanidadeAtual / max) * 100;
+    document.querySelector('#barra-sanidade .preenchimento').style.width = `${Math.min(100, Math.max(0, porcentagem))}%`;
+    document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
+  }
+  salvarDados();
+}
 
     function mudarStatus(tipo, valor) {
       if (tipo === 'vida') {
@@ -803,11 +805,11 @@
       localStorage.setItem('fichaRPG', JSON.stringify(dados));
     }
 
-    function carregarDados() {
-      const dadosSalvos = localStorage.getItem('fichaRPG');
-      if (!dadosSalvos) return;
+function carregarDados() {
+  const dadosSalvos = localStorage.getItem('fichaRPG');
+  if (!dadosSalvos) return;
 
-      const dados = JSON.parse(dadosSalvos);
+  const dados = JSON.parse(dadosSalvos);
 
       // Dados básicos
       document.getElementById('nome-personagem').value = dados.nomePersonagem || '';
@@ -828,10 +830,12 @@
       document.getElementById('atributo-presenca').value = dados.presenca || 5;
 
       // Status
-      document.getElementById('vida-max').value = dados.vidaMax || 100;
-      document.getElementById('sanidade-max').value = dados.sanidadeMax || 80;
-      vidaAtual = parseInt(dados.vidaAtual) || parseInt(dados.vidaMax) || 100;
-      sanidadeAtual = parseInt(dados.sanidadeAtual) || parseInt(dados.sanidadeMax) || 80;
+    document.getElementById('vida-max').value = dados.vidaMax !== undefined ? dados.vidaMax : 100;
+  document.getElementById('sanidade-max').value = dados.sanidadeMax !== undefined ? dados.sanidadeMax : 80;
+  
+  // Verifica explicitamente se os valores são números válidos
+  vidaAtual = typeof dados.vidaAtual === 'number' ? dados.vidaAtual : (dados.vidaMax !== undefined ? dados.vidaMax : 100);
+  sanidadeAtual = typeof dados.sanidadeAtual === 'number' ? dados.sanidadeAtual : (dados.sanidadeMax !== undefined ? dados.sanidadeMax : 80);
       document.getElementById('insanidade').checked = dados.insanidade || false;
       document.getElementById('morrendo').checked = dados.morrendo || false;
       document.getElementById('inconsciente').checked = dados.inconsciente || false;
@@ -922,17 +926,18 @@
       });
 
       // Configura listeners para os máximos das barras
-      document.getElementById('vida-max').addEventListener('change', function() {
-        vidaMaxima = parseInt(this.value) || 100;
-        vidaAtual = Math.min(vidaAtual, vidaMaxima);
-        atualizarBarra('vida');
-      });
 
-      document.getElementById('sanidade-max').addEventListener('change', function() {
-        sanidadeMaxima = parseInt(this.value) || 80;
-        sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
-        atualizarBarra('sanidade');
-      });
+document.getElementById('vida-max').addEventListener('change', function() {
+  vidaMaxima = parseInt(this.value) || 0; // Permite zero como valor válido
+  vidaAtual = Math.min(vidaAtual, vidaMaxima);
+  atualizarBarra('vida');
+});
+
+document.getElementById('sanidade-max').addEventListener('change', function() {
+  sanidadeMaxima = parseInt(this.value) || 0; // Permite zero como valor válido
+  sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
+  atualizarBarra('sanidade');
+});
 
       // Carrega os dados salvos
       carregarDados();
