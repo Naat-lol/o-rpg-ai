@@ -1,17 +1,14 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ficha RPG</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
-      background-color: #0a0a0a;
+      background: #0a0a0a;
       color: #c0f7c0;
       font-family: 'Share Tech Mono', monospace;
       padding: 2rem;
@@ -20,9 +17,9 @@
       max-width: 960px;
       margin: auto;
       padding: 2rem;
-      background-color: #101010;
+      background: #111;
       border-radius: 12px;
-      box-shadow: 0 0 15px #4a4a4a;
+      box-shadow: 0 0 15px #333;
     }
     .tabs {
       display: flex;
@@ -48,10 +45,9 @@
     }
     .foto-nome {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
     .foto-nome img {
       width: 120px;
@@ -59,49 +55,37 @@
       border-radius: 8px;
       border: 2px solid #c0f7c0;
     }
-    .nome-info input {
-      font-size: 1.5rem;
-      background-color: transparent;
-      color: #c0f7c0;
+    .foto-nome input {
+      font-size: 1.2rem;
+      background: transparent;
       border: none;
+      color: #c0f7c0;
       border-bottom: 1px dashed #c0f7c0;
       padding: 4px 10px;
       width: 100%;
-      font-family: inherit;
     }
-    input[type="text"] {
-      background-color: #000;
+    input[type="text"], input[type="number"] {
+      background: #000;
       color: #c0f7c0;
-      border: 1px solid #ffffff;
+      border: 1px solid #fff;
       border-radius: 6px;
-      padding: 6px 10px;
+      padding: 5px 8px;
       font-family: inherit;
-      font-size: 1rem;
     }
     input::placeholder {
       color: #777;
     }
-    .dados-basicos,
-    .atributos,
-    .barras,
-    .pericias {
-      margin-top: 2rem;
+    .titulo-secao {
+      font-size: 1.3rem;
+      margin: 2rem 0 0.5rem;
+      text-transform: uppercase;
     }
     .atributos input {
       width: 40px;
       text-align: center;
     }
-    .titulo-secao {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-      margin-top: 2rem;
-      text-transform: uppercase;
-    }
-    .barras {
-      margin-top: 2rem;
-    }
     .barra-container {
-      margin-bottom: 2rem;
+      margin: 1rem 0;
     }
     .barra-label {
       display: flex;
@@ -110,28 +94,21 @@
       margin-bottom: 0.3rem;
     }
     .barra {
-      position: relative;
-      background-color: #222;
-      height: 36px;
-      border-radius: 6px;
-      border: 2px solid #fff;
-      overflow: hidden;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      height: 36px;
+      border-radius: 6px;
+      border: 2px solid white;
+      position: relative;
+      overflow: hidden;
+      background: #222;
     }
-    .preenchimento {
-      height: 100%;
-      color: white;
-      font-weight: bold;
-      text-align: center;
-      line-height: 36px;
+    .barra .preenchimento {
       position: absolute;
-      left: 0;
-      top: 0;
-      transition: width 0.3s;
-      width: 0;
+      top: 0; left: 0;
+      height: 100%;
       z-index: 1;
+      transition: width 0.3s ease;
     }
     .barra.vida .preenchimento {
       background: linear-gradient(to right, #ff3333, #990000);
@@ -140,10 +117,10 @@
       background: linear-gradient(to right, #9933ff, #330066);
     }
     .barra .barra-texto {
-      position: relative;
+      z-index: 2;
       width: 100%;
       text-align: center;
-      z-index: 2;
+      font-weight: bold;
     }
     .barra .controle-lateral {
       z-index: 3;
@@ -154,42 +131,33 @@
       cursor: pointer;
       padding: 0 0.5rem;
     }
-    .barra .controle-direita {
-      order: 2;
-    }
-    .barra .controle-esquerda {
-      order: 0;
-    }
     .pericias {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
+      margin-top: 1rem;
     }
     .pericia-coluna {
       flex: 1;
       min-width: 200px;
     }
-    .pericia-coluna .linha-pericia {
+    .linha-pericia {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.5rem;
-      gap: 0.5rem;
+      margin-bottom: 0.4rem;
     }
-    .pericia-coluna label {
-      flex: 1;
-    }
-    .pericia-coluna input {
-      width: 60px;
+    .linha-pericia input {
+      width: 50px;
       text-align: center;
     }
     textarea {
       width: 100%;
-      height: 150px;
+      height: 200px;
       background: #000;
       color: #c0f7c0;
-      border: 1px solid #4a4a4a;
+      border: 1px solid #444;
       padding: 1rem;
-      font-family: 'Share Tech Mono', monospace;
     }
   </style>
 </head>
@@ -201,114 +169,91 @@
       <button onclick="mudarAba(2)">Anotações</button>
       <button onclick="mudarAba(3)">Habilidades</button>
       <button onclick="mudarAba(4)">Histórico</button>
-    </div><div class="tab-content active">
-  <div class="foto-nome">
-    <img src="https://via.placeholder.com/120" alt="Foto do Personagem">
-    <div class="nome-info">
-      <input type="text" placeholder="Nome do Personagem">
-      <input type="text" placeholder="Nome do Jogador">
     </div>
-  </div>
 
-  <div class="dados-basicos">
-    <p><strong>Idade:</strong> <input type="text" placeholder="Ex: 28"></p>
-    <p><strong>Sexo:</strong> <input type="text" placeholder="Ex: Masculino"></p>
-    <p><strong>Data de Nascimento:</strong> <input type="text" placeholder="Ex: 01/01/1990"></p>
-  </div>
-
-  <div class="titulo-secao">Atributos</div>
-  <div class="atributos">
-    <p><strong>Força:</strong> <input type="text"></p>
-    <p><strong>Destreza:</strong> <input type="text"></p>
-    <p><strong>Inteligência:</strong> <input type="text"></p>
-    <p><strong>Constituição:</strong> <input type="text"></p>
-    <p><strong>Poder:</strong> <input type="text"></p>
-    <p><strong>Presença:</strong> <input type="text"></p>
-  </div>
-
-  <div class="titulo-secao">Vida e Sanidade</div>
-  <div class="barras">
-    <div class="barra-container">
-      <div class="barra-label">
-        <strong>Vida</strong>
-        <input type="text" id="vida-max" placeholder="Max" oninput="atualizarBarra('vida')">
+    <!-- Aba 1 -->
+    <div class="tab-content active">
+      <div class="foto-nome">
+        <img src="https://via.placeholder.com/120" alt="Foto">
+        <div style="flex:1">
+          <input type="text" placeholder="Nome do Personagem">
+          <input type="text" placeholder="Nome do Jogador">
+        </div>
       </div>
-      <div class="barra vida">
-        <button class="controle-lateral controle-esquerda" onclick="alterarBarra('vida', -5)">&laquo;</button>
-        <button class="controle-lateral controle-esquerda" onclick="alterarBarra('vida', -1)">&lsaquo;</button>
-        <div class="preenchimento" id="barra-vida"></div>
-        <div class="barra-texto" id="vida-texto">0 / 0</div>
-        <button class="controle-lateral controle-direita" onclick="alterarBarra('vida', 1)">&rsaquo;</button>
-        <button class="controle-lateral controle-direita" onclick="alterarBarra('vida', 5)">&raquo;</button>
+
+      <div class="titulo-secao">Atributos</div>
+      <div class="atributos">
+        <p>Força: <input type="text"></p>
+        <p>Destreza: <input type="text"></p>
+        <p>Inteligência: <input type="text"></p>
+        <p>Constituição: <input type="text"></p>
+        <p>Poder: <input type="text"></p>
+        <p>Presença: <input type="text"></p>
+      </div>
+
+      <div class="titulo-secao">Vida e Sanidade</div>
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Vida</span>
+          <input id="vida-max" placeholder="Max" oninput="atualizarBarra('vida')">
+        </div>
+        <div class="barra vida">
+          <button class="controle-lateral" onclick="alterarBarra('vida', -5)">&laquo;</button>
+          <button class="controle-lateral" onclick="alterarBarra('vida', -1)">&lsaquo;</button>
+          <div class="preenchimento" id="barra-vida"></div>
+          <div class="barra-texto" id="vida-texto">0 / 0</div>
+          <button class="controle-lateral" onclick="alterarBarra('vida', 1)">&rsaquo;</button>
+          <button class="controle-lateral" onclick="alterarBarra('vida', 5)">&raquo;</button>
+        </div>
+      </div>
+
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Sanidade</span>
+          <input id="sanidade-max" placeholder="Max" oninput="atualizarBarra('sanidade')">
+        </div>
+        <div class="barra sanidade">
+          <button class="controle-lateral" onclick="alterarBarra('sanidade', -5)">&laquo;</button>
+          <button class="controle-lateral" onclick="alterarBarra('sanidade', -1)">&lsaquo;</button>
+          <div class="preenchimento" id="barra-sanidade"></div>
+          <div class="barra-texto" id="sanidade-texto">0 / 0</div>
+          <button class="controle-lateral" onclick="alterarBarra('sanidade', 1)">&rsaquo;</button>
+          <button class="controle-lateral" onclick="alterarBarra('sanidade', 5)">&raquo;</button>
+        </div>
+      </div>
+
+      <div class="titulo-secao">Perícias</div>
+      <div class="pericias">
+        <div class="pericia-coluna">
+          <div class="linha-pericia"><span>Atuação</span><input type="text"></div>
+          <div class="linha-pericia"><span>Ciência</span><input type="text"></div>
+          <div class="linha-pericia"><span>Disfarce</span><input type="text"></div>
+          <div class="linha-pericia"><span>Furtividade</span><input type="text"></div>
+          <div class="linha-pericia"><span>Informática</span><input type="text"></div>
+          <div class="linha-pericia"><span>Intimidação</span><input type="text"></div>
+        </div>
+        <div class="pericia-coluna">
+          <div class="linha-pericia"><span>Investigação</span><input type="text"></div>
+          <div class="linha-pericia"><span>Lábia</span><input type="text"></div>
+          <div class="linha-pericia"><span>Luta</span><input type="text"></div>
+          <div class="linha-pericia"><span>Medicina</span><input type="text"></div>
+          <div class="linha-pericia"><span>Ouvir</span><input type="text"></div>
+          <div class="linha-pericia"><span>Tiro</span><input type="text"></div>
+        </div>
       </div>
     </div>
 
-    <div class="barra-container">
-      <div class="barra-label">
-        <strong>Sanidade</strong>
-        <input type="text" id="sanidade-max" placeholder="Max" oninput="atualizarBarra('sanidade')">
-      </div>
-      <div class="barra sanidade">
-        <button class="controle-lateral controle-esquerda" onclick="alterarBarra('sanidade', -5)">&laquo;</button>
-        <button class="controle-lateral controle-esquerda" onclick="alterarBarra('sanidade', -1)">&lsaquo;</button>
-        <div class="preenchimento" id="barra-sanidade"></div>
-        <div class="barra-texto" id="sanidade-texto">0 / 0</div>
-        <button class="controle-lateral controle-direita" onclick="alterarBarra('sanidade', 1)">&rsaquo;</button>
-        <button class="controle-lateral controle-direita" onclick="alterarBarra('sanidade', 5)">&raquo;</button>
-      </div>
-    </div>
+    <!-- Aba 2 -->
+    <div class="tab-content"><textarea placeholder="Inventário..."></textarea></div>
+    <!-- Aba 3 -->
+    <div class="tab-content"><textarea placeholder="Anotações..."></textarea></div>
+    <!-- Aba 4 -->
+    <div class="tab-content"><textarea placeholder="Habilidades..."></textarea></div>
+    <!-- Aba 5 -->
+    <div class="tab-content"><textarea placeholder="Histórico..."></textarea></div>
   </div>
 
-  <div class="titulo-secao">Perícias</div>
-  <div class="pericias">
-    <div class="pericia-coluna">
-      <div class="linha-pericia"><label>Atuação</label><input type="text"></div>
-      <div class="linha-pericia"><label>Ciência</label><input type="text"></div>
-      <div class="linha-pericia"><label>Disfarce</label><input type="text"></div>
-      <div class="linha-pericia"><label>Furtividade</label><input type="text"></div>
-      <div class="linha-pericia"><label>Informática</label><input type="text"></div>
-      <div class="linha-pericia"><label>Intimidação</label><input type="text"></div>
-      <div class="linha-pericia"><label>Investigação</label><input type="text"></div>
-      <div class="linha-pericia"><label>Lábia</label><input type="text"></div>
-      <div class="linha-pericia"><label>Luta</label><input type="text"></div>
-    </div>
-    <div class="pericia-coluna">
-      <div class="linha-pericia"><label>Medicina</label><input type="text"></div>
-      <div class="linha-pericia"><label>Ouvir</label><input type="text"></div>
-      <div class="linha-pericia"><label>Pilotar</label><input type="text"></div>
-      <div class="linha-pericia"><label>Psicologia</label><input type="text"></div>
-      <div class="linha-pericia"><label>Reparação</label><input type="text"></div>
-      <div class="linha-pericia"><label>Rastrear</label><input type="text"></div>
-      <div class="linha-pericia"><label>Saltar</label><input type="text"></div>
-      <div class="linha-pericia"><label>Sobrevivência</label><input type="text"></div>
-      <div class="linha-pericia"><label>Tiro</label><input type="text"></div>
-    </div>
-  </div>
-</div>
-
-<div class="tab-content"><textarea placeholder="Adicione itens e equipamentos..."></textarea></div>
-<div class="tab-content"><textarea placeholder="Anotações do jogador ou do mestre..."></textarea></div>
-<div class="tab-content"><textarea placeholder="Habilidades especiais, poderes, etc..."></textarea></div>
-<div class="tab-content"><textarea placeholder="Histórico e passado do personagem..."></textarea></div>
-
-  </div>  <script>
-    function atualizarBarra(tipo) {
-      const max = parseInt(document.getElementById(${tipo}-max).value) || 1;
-      let atual = parseInt(localStorage.getItem(${tipo}-atual)) || 0;
-      atual = Math.max(0, Math.min(max, atual));
-      const percentual = (atual / max) * 100;
-      document.getElementById(barra-${tipo}).style.width = percentual + '%';
-      document.getElementById(${tipo}-texto).innerText = ${atual} / ${max};
-    }
-
-    function alterarBarra(tipo, valor) {
-      const max = parseInt(document.getElementById(${tipo}-max).value) || 1;
-      let atual = parseInt(localStorage.getItem(${tipo}-atual)) || 0;
-      atual = Math.max(0, Math.min(max, atual + valor));
-      localStorage.setItem(${tipo}-atual, atual);
-      atualizarBarra(tipo);
-    }
-
+  <script>
     function mudarAba(index) {
       const tabs = document.querySelectorAll('.tab-content');
       const buttons = document.querySelectorAll('.tabs button');
@@ -316,9 +261,27 @@
       buttons.forEach((btn, i) => btn.classList.toggle('active', i === index));
     }
 
+    function atualizarBarra(tipo) {
+      const max = parseInt(document.getElementById(${tipo}-max).value) || 0;
+      let atual = parseInt(localStorage.getItem(${tipo}-atual)) || 0;
+      atual = Math.min(max, Math.max(0, atual));
+      const pct = max ? (atual / max) * 100 : 0;
+      document.getElementById(barra-${tipo}).style.width = pct + '%';
+      document.getElementById(${tipo}-texto).innerText = ${atual} / ${max};
+    }
+
+    function alterarBarra(tipo, delta) {
+      const max = parseInt(document.getElementById(${tipo}-max).value) || 0;
+      let atual = parseInt(localStorage.getItem(${tipo}-atual)) || 0;
+      atual = Math.min(max, Math.max(0, atual + delta));
+      localStorage.setItem(${tipo}-atual, atual);
+      atualizarBarra(tipo);
+    }
+
     window.onload = () => {
       atualizarBarra('vida');
       atualizarBarra('sanidade');
-    };
-  </script></body>
+    }
+  </script>
+</body>
 </html>
