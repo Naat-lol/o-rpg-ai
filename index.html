@@ -1,7 +1,8 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ficha RPG</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
@@ -36,49 +37,99 @@
     .tabs button.active {
       border-bottom: 2px solid #c0f7c0;
     }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .foto-nome {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .foto-nome img {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      border: 2px solid #c0f7c0;
+    }
+    .foto-nome input {
+      font-size: 1.2rem;
+      background: transparent;
+      border: none;
+      color: #c0f7c0;
+      border-bottom: 1px dashed #c0f7c0;
+      padding: 4px 10px;
+      width: 100%;
+    }
     input[type="text"], input[type="number"] {
       background: #000;
       color: #c0f7c0;
       border: 1px solid #fff;
       border-radius: 6px;
-      padding: 4px 8px;
+      padding: 5px 8px;
       font-family: inherit;
     }
-    input::placeholder { color: #777; }
+    input::placeholder {
+      color: #777;
+    }
     .titulo-secao {
       font-size: 1.3rem;
       margin: 2rem 0 0.5rem;
       text-transform: uppercase;
     }
-    .atributos input { width: 40px; text-align: center; }
+    .atributos input {
+      width: 40px;
+      text-align: center;
+    }
+    .barra-container {
+      margin: 1rem 0;
+    }
+    .barra-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.3rem;
+    }
     .barra {
-      position: relative;
+      display: flex;
+      align-items: center;
       height: 36px;
       border-radius: 6px;
       border: 2px solid white;
+      position: relative;
       overflow: hidden;
-      margin-bottom: 1rem;
+      background: #222;
     }
     .barra .preenchimento {
       position: absolute;
       top: 0; left: 0;
       height: 100%;
-      background: red;
       z-index: 1;
       transition: width 0.3s ease;
     }
-    .barra-texto {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      line-height: 36px;
+    .barra.vida .preenchimento {
+      background: linear-gradient(to right, #ff3333, #990000);
     }
-    .botoes-barra {
-      display: flex;
-      gap: 5px;
-      margin: 0.5rem 0;
+    .barra.sanidade .preenchimento {
+      background: linear-gradient(to right, #9933ff, #330066);
+    }
+    .barra .barra-texto {
+      z-index: 2;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+    }
+    .barra .controle-lateral {
+      z-index: 3;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0 0.5rem;
     }
     .pericias {
       display: flex;
@@ -100,106 +151,171 @@
       width: 50px;
       text-align: center;
     }
+    textarea {
+      width: 100%;
+      height: 200px;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #444;
+      padding: 1rem;
+    }
   </style>
 </head>
 <body>
   <div class="ficha-container">
     <div class="tabs">
-      <button onclick="mudarAba(0)" class="active">Ficha</button>
-      <button onclick="mudarAba(1)">Inventário</button>
-      <button onclick="mudarAba(2)">Anotações</button>
-    </div><div class="tab-content active">
-  <input id="personagem" placeholder="Nome do Personagem" oninput="salvarCampo(this)"><br>
-  <input id="jogador" placeholder="Nome do Jogador" oninput="salvarCampo(this)">
+      <button data-tab="0" class="active">Ficha</button>
+      <button data-tab="1">Inventário</button>
+      <button data-tab="2">Anotações</button>
+      <button data-tab="3">Habilidades</button>
+      <button data-tab="4">Histórico</button>
+    </div>
 
-  <div class="titulo-secao">Atributos</div>
-  <div class="atributos">
-    <p>Força: <input id="forca" oninput="salvarCampo(this)"></p>
-    <p>Destreza: <input id="destreza" oninput="salvarCampo(this)"></p>
-    <p>Inteligência: <input id="inteligencia" oninput="salvarCampo(this)"></p>
-    <p>Constituição: <input id="constituicao" oninput="salvarCampo(this)"></p>
-    <p>Poder: <input id="poder" oninput="salvarCampo(this)"></p>
-    <p>Presença: <input id="presenca" oninput="salvarCampo(this)"></p>
+    <!-- Aba 1 -->
+    <div class="tab-content active" data-tab-content="0">
+      <div class="foto-nome">
+        <img src="https://via.placeholder.com/120" alt="Foto">
+        <div style="flex:1">
+          <input type="text" placeholder="Nome do Personagem">
+          <input type="text" placeholder="Nome do Jogador">
+        </div>
+      </div>
+
+      <div class="titulo-secao">Atributos</div>
+      <div class="atributos">
+        <p>Força: <input type="text"></p>
+        <p>Destreza: <input type="text"></p>
+        <p>Inteligência: <input type="text"></p>
+        <p>Constituição: <input type="text"></p>
+        <p>Poder: <input type="text"></p>
+        <p>Presença: <input type="text"></p>
+      </div>
+
+      <div class="titulo-secao">Vida e Sanidade</div>
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Vida</span>
+          <input id="vida-max" type="number" placeholder="Max" oninput="atualizarBarra('vida')">
+        </div>
+        <div class="barra vida">
+          <button class="controle-lateral" onclick="alterarBarra('vida', -5)">&laquo;</button>
+          <button class="controle-lateral" onclick="alterarBarra('vida', -1)">&lsaquo;</button>
+          <div class="preenchimento" id="barra-vida"></div>
+          <div class="barra-texto" id="vida-texto">0 / 0</div>
+          <button class="controle-lateral" onclick="alterarBarra('vida', 1)">&rsaquo;</button>
+          <button class="controle-lateral" onclick="alterarBarra('vida', 5)">&raquo;</button>
+        </div>
+      </div>
+
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Sanidade</span>
+          <input id="sanidade-max" type="number" placeholder="Max" oninput="atualizarBarra('sanidade')">
+        </div>
+        <div class="barra sanidade">
+          <button class="controle-lateral" onclick="alterarBarra('sanidade', -5)">&laquo;</button>
+          <button class="controle-lateral" onclick="alterarBarra('sanidade', -1)">&lsaquo;</button>
+          <div class="preenchimento" id="barra-sanidade"></div>
+          <div class="barra-texto" id="sanidade-texto">0 / 0</div>
+          <button class="controle-lateral" onclick="alterarBarra('sanidade', 1)">&rsaquo;</button>
+          <button class="controle-lateral" onclick="alterarBarra('sanidade', 5)">&raquo;</button>
+        </div>
+      </div>
+
+      <div class="titulo-secao">Perícias</div>
+      <div class="pericias">
+        <div class="pericia-coluna">
+          <div class="linha-pericia"><span>Atuação</span><input type="text"></div>
+          <div class="linha-pericia"><span>Ciência</span><input type="text"></div>
+          <div class="linha-pericia"><span>Disfarce</span><input type="text"></div>
+          <div class="linha-pericia"><span>Furtividade</span><input type="text"></div>
+          <div class="linha-pericia"><span>Informática</span><input type="text"></div>
+          <div class="linha-pericia"><span>Intimidação</span><input type="text"></div>
+        </div>
+        <div class="pericia-coluna">
+          <div class="linha-pericia"><span>Investigação</span><input type="text"></div>
+          <div class="linha-pericia"><span>Lábia</span><input type="text"></div>
+          <div class="linha-pericia"><span>Luta</span><input type="text"></div>
+          <div class="linha-pericia"><span>Medicina</span><input type="text"></div>
+          <div class="linha-pericia"><span>Ouvir</span><input type="text"></div>
+          <div class="linha-pericia"><span>Tiro</span><input type="text"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aba 2 -->
+    <div class="tab-content" data-tab-content="1"><textarea placeholder="Inventário..."></textarea></div>
+    <!-- Aba 3 -->
+    <div class="tab-content" data-tab-content="2"><textarea placeholder="Anotações..."></textarea></div>
+    <!-- Aba 4 -->
+    <div class="tab-content" data-tab-content="3"><textarea placeholder="Habilidades..."></textarea></div>
+    <!-- Aba 5 -->
+    <div class="tab-content" data-tab-content="4"><textarea placeholder="Histórico..."></textarea></div>
   </div>
 
-  <div class="titulo-secao">Vida</div>
-  <input id="vida-max" type="number" placeholder="Vida Máxima" oninput="atualizarBarra('vida')">
-  <div class="barra">
-    <div class="preenchimento" id="barra-vida"></div>
-    <div class="barra-texto" id="vida-texto">0 / 0</div>
-  </div>
-  <div class="botoes-barra">
-    <button onclick="alterarBarra('vida', -5)">&laquo;</button>
-    <button onclick="alterarBarra('vida', -1)">&lsaquo;</button>
-    <button onclick="alterarBarra('vida', 1)">&rsaquo;</button>
-    <button onclick="alterarBarra('vida', 5)">&raquo;</button>
-  </div>
+  <script>
+    // Função para mudar as abas
+    document.querySelectorAll('.tabs button').forEach(button => {
+      button.addEventListener('click', () => {
+        const tabIndex = button.getAttribute('data-tab');
+        
+        // Remove a classe active de todas as abas e botões
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        document.querySelectorAll('.tabs button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        // Adiciona a classe active apenas na aba e botão selecionados
+        button.classList.add('active');
+        document.querySelector(.tab-content[data-tab-content="${tabIndex}"]).classList.add('active');
+      });
+    });
 
-  <div class="titulo-secao">Sanidade</div>
-  <input id="sanidade-max" type="number" placeholder="Sanidade Máxima" oninput="atualizarBarra('sanidade')">
-  <div class="barra">
-    <div class="preenchimento" id="barra-sanidade"></div>
-    <div class="barra-texto" id="sanidade-texto">0 / 0</div>
-  </div>
-  <div class="botoes-barra">
-    <button onclick="alterarBarra('sanidade', -5)">&laquo;</button>
-    <button onclick="alterarBarra('sanidade', -1)">&lsaquo;</button>
-    <button onclick="alterarBarra('sanidade', 1)">&rsaquo;</button>
-    <button onclick="alterarBarra('sanidade', 5)">&raquo;</button>
-  </div>
-</div>
-
-<div class="tab-content">
-  <textarea id="inventario" placeholder="Inventário..." oninput="salvarCampo(this)"></textarea>
-</div>
-
-<div class="tab-content">
-  <textarea id="anotacoes" placeholder="Anotações..." oninput="salvarCampo(this)"></textarea>
-</div>
-
-  </div>  <script>
-    function mudarAba(index) {
-      const tabs = document.querySelectorAll('.tab-content');
-      const buttons = document.querySelectorAll('.tabs button');
-      tabs.forEach((tab, i) => tab.classList.toggle('active', i === index));
-      buttons.forEach((btn, i) => btn.classList.toggle('active', i === index));
-    }
-
+    // Funções para manipular as barras de vida/sanidade
     function atualizarBarra(tipo) {
-      const max = parseInt(document.getElementById(${tipo}-max).value) || 0;
-      const atual = parseInt(localStorage.getItem(${tipo}-atual)) || 0;
-      const barra = document.getElementById(barra-${tipo});
-      const texto = document.getElementById(${tipo}-texto);
-      const porcentagem = max > 0 ? (atual / max) * 100 : 0;
-      barra.style.width = ${porcentagem}%;
-      texto.textContent = ${atual} / ${max};
+      const maxInput = document.getElementById(${tipo}-max);
+      const max = parseInt(maxInput.value) || 0;
+      
+      // Garante que o valor máximo não seja negativo
+      if (max < 0) {
+        maxInput.value = 0;
+        return;
+      }
+      
+      let atual = parseInt(localStorage.getItem(${tipo}-atual)) || max;
+      atual = Math.min(max, Math.max(0, atual));
+      
+      const pct = max > 0 ? (atual / max) * 100 : 0;
+      document.getElementById(barra-${tipo}).style.width = pct + '%';
+      document.getElementById(${tipo}-texto).innerText = ${atual} / ${max};
+      
+      // Salva os valores atualizados
+      localStorage.setItem(${tipo}-atual, atual);
+      localStorage.setItem(${tipo}-max, max);
     }
 
     function alterarBarra(tipo, delta) {
       const max = parseInt(document.getElementById(${tipo}-max).value) || 0;
-      let atual = parseInt(localStorage.getItem(${tipo}-atual)) || 0;
-      atual = Math.max(0, Math.min(max, atual + delta));
+      let atual = parseInt(localStorage.getItem(${tipo}-atual)) || max;
+      atual = Math.min(max, Math.max(0, atual + delta));
       localStorage.setItem(${tipo}-atual, atual);
       atualizarBarra(tipo);
     }
 
-    function salvarCampo(el) {
-      localStorage.setItem(el.id, el.value);
-    }
-
-    function carregarCampos() {
-      document.querySelectorAll('input, textarea').forEach(el => {
-        if (localStorage.getItem(el.id)) {
-          el.value = localStorage.getItem(el.id);
-          if (el.id.endsWith('-max')) atualizarBarra(el.id.split('-')[0]);
-        }
-      });
-    }
-
+    // Inicialização
     window.onload = () => {
-      carregarCampos();
+      // Carrega valores salvos ou inicia com 0
+      const vidaMax = localStorage.getItem('vida-max');
+      const sanidadeMax = localStorage.getItem('sanidade-max');
+      
+      if (vidaMax) document.getElementById('vida-max').value = vidaMax;
+      if (sanidadeMax) document.getElementById('sanidade-max').value = sanidadeMax;
+      
       atualizarBarra('vida');
       atualizarBarra('sanidade');
     }
-  </script></body>
+  </script>
+</body>
 </html>
