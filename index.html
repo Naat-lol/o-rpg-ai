@@ -24,6 +24,7 @@
       background: #111;
       border-radius: 10px;
       box-shadow: 0 0 15px #333;
+      transition: all 0.3s;
     }
     
     /* Sistema de Abas */
@@ -136,100 +137,88 @@
       padding: 5px;
     }
     
-/* Barras no estilo C.R.I.S. */
-.barra-container {
-  margin: 15px 0;
-}
-
-.barra-label {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-  font-size: 14px;
-}
-
-.barra {
-  height: 30px;
-  background: #222;
-  border-radius: 5px;
-  border: 1px solid #444;
-  position: relative;
-  overflow: hidden;
-}
-
-.preenchimento {
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  transition: width 0.3s;
-}
-
-#barra-vida .preenchimento {
-  background: #d33; /* Vermelho */
-}
-
-#barra-sanidade .preenchimento {
-  background: #63a; /* Roxo */
-}
-
-/* Controles (botões) */
-.controles-barra {
-  position: absolute;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 2;
-}
-
-.controles-esquerda {
-  left: 0;
-  padding-left: 5px;
-}
-
-.controles-direita {
-  right: 0;
-  padding-right: 5px;
-}
-
-.controles-barra button {
-  background: transparent;
-  color: white;
-  border: none;
-  width: 30px;
-  height: 100%;
-  cursor: pointer;
-  font-size: 18px;
-  font-family: 'Share Tech Mono', monospace;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.controles-barra button:hover {
-  color: #c0f7c0;
-}
-
-.barra-texto {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-  line-height: 30px;
-  z-index: 1;
-}
-
-.barra-max {
-  width: 50px;
-  text-align: center;
-  background: #000;
-  color: #c0f7c0;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 3px;
-  margin-left: 10px;
-}
+    /* Barras no estilo C.R.I.S. */
+    .barra-container {
+      margin: 15px 0;
+    }
+    .barra-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .barra {
+      height: 30px;
+      background: #222;
+      border-radius: 5px;
+      border: 1px solid #444;
+      position: relative;
+      overflow: hidden;
+    }
+    .preenchimento {
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: width 0.3s;
+    }
+    #barra-vida .preenchimento {
+      background: #d33;
+    }
+    #barra-sanidade .preenchimento {
+      background: #63a;
+    }
+    /* Controles (botões) */
+    .controles-barra {
+      position: absolute;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 2;
+    }
+    .controles-esquerda {
+      left: 0;
+      padding-left: 5px;
+    }
+    .controles-direita {
+      right: 0;
+      padding-right: 5px;
+    }
+    .controles-barra button {
+      background: transparent;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 100%;
+      cursor: pointer;
+      font-size: 18px;
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .controles-barra button:hover {
+      color: #c0f7c0;
+    }
+    .barra-texto {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      line-height: 30px;
+      z-index: 1;
+    }
+    .barra-max {
+      width: 50px;
+      text-align: center;
+      background: #000;
+      color: #c0f7c0;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 3px;
+      margin-left: 10px;
+    }
     
     /* Perícias */
     .pericias {
@@ -315,25 +304,58 @@
       color: #c0f7c0;
     }
 
+    /* Efeitos visuais */
     .ficha-container.morrendo {
-  animation: pulsarVermelho 1s infinite;
-  box-shadow: 0 0 15px #a00;
-  border: 2px solid #a00;
-}
+      animation: pulsarVermelho 1s infinite;
+      box-shadow: 0 0 15px #a00;
+      border: 2px solid #a00;
+    }
+    @keyframes pulsarVermelho {
+      0%, 100% { box-shadow: 0 0 10px #a00; }
+      50% { box-shadow: 0 0 25px #f00; }
+    }
+    #barra-sanidade.insano .preenchimento {
+      animation: pulsarRoxo 1s infinite;
+    }
+    @keyframes pulsarRoxo {
+      0%, 100% { background-color: #7a4fff; }
+      50% { background-color: #c0a0ff; }
+    }
 
-@keyframes pulsarVermelho {
-  0%, 100% { box-shadow: 0 0 10px #a00; }
-  50% { box-shadow: 0 0 25px #f00; }
-}
+    /* Checkboxes */
+    .status-checkboxes {
+      margin-top: 10px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .status-checkboxes label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .status-checkboxes input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
 
-#barra-sanidade.insano .preenchimento {
-  animation: pulsarRoxo 1s infinite;
-}
-
-@keyframes pulsarRoxo {
-  0%, 100% { background-color: #7a4fff; }
-  50% { background-color: #c0a0ff; }
-}
+    /* Botão de salvar */
+    .btn-salvar {
+      background: #0066cc;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-family: 'Share Tech Mono', monospace;
+      transition: background 0.3s;
+    }
+    .btn-salvar:hover {
+      background: #0055aa;
+    }
   </style>
 </head>
 <body>
@@ -350,19 +372,19 @@
       <div class="info-personagem">
         <img src="https://via.placeholder.com/150" class="foto-personagem" alt="Foto do Personagem">
         <div class="dados-basicos">
-          <input type="text" placeholder="Nome do Personagem">
-          <input type="text" placeholder="Nome do Jogador">
-          <input type="text" placeholder="Idade">
-          <select>
+          <input type="text" id="nome-personagem" placeholder="Nome do Personagem">
+          <input type="text" id="nome-jogador" placeholder="Nome do Jogador">
+          <input type="text" id="idade" placeholder="Idade">
+          <select id="sexo">
             <option value="">Sexo</option>
             <option value="masculino">Masculino</option>
             <option value="feminino">Feminino</option>
             <option value="outro">Outro</option>
           </select>
-          <input type="text" placeholder="Data de Nascimento">
-          <input type="text" placeholder="Altura">
-          <input type="text" placeholder="Peso">
-          <input type="text" placeholder="Tipo Sanguíneo">
+          <input type="text" id="nascimento" placeholder="Data de Nascimento">
+          <input type="text" id="altura" placeholder="Altura">
+          <input type="text" id="peso" placeholder="Peso">
+          <input type="text" id="sangue" placeholder="Tipo Sanguíneo">
         </div>
       </div>
 
@@ -371,55 +393,53 @@
         <div class="atributos">
           <div class="atributo-item">
             <div class="atributo-nome"><span>Força</span><span>(STR)</span></div>
-            <input type="number" class="atributo-valor" value="5">
+            <input type="number" id="atributo-forca" class="atributo-valor" value="5">
           </div>
           <div class="atributo-item">
             <div class="atributo-nome"><span>Destreza</span><span>(DEX)</span></div>
-            <input type="number" class="atributo-valor" value="5">
+            <input type="number" id="atributo-destreza" class="atributo-valor" value="5">
           </div>
           <div class="atributo-item">
             <div class="atributo-nome"><span>Inteligência</span><span>(INT)</span></div>
-            <input type="number" class="atributo-valor" value="5">
+            <input type="number" id="atributo-inteligencia" class="atributo-valor" value="5">
           </div>
           <div class="atributo-item">
             <div class="atributo-nome"><span>Constituição</span><span>(CON)</span></div>
-            <input type="number" class="atributo-valor" value="5">
+            <input type="number" id="atributo-constituicao" class="atributo-valor" value="5">
           </div>
           <div class="atributo-item">
             <div class="atributo-nome"><span>Poder</span><span>(POW)</span></div>
-            <input type="number" class="atributo-valor" value="5">
+            <input type="number" id="atributo-poder" class="atributo-valor" value="5">
           </div>
           <div class="atributo-item">
             <div class="atributo-nome"><span>Presença</span><span>(CAR)</span></div>
-            <input type="number" class="atributo-valor" value="5">
+            <input type="number" id="atributo-presenca" class="atributo-valor" value="5">
           </div>
         </div>
       </div>
 
       <h3>Status</h3>
-<!-- Barra de Vida -->
-<div class="barra-container">
-  <div class="barra-label">
-    <span>Vida</span>
-    <div>
-      <input type="number" class="barra-max" id="vida-max" value="100">
-    </div>
-  </div>
-  <div class="barra" id="barra-vida">
-    <div class="controles-barra controles-esquerda">
-      <button onclick="mudarStatus('vida', -10)">«</button>
-      <button onclick="mudarStatus('vida', -1)">‹</button>
-    </div>
-    <div class="preenchimento" style="width: 100%"></div>
-    <div class="barra-texto" id="texto-vida">100 / 100</div>
-    <div class="controles-barra controles-direita">
-      <button onclick="mudarStatus('vida', 1)">›</button>
-      <button onclick="mudarStatus('vida', 10)">»</button>
-    </div>
-  </div>
-</div>
-
-<!-- Barra de Sanidade (mesma estrutura, troque "vida" por "sanidade") -->
+      <!-- Barra de Vida -->
+      <div class="barra-container">
+        <div class="barra-label">
+          <span>Vida</span>
+          <div>
+            <input type="number" class="barra-max" id="vida-max" value="100">
+          </div>
+        </div>
+        <div class="barra" id="barra-vida">
+          <div class="controles-barra controles-esquerda">
+            <button onclick="mudarStatus('vida', -10)">«</button>
+            <button onclick="mudarStatus('vida', -1)">‹</button>
+          </div>
+          <div class="preenchimento" style="width: 100%"></div>
+          <div class="barra-texto" id="texto-vida">100 / 100</div>
+          <div class="controles-barra controles-direita">
+            <button onclick="mudarStatus('vida', 1)">›</button>
+            <button onclick="mudarStatus('vida', 10)">»</button>
+          </div>
+        </div>
+      </div>
       
       <!-- Barra de Sanidade -->
       <div class="barra-container">
@@ -443,94 +463,94 @@
         </div>
       </div>
 
-      <!-- ✅ Caixas de marcação adicionais -->
-<div style="margin-top: 10px; display: flex; gap: 20px; align-items: center;">
-  <label style="display: flex; align-items: center; gap: 5px;">
-    <input type="checkbox" id="insanidade" style="width: 18px; height: 18px;">
-    <span>Insanidade</span>
-  </label>
-  <label style="display: flex; align-items: center; gap: 5px;">
-    <input type="checkbox" id="morrendo" style="width: 18px; height: 18px;">
-    <span>Morrendo</span>
-  </label>
-</div>
-      
+      <!-- Checkboxes de status -->
+      <div class="status-checkboxes">
+        <label>
+          <input type="checkbox" id="insanidade">
+          <span>Insanidade</span>
+        </label>
+        <label>
+          <input type="checkbox" id="morrendo">
+          <span>Morrendo</span>
+        </label>
+      </div>
+
       <h3>Perícias</h3>
       <div class="pericias">
         <div>
           <div class="linha-pericia">
             <span>Atuação <span class="pericia-atributo">(CAR)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Ciência <span class="pericia-atributo">(INT)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Disfarce <span class="pericia-atributo">(CAR)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Furtividade <span class="pericia-atributo">(DEX)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Informática <span class="pericia-atributo">(INT)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Intimidação <span class="pericia-atributo">(CAR)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Investigação <span class="pericia-atributo">(INT)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Lábia <span class="pericia-atributo">(CAR)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
         </div>
         <div>
           <div class="linha-pericia">
             <span>Luta <span class="pericia-atributo">(STR)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Medicina <span class="pericia-atributo">(INT)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Ouvir <span class="pericia-atributo">(CAR)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Pilotar <span class="pericia-atributo">(DEX)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Psicologia <span class="pericia-atributo">(INT)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Reparação <span class="pericia-atributo">(INT)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Rastrear <span class="pericia-atributo">(INT)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Saltar <span class="pericia-atributo">(DEX)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Sobrevivência <span class="pericia-atributo">(INT)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
           <div class="linha-pericia">
             <span>Tiro <span class="pericia-atributo">(DEX)</span></span>
-            <input type="number" value="0">
+            <input type="number" class="pericia-input" value="0">
           </div>
         </div>
       </div>
@@ -543,7 +563,7 @@
         <div class="inventario-item">
           <input type="text" placeholder="Nome do item">
           <input type="number" placeholder="Quantidade" value="1" min="1">
-          <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
+          <button class="btn-remover" onclick="this.parentElement.remove(); salvarDados();">X</button>
         </div>
       </div>
       <button id="btn-adicionar-item" onclick="adicionarItem()">+ Adicionar Item</button>
@@ -552,62 +572,55 @@
     <!-- Aba Anotações -->
     <div id="anotacoes" class="tab-content">
       <h3>Anotações</h3>
-      <textarea placeholder="Anotações sobre a campanha..."></textarea>
+      <textarea id="anotacoes-texto" placeholder="Anotações sobre a campanha..."></textarea>
     </div>
+
+    <!-- Botão de salvar -->
+    <button class="btn-salvar" onclick="salvarDados()">Salvar Ficha</button>
   </div>
 
   <script>
-    // ===== SISTEMA DE ABAS ===== //
-    document.querySelectorAll('.tabs button').forEach(button => {
-      button.addEventListener('click', function() {
-        // Remove 'active' de todos
-        document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        
-        // Adiciona ao clicado
-        this.classList.add('active');
-        document.getElementById(this.getAttribute('data-tab')).classList.add('active');
-      });
-    });
-
-    // ===== SISTEMA DE BARRAS ===== //
+    // ===== VARIÁVEIS GLOBAIS ===== //
     let vidaAtual = 100;
     let vidaMaxima = 100;
     let sanidadeAtual = 80;
     let sanidadeMaxima = 80;
 
-function atualizarBarra(tipo) {
-  if (tipo === 'vida') {
-    const porcentagem = (vidaAtual / vidaMaxima) * 100;
-    document.querySelector('#barra-vida .preenchimento').style.width = `${Math.min(100, porcentagem)}%`;
-    document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
-  } else {
-    const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
-    document.querySelector('#barra-sanidade .preenchimento').style.width = `${Math.min(100, porcentagem)}%`;
-    document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
-  }
-  salvarDados();
-}
+    // ===== SISTEMA DE ABAS ===== //
+    function configurarAbas() {
+      document.querySelectorAll('.tabs button').forEach(button => {
+        button.addEventListener('click', function() {
+          document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+          
+          this.classList.add('active');
+          document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+        });
+      });
+    }
+
+    // ===== SISTEMA DE BARRAS ===== //
+    function atualizarBarra(tipo) {
+      if (tipo === 'vida') {
+        const porcentagem = (vidaAtual / vidaMaxima) * 100;
+        document.querySelector('#barra-vida .preenchimento').style.width = `${Math.min(100, Math.max(0, porcentagem))}%`;
+        document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
+      } else {
+        const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
+        document.querySelector('#barra-sanidade .preenchimento').style.width = `${Math.min(100, Math.max(0, porcentagem))}%`;
+        document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
+      }
+      salvarDados();
+    }
 
     function mudarStatus(tipo, valor) {
       if (tipo === 'vida') {
-        vidaAtual += valor;
+        vidaAtual = Math.max(0, Math.min(vidaAtual + valor, vidaMaxima));
       } else {
-        sanidadeAtual += valor;
+        sanidadeAtual = Math.max(0, Math.min(sanidadeAtual + valor, sanidadeMaxima));
       }
       atualizarBarra(tipo);
     }
-
-    // Atualizar máximos
-    document.getElementById('vida-max').addEventListener('change', function() {
-      vidaMaxima = parseInt(this.value) || 1;
-      atualizarBarra('vida');
-    });
-
-    document.getElementById('sanidade-max').addEventListener('change', function() {
-      sanidadeMaxima = parseInt(this.value) || 1;
-      atualizarBarra('sanidade');
-    });
 
     // ===== INVENTÁRIO ===== //
     function adicionarItem() {
@@ -616,106 +629,165 @@ function atualizarBarra(tipo) {
       div.innerHTML = `
         <input type="text" placeholder="Nome do item">
         <input type="number" placeholder="Quantidade" value="1" min="1">
-        <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
+        <button class="btn-remover" onclick="this.parentElement.remove(); salvarDados();">X</button>
       `;
       document.getElementById('lista-inventario').appendChild(div);
     }
 
-// ===== EFEITOS VISUAIS INSANIDADE / MORRENDO ===== //
-window.onload = function() {
-  atualizarBarra('vida');
-  atualizarBarra('sanidade');
+    // ===== SISTEMA DE SALVAMENTO ===== //
+    function salvarDados() {
+      const dados = {
+        // Dados básicos
+        nomePersonagem: document.getElementById('nome-personagem').value,
+        nomeJogador: document.getElementById('nome-jogador').value,
+        idade: document.getElementById('idade').value,
+        sexo: document.getElementById('sexo').value,
+        nascimento: document.getElementById('nascimento').value,
+        altura: document.getElementById('altura').value,
+        peso: document.getElementById('peso').value,
+        sangue: document.getElementById('sangue').value,
 
-  // Adiciona listeners após o DOM estar pronto
-  document.getElementById('insanidade').addEventListener('change', function() {
-    const barra = document.getElementById('barra-sanidade');
-    barra.classList.toggle('insano', this.checked);
-  });
+        // Atributos
+        forca: document.getElementById('atributo-forca').value,
+        destreza: document.getElementById('atributo-destreza').value,
+        inteligencia: document.getElementById('atributo-inteligencia').value,
+        constituicao: document.getElementById('atributo-constituicao').value,
+        poder: document.getElementById('atributo-poder').value,
+        presenca: document.getElementById('atributo-presenca').value,
 
-  document.getElementById('morrendo').addEventListener('change', function() {
-    const ficha = document.querySelector('.ficha-container');
-    ficha.classList.toggle('morrendo', this.checked);
-  });
-};
+        // Status
+        vidaMax: document.getElementById('vida-max').value,
+        sanidadeMax: document.getElementById('sanidade-max').value,
+        vidaAtual: vidaAtual,
+        sanidadeAtual: sanidadeAtual,
+        insanidade: document.getElementById('insanidade').checked,
+        morrendo: document.getElementById('morrendo').checked,
 
-    // Inicializar
-    window.onload = function() {
-      vidaAtual = parseInt(d.vidaAtual) || parseInt(d.vidaMax) || 100;
-sanidadeAtual = parseInt(d.sanidadeAtual) || parseInt(d.sanidadeMax) || 80;
-      atualizarBarra('vida');
-      atualizarBarra('sanidade');
-    };
-    
- // ===== Salvamento ===== //
-   function salvarDados() {
-  const dados = {
-    nome: document.querySelector('input[placeholder="Nome do Personagem"]').value,
-    jogador: document.querySelector('input[placeholder="Nome do Jogador"]').value,
-    idade: document.querySelector('input[placeholder="Idade"]').value,
-    sexo: document.querySelector('select').value,
-    nascimento: document.querySelector('input[placeholder="Data de Nascimento"]').value,
-    altura: document.querySelector('input[placeholder="Altura"]').value,
-    peso: document.querySelector('input[placeholder="Peso"]').value,
-    sangue: document.querySelector('input[placeholder="Tipo Sanguíneo"]').value,
-    vidaMax: document.getElementById('vida-max').value,
-    sanidadeMax: document.getElementById('sanidade-max').value,
-    vidaAtual: vidaAtual,
-    sanidadeAtual: sanidadeAtual,
-    insanidade: document.getElementById('insanidade').checked,
-    morrendo: document.getElementById('morrendo').checked,
-    atributos: Array.from(document.querySelectorAll('.atributo-valor')).map(el => el.value),
-    pericias: Array.from(document.querySelectorAll('.linha-pericia input')).map(el => el.value),
-    inventario: Array.from(document.querySelectorAll('#lista-inventario .inventario-item')).map(item => {
-      const inputs = item.querySelectorAll('input');
-      return { nome: inputs[0].value, qtd: inputs[1].value };
-    }),
-    anotacoes: document.querySelector('textarea').value
-  };
-  localStorage.setItem('fichaRPG', JSON.stringify(dados));
-}
+        // Perícias
+        pericias: Array.from(document.querySelectorAll('.pericia-input')).map(el => el.value),
 
-    document.querySelectorAll('input, select, textarea').forEach(el => {
-      el.addEventListener('input', salvarDados);
-    });
+        // Inventário
+        inventario: Array.from(document.querySelectorAll('#lista-inventario .inventario-item')).map(item => {
+          const inputs = item.querySelectorAll('input');
+          return {
+            nome: inputs[0].value,
+            quantidade: inputs[1].value
+          };
+        }),
 
-    window.onload = function() {
-      // ... Atualizar barras ...
+        // Anotações
+        anotacoes: document.getElementById('anotacoes-texto').value
+      };
+
+      localStorage.setItem('fichaRPG', JSON.stringify(dados));
+    }
+
+    function carregarDados() {
       const dadosSalvos = localStorage.getItem('fichaRPG');
-      if (dadosSalvos) {
-        const d = JSON.parse(dadosSalvos);
-        document.querySelector('input[placeholder="Nome do Personagem"]').value = d.nome || '';
-        document.querySelector('input[placeholder="Nome do Jogador"]').value = d.jogador || '';
-        document.querySelector('input[placeholder="Idade"]').value = d.idade || '';
-        document.querySelector('select').value = d.sexo || '';
-        document.querySelector('input[placeholder="Data de Nascimento"]').value = d.nascimento || '';
-        document.querySelector('input[placeholder="Altura"]').value = d.altura || '';
-        document.querySelector('input[placeholder="Peso"]').value = d.peso || '';
-        document.querySelector('input[placeholder="Tipo Sanguíneo"]').value = d.sangue || '';
-        document.getElementById('vida-max').value = d.vidaMax || 100;
-        document.getElementById('sanidade-max').value = d.sanidadeMax || 80;
-        document.getElementById('insanidade').checked = d.insanidade || false;
-        document.getElementById('morrendo').checked = d.morrendo || false;
+      if (!dadosSalvos) return;
 
-        d.atributos?.forEach((v, i) => document.querySelectorAll('.atributo-valor')[i].value = v);
-        d.pericias?.forEach((v, i) => document.querySelectorAll('.linha-pericia input')[i].value = v);
+      const dados = JSON.parse(dadosSalvos);
 
-        document.getElementById('lista-inventario').innerHTML = '';
-        d.inventario?.forEach(item => {
+      // Dados básicos
+      document.getElementById('nome-personagem').value = dados.nomePersonagem || '';
+      document.getElementById('nome-jogador').value = dados.nomeJogador || '';
+      document.getElementById('idade').value = dados.idade || '';
+      document.getElementById('sexo').value = dados.sexo || '';
+      document.getElementById('nascimento').value = dados.nascimento || '';
+      document.getElementById('altura').value = dados.altura || '';
+      document.getElementById('peso').value = dados.peso || '';
+      document.getElementById('sangue').value = dados.sangue || '';
+
+      // Atributos
+      document.getElementById('atributo-forca').value = dados.forca || 5;
+      document.getElementById('atributo-destreza').value = dados.destreza || 5;
+      document.getElementById('atributo-inteligencia').value = dados.inteligencia || 5;
+      document.getElementById('atributo-constituicao').value = dados.constituicao || 5;
+      document.getElementById('atributo-poder').value = dados.poder || 5;
+      document.getElementById('atributo-presenca').value = dados.presenca || 5;
+
+      // Status
+      document.getElementById('vida-max').value = dados.vidaMax || 100;
+      document.getElementById('sanidade-max').value = dados.sanidadeMax || 80;
+      vidaAtual = parseInt(dados.vidaAtual) || parseInt(dados.vidaMax) || 100;
+      sanidadeAtual = parseInt(dados.sanidadeAtual) || parseInt(dados.sanidadeMax) || 80;
+      document.getElementById('insanidade').checked = dados.insanidade || false;
+      document.getElementById('morrendo').checked = dados.morrendo || false;
+
+      // Perícias
+      if (dados.pericias) {
+        const pericias = document.querySelectorAll('.pericia-input');
+        dados.pericias.forEach((valor, i) => {
+          if (pericias[i]) pericias[i].value = valor;
+        });
+      }
+
+      // Inventário
+      const listaInventario = document.getElementById('lista-inventario');
+      listaInventario.innerHTML = '';
+      if (dados.inventario && dados.inventario.length > 0) {
+        dados.inventario.forEach(item => {
           const div = document.createElement('div');
           div.className = 'inventario-item';
           div.innerHTML = `
-            <input type="text" placeholder="Nome do item" value="${item.nome}">
-            <input type="number" placeholder="Quantidade" value="${item.qtd}" min="1">
+            <input type="text" placeholder="Nome do item" value="${item.nome || ''}">
+            <input type="number" placeholder="Quantidade" value="${item.quantidade || 1}" min="1">
             <button class="btn-remover" onclick="this.parentElement.remove(); salvarDados();">X</button>
           `;
-          document.getElementById('lista-inventario').appendChild(div);
+          listaInventario.appendChild(div);
         });
-
-        document.querySelector('textarea').value = d.anotacoes || '';
-        document.getElementById('insanidade').dispatchEvent(new Event('change'));
-        document.getElementById('morrendo').dispatchEvent(new Event('change'));
+      } else {
+        // Adiciona um item vazio se não houver inventário salvo
+        adicionarItem();
       }
+
+      // Anotações
+      document.getElementById('anotacoes-texto').value = dados.anotacoes || '';
+
+      // Atualiza as barras e efeitos visuais
+      atualizarBarra('vida');
+      atualizarBarra('sanidade');
+      document.getElementById('barra-sanidade').classList.toggle('insano', dados.insanidade);
+      document.querySelector('.ficha-container').classList.toggle('morrendo', dados.morrendo);
     }
+
+    // ===== INICIALIZAÇÃO ===== //
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configura abas
+      configurarAbas();
+
+      // Configura listeners para salvar automaticamente
+      document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.addEventListener('input', salvarDados);
+      });
+
+      // Configura listeners para checkboxes
+      document.getElementById('insanidade').addEventListener('change', function() {
+        document.getElementById('barra-sanidade').classList.toggle('insano', this.checked);
+        salvarDados();
+      });
+
+      document.getElementById('morrendo').addEventListener('change', function() {
+        document.querySelector('.ficha-container').classList.toggle('morrendo', this.checked);
+        salvarDados();
+      });
+
+      // Configura listeners para os máximos das barras
+      document.getElementById('vida-max').addEventListener('change', function() {
+        vidaMaxima = parseInt(this.value) || 100;
+        vidaAtual = Math.min(vidaAtual, vidaMaxima);
+        atualizarBarra('vida');
+      });
+
+      document.getElementById('sanidade-max').addEventListener('change', function() {
+        sanidadeMaxima = parseInt(this.value) || 80;
+        sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
+        atualizarBarra('sanidade');
+      });
+
+      // Carrega os dados salvos
+      carregarDados();
+    });
   </script>
 </body>
 </html>
