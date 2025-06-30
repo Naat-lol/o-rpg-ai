@@ -642,6 +642,75 @@ window.onload = function() {
       atualizarBarra('vida');
       atualizarBarra('sanidade');
     };
+    
+ // ===== Salvamento ===== //
+    function salvarDados() {
+      const dados = {
+        nome: document.querySelector('input[placeholder="Nome do Personagem"]').value,
+        jogador: document.querySelector('input[placeholder="Nome do Jogador"]').value,
+        idade: document.querySelector('input[placeholder="Idade"]').value,
+        sexo: document.querySelector('select').value,
+        nascimento: document.querySelector('input[placeholder="Data de Nascimento"]').value,
+        altura: document.querySelector('input[placeholder="Altura"]').value,
+        peso: document.querySelector('input[placeholder="Peso"]').value,
+        sangue: document.querySelector('input[placeholder="Tipo Sanguíneo"]').value,
+        vidaMax: document.getElementById('vida-max').value,
+        sanidadeMax: document.getElementById('sanidade-max').value,
+        insanidade: document.getElementById('insanidade').checked,
+        morrendo: document.getElementById('morrendo').checked,
+        atributos: Array.from(document.querySelectorAll('.atributo-valor')).map(el => el.value),
+        pericias: Array.from(document.querySelectorAll('.linha-pericia input')).map(el => el.value),
+        inventario: Array.from(document.querySelectorAll('#lista-inventario .inventario-item')).map(item => {
+          const inputs = item.querySelectorAll('input');
+          return { nome: inputs[0].value, qtd: inputs[1].value };
+        }),
+        anotacoes: document.querySelector('textarea').value
+      };
+      localStorage.setItem('fichaRPG', JSON.stringify(dados));
+    }
+
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input', salvarDados);
+    });
+
+    window.onload = function() {
+      // ... Atualizar barras ...
+      const dadosSalvos = localStorage.getItem('fichaRPG');
+      if (dadosSalvos) {
+        const d = JSON.parse(dadosSalvos);
+        document.querySelector('input[placeholder="Nome do Personagem"]').value = d.nome || '';
+        document.querySelector('input[placeholder="Nome do Jogador"]').value = d.jogador || '';
+        document.querySelector('input[placeholder="Idade"]').value = d.idade || '';
+        document.querySelector('select').value = d.sexo || '';
+        document.querySelector('input[placeholder="Data de Nascimento"]').value = d.nascimento || '';
+        document.querySelector('input[placeholder="Altura"]').value = d.altura || '';
+        document.querySelector('input[placeholder="Peso"]').value = d.peso || '';
+        document.querySelector('input[placeholder="Tipo Sanguíneo"]').value = d.sangue || '';
+        document.getElementById('vida-max').value = d.vidaMax || 100;
+        document.getElementById('sanidade-max').value = d.sanidadeMax || 80;
+        document.getElementById('insanidade').checked = d.insanidade || false;
+        document.getElementById('morrendo').checked = d.morrendo || false;
+
+        d.atributos?.forEach((v, i) => document.querySelectorAll('.atributo-valor')[i].value = v);
+        d.pericias?.forEach((v, i) => document.querySelectorAll('.linha-pericia input')[i].value = v);
+
+        document.getElementById('lista-inventario').innerHTML = '';
+        d.inventario?.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'inventario-item';
+          div.innerHTML = `
+            <input type="text" placeholder="Nome do item" value="${item.nome}">
+            <input type="number" placeholder="Quantidade" value="${item.qtd}" min="1">
+            <button class="btn-remover" onclick="this.parentElement.remove(); salvarDados();">X</button>
+          `;
+          document.getElementById('lista-inventario').appendChild(div);
+        });
+
+        document.querySelector('textarea').value = d.anotacoes || '';
+        document.getElementById('insanidade').dispatchEvent(new Event('change'));
+        document.getElementById('morrendo').dispatchEvent(new Event('change'));
+      }
+    }
   </script>
 </body>
 </html>
