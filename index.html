@@ -644,30 +644,32 @@ window.onload = function() {
     };
     
  // ===== Salvamento ===== //
-    function salvarDados() {
-      const dados = {
-        nome: document.querySelector('input[placeholder="Nome do Personagem"]').value,
-        jogador: document.querySelector('input[placeholder="Nome do Jogador"]').value,
-        idade: document.querySelector('input[placeholder="Idade"]').value,
-        sexo: document.querySelector('select').value,
-        nascimento: document.querySelector('input[placeholder="Data de Nascimento"]').value,
-        altura: document.querySelector('input[placeholder="Altura"]').value,
-        peso: document.querySelector('input[placeholder="Peso"]').value,
-        sangue: document.querySelector('input[placeholder="Tipo Sanguíneo"]').value,
-        vidaMax: document.getElementById('vida-max').value,
-        sanidadeMax: document.getElementById('sanidade-max').value,
-        insanidade: document.getElementById('insanidade').checked,
-        morrendo: document.getElementById('morrendo').checked,
-        atributos: Array.from(document.querySelectorAll('.atributo-valor')).map(el => el.value),
-        pericias: Array.from(document.querySelectorAll('.linha-pericia input')).map(el => el.value),
-        inventario: Array.from(document.querySelectorAll('#lista-inventario .inventario-item')).map(item => {
-          const inputs = item.querySelectorAll('input');
-          return { nome: inputs[0].value, qtd: inputs[1].value };
-        }),
-        anotacoes: document.querySelector('textarea').value
-      };
-      localStorage.setItem('fichaRPG', JSON.stringify(dados));
-    }
+   function salvarDados() {
+  const dados = {
+    nome: document.querySelector('input[placeholder="Nome do Personagem"]').value,
+    jogador: document.querySelector('input[placeholder="Nome do Jogador"]').value,
+    idade: document.querySelector('input[placeholder="Idade"]').value,
+    sexo: document.querySelector('select').value,
+    nascimento: document.querySelector('input[placeholder="Data de Nascimento"]').value,
+    altura: document.querySelector('input[placeholder="Altura"]').value,
+    peso: document.querySelector('input[placeholder="Peso"]').value,
+    sangue: document.querySelector('input[placeholder="Tipo Sanguíneo"]').value,
+    vidaMax: document.getElementById('vida-max').value,
+    sanidadeMax: document.getElementById('sanidade-max').value,
+    vidaAtual: vidaAtual,
+    sanidadeAtual: sanidadeAtual,
+    insanidade: document.getElementById('insanidade').checked,
+    morrendo: document.getElementById('morrendo').checked,
+    atributos: Array.from(document.querySelectorAll('.atributo-valor')).map(el => el.value),
+    pericias: Array.from(document.querySelectorAll('.linha-pericia input')).map(el => el.value),
+    inventario: Array.from(document.querySelectorAll('#lista-inventario .inventario-item')).map(item => {
+      const inputs = item.querySelectorAll('input');
+      return { nome: inputs[0].value, qtd: inputs[1].value };
+    }),
+    anotacoes: document.querySelector('textarea').value
+  };
+  localStorage.setItem('fichaRPG', JSON.stringify(dados));
+}
 
     document.querySelectorAll('input, select, textarea').forEach(el => {
       el.addEventListener('input', salvarDados);
