@@ -11,8 +11,8 @@
       box-sizing: border-box;
     }
     body {
-      background-color: #000;
-      color: #00ffea;
+      background-color: #0a0a0a;
+      color: #c0f7c0;
       font-family: 'Share Tech Mono', monospace;
       padding: 2rem;
     }
@@ -20,9 +20,9 @@
       max-width: 960px;
       margin: auto;
       padding: 2rem;
-      background-color: #0f0f0f;
-      border: 1px solid #00ffea55;
-      box-shadow: 0 0 15px #00ffee66;
+      background-color: #101010;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #4a4a4a;
     }
     .tabs {
       display: flex;
@@ -31,14 +31,14 @@
     }
     .tabs button {
       background: transparent;
-      border: 1px solid #00ffee;
-      color: #00ffee;
+      border: none;
+      color: #c0f7c0;
       padding: 0.5rem 1rem;
       cursor: pointer;
-      transition: background 0.3s;
+      font-size: 1rem;
     }
-    .tabs button.active, .tabs button:hover {
-      background: #00ffee33;
+    .tabs button.active {
+      border-bottom: 2px solid #c0f7c0;
     }
     .tab-content {
       display: none;
@@ -56,10 +56,10 @@
       width: 120px;
       height: 120px;
       border-radius: 8px;
-      border: 2px solid #00ffee;
+      border: 2px solid #c0f7c0;
     }
     .nome-info h1, .nome-info p {
-      color: #00ffee;
+      color: #c0f7c0;
     }
     .nome-info h1 {
       font-size: 2rem;
@@ -67,64 +67,74 @@
     .nome-info p {
       font-size: 1rem;
     }
-    input[type="number"], input[type="text"], input[type="date"] {
+    input[type="text"] {
       background-color: #000;
-      color: #00ffee;
+      color: #c0f7c0;
       border: none;
-      border-bottom: 1px solid #00ffee99;
+      border-bottom: 1px solid #666;
       padding: 2px 4px;
-      width: auto;
+      width: 100px;
       font-family: inherit;
+      font-size: 1rem;
     }
     input:focus {
       outline: none;
-      border-bottom: 1px solid #ffffff;
+      border-bottom: 1px solid #fff;
+    }
+    .atributos input {
+      width: 40px;
+      text-align: center;
+    }
+    .barras {
+      margin-top: 1rem;
     }
     .barra {
       background-color: #222;
       height: 24px;
-      border: 1px solid #00ffee55;
       border-radius: 4px;
       overflow: hidden;
       margin-top: 0.5rem;
+      position: relative;
     }
     .barra .preenchimento {
       height: 100%;
-      background: linear-gradient(to right, #00ffee, #0088aa);
       text-align: center;
       line-height: 24px;
       color: black;
       font-weight: bold;
+      transition: width 0.3s;
+    }
+    .barra.vida .preenchimento {
+      background: linear-gradient(to right, #ff3333, #990000);
     }
     .barra.sanidade .preenchimento {
-      background: linear-gradient(to right, #ff33cc, #9900cc);
+      background: linear-gradient(to right, #9933ff, #330066);
     }
-    .pericias ul {
-      list-style: none;
-      columns: 2;
-      gap: 2rem;
-      margin-top: 1rem;
+    .barra.extra .preenchimento {
+      background: linear-gradient(to right, #66ff66, #116611);
     }
-    .pericias li {
-      margin-bottom: 0.4rem;
+    .pericias {
+      margin-top: 2rem;
     }
-    [contenteditable="true"] {
-      border-bottom: 1px dashed #00ffee88;
-      padding: 1px 3px;
+    .pericias .linha-pericia {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      gap: 0.5rem;
+    }
+    .pericias label {
+      flex: 1;
     }
     textarea {
       width: 100%;
-      height: 200px;
+      height: 150px;
       background: #000;
-      color: #00ffee;
-      border: 1px solid #00ffee66;
+      color: #c0f7c0;
+      border: 1px solid #4a4a4a;
       padding: 1rem;
       font-family: 'Share Tech Mono', monospace;
     }
     @media (max-width: 600px) {
-      .pericias ul {
-        columns: 1;
-      }
       .foto-nome {
         flex-direction: column;
         align-items: flex-start;
@@ -144,80 +154,67 @@
   <div class="foto-nome">
     <img src="https://via.placeholder.com/120" alt="Foto do Personagem">
     <div class="nome-info">
-      <h1 contenteditable="true">Fulano da Silva</h1>
-      <p contenteditable="true">Jogador: Zé Ruela</p>
+      <h1 contenteditable="true">Nome do Personagem</h1>
+      <p contenteditable="true">Jogador</p>
     </div>
   </div>
 
   <div class="dados-basicos">
-    <p><strong>Idade:</strong> <input type="number" value="28"></p>
-    <p><strong>Sexo:</strong> <input type="text" value="Masculino"></p>
-    <p><strong>Data de Nascimento:</strong> <input type="date" value="1997-04-14"></p>
+    <p><strong>Idade:</strong> <input type="text"></p>
+    <p><strong>Sexo:</strong> <input type="text"></p>
+    <p><strong>Data de Nascimento:</strong> <input type="text"></p>
   </div>
 
   <div class="atributos">
-    <p><strong>Força:</strong> <input type="number" value="10"></p>
-    <p><strong>Destreza:</strong> <input type="number" value="12"></p>
-    <p><strong>Inteligência:</strong> <input type="number" value="14"></p>
-    <p><strong>Constituição:</strong> <input type="number" value="9"></p>
-    <p><strong>Poder:</strong> <input type="number" value="13"></p>
-    <p><strong>Presença:</strong> <input type="number" value="15"></p>
+    <p><strong>Força:</strong> <input type="text"></p>
+    <p><strong>Destreza:</strong> <input type="text"></p>
+    <p><strong>Inteligência:</strong> <input type="text"></p>
+    <p><strong>Constituição:</strong> <input type="text"></p>
+    <p><strong>Poder:</strong> <input type="text"></p>
+    <p><strong>Presença:</strong> <input type="text"></p>
   </div>
 
   <div class="barras">
-    <p><strong>Vida</strong></p>
-    <input type="number" id="vida-atual" value="14" onchange="atualizarBarra('vida')"> / <input type="number" id="vida-max" value="20" onchange="atualizarBarra('vida')">
-    <div class="barra">
-      <div class="preenchimento" id="barra-vida">14 / 20</div>
+    <p><strong>Vida:</strong></p>
+    <input type="text" id="vida-atual" placeholder="Atual" oninput="atualizarBarra('vida')"> / <input type="text" id="vida-max" placeholder="Máxima" oninput="atualizarBarra('vida')">
+    <div class="barra vida">
+      <div class="preenchimento" id="barra-vida">0 / 0</div>
     </div>
 
-    <p style="margin-top: 1rem;"><strong>Sanidade</strong></p>
-    <input type="number" id="sanidade-atual" value="25" onchange="atualizarBarra('sanidade')"> / <input type="number" id="sanidade-max" value="50" onchange="atualizarBarra('sanidade')">
+    <p style="margin-top: 1rem;"><strong>Sanidade:</strong></p>
+    <input type="text" id="sanidade-atual" placeholder="Atual" oninput="atualizarBarra('sanidade')"> / <input type="text" id="sanidade-max" placeholder="Máxima" oninput="atualizarBarra('sanidade')">
     <div class="barra sanidade">
-      <div class="preenchimento" id="barra-sanidade">25 / 50</div>
+      <div class="preenchimento" id="barra-sanidade">0 / 0</div>
     </div>
   </div>
 
   <div class="pericias">
-    <h2 style="margin-top: 2rem;">Perícias</h2>
-    <ul>
-      <li contenteditable="true">Atuação — 45</li>
-      <li contenteditable="true">Ciência — 62</li>
-      <li contenteditable="true">Disfarce — 51</li>
-      <li contenteditable="true">Furtividade — 70</li>
-      <li contenteditable="true">Informática — 88</li>
-      <li contenteditable="true">Intimidação — 30</li>
-      <li contenteditable="true">Investigação — 66</li>
-      <li contenteditable="true">Lábia — 55</li>
-      <li contenteditable="true">Luta — 61</li>
-      <li contenteditable="true">Medicina — 42</li>
-      <li contenteditable="true">Ouvir — 69</li>
-      <li contenteditable="true">Pilotar — 35</li>
-      <li contenteditable="true">Psicologia — 59</li>
-      <li contenteditable="true">Reparação — 20</li>
-      <li contenteditable="true">Rastrear — 58</li>
-      <li contenteditable="true">Saltar — 40</li>
-      <li contenteditable="true">Sobrevivência — 73</li>
-      <li contenteditable="true">Tiro — 65</li>
-    </ul>
+    <h2>Perícias</h2>
+    <div class="linha-pericia"><label>Atuação</label><input type="text"></div>
+    <div class="linha-pericia"><label>Ciência</label><input type="text"></div>
+    <div class="linha-pericia"><label>Disfarce</label><input type="text"></div>
+    <div class="linha-pericia"><label>Furtividade</label><input type="text"></div>
+    <div class="linha-pericia"><label>Informática</label><input type="text"></div>
+    <div class="linha-pericia"><label>Intimidação</label><input type="text"></div>
+    <div class="linha-pericia"><label>Investigação</label><input type="text"></div>
+    <div class="linha-pericia"><label>Lábia</label><input type="text"></div>
+    <div class="linha-pericia"><label>Luta</label><input type="text"></div>
+    <div class="linha-pericia"><label>Medicina</label><input type="text"></div>
+    <div class="linha-pericia"><label>Ouvir</label><input type="text"></div>
+    <div class="linha-pericia"><label>Pilotar</label><input type="text"></div>
+    <div class="linha-pericia"><label>Psicologia</label><input type="text"></div>
+    <div class="linha-pericia"><label>Reparação</label><input type="text"></div>
+    <div class="linha-pericia"><label>Rastrear</label><input type="text"></div>
+    <div class="linha-pericia"><label>Saltar</label><input type="text"></div>
+    <div class="linha-pericia"><label>Sobrevivência</label><input type="text"></div>
+    <div class="linha-pericia"><label>Tiro</label><input type="text"></div>
   </div>
 </div>
 
-<div class="tab-content">
-  <textarea placeholder="Adicione itens e equipamentos..."></textarea>
-</div>
-
-<div class="tab-content">
-  <textarea placeholder="Anotações do jogador ou do mestre..."></textarea>
-</div>
-
-<div class="tab-content">
-  <textarea placeholder="Habilidades especiais, poderes, etc..."></textarea>
-</div>
-
-<div class="tab-content">
-  <textarea placeholder="Histórico e passado do personagem..."></textarea>
-</div>
+<div class="tab-content"><textarea placeholder="Adicione itens e equipamentos..."></textarea></div>
+<div class="tab-content"><textarea placeholder="Anotações do jogador ou do mestre..."></textarea></div>
+<div class="tab-content"><textarea placeholder="Habilidades especiais, poderes, etc..."></textarea></div>
+<div class="tab-content"><textarea placeholder="Histórico e passado do personagem..."></textarea></div>
 
   </div>  <script>
     function atualizarBarra(tipo) {
@@ -252,12 +249,14 @@
       atualizarBarra('sanidade');
     }
 
-    function mudarAba(index) {
-      const tabs = document.querySelectorAll('.tab-content');
-      const buttons = document.querySelectorAll('.tabs button');
-      tabs.forEach((tab, i) => tab.classList.toggle('active', i === index));
-      buttons.forEach((btn, i) => btn.classList.toggle('active', i === index));
-    }
+function mudarAba(index) {
+  const tabs = document.querySelectorAll('.tab-content');
+  const buttons = document.querySelectorAll('.tabs button');
+  tabs.forEach(tab => tab.classList.remove('active'));
+  buttons.forEach(btn => btn.classList.remove('active'));
+  if (tabs[index]) tabs[index].classList.add('active');
+  if (buttons[index]) buttons[index].classList.add('active');
+}
 
     window.onload = carregarDoLocalStorage;
   </script></body>
