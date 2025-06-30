@@ -373,34 +373,36 @@
       background: #0055aa;
     }
     
-    /* Tabela de danos */
-    .tabela-danos {
-      width: 100%;
-      border-collapse: collapse;
+    /* Estilos para a aba de Ataques */
+    .lista-ataques {
       margin-top: 15px;
     }
-    .tabela-danos th, .tabela-danos td {
-      border: 1px solid #444;
-      padding: 8px;
-      text-align: left;
+    .ataque-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
     }
-    .tabela-danos th {
-      background: #222;
-    }
-    .tabela-danos tr:nth-child(even) {
-      background: #1a1a1a;
-    }
-    .tabela-danos input, .tabela-danos textarea {
-      width: 100%;
+    .ataque-item input {
       background: #000;
       color: #c0f7c0;
-      border: 1px solid #333;
-      padding: 5px;
+      border: 1px solid #444;
+      padding: 8px;
+      border-radius: 4px;
     }
-    .tabela-danos textarea {
-      min-height: 60px;
+    .ataque-item input:nth-child(1) {
+      flex: 2;
+      min-width: 150px;
     }
-    .btn-adicionar-dano {
+    .ataque-item input:nth-child(2) {
+      flex: 1;
+      min-width: 100px;
+    }
+    .ataque-item input:nth-child(3) {
+      flex: 1;
+      min-width: 80px;
+    }
+    .btn-adicionar-ataque {
       background: #006600;
       color: white;
       border: none;
@@ -409,7 +411,7 @@
       cursor: pointer;
       margin-top: 10px;
     }
-    .btn-remover-dano {
+    .btn-remover-ataque {
       background: #990000;
       color: white;
       border: none;
@@ -425,7 +427,7 @@
     <div class="tabs">
       <button class="active" data-tab="ficha">Ficha</button>
       <button data-tab="inventario">Inventário</button>
-      <button data-tab="danos">Registro de Danos</button>
+      <button data-tab="ataques">Ataques/Armas</button>
       <button data-tab="anotacoes">Anotações</button>
     </div>
 
@@ -635,30 +637,27 @@
       <button id="btn-adicionar-item" onclick="adicionarItem()">+ Adicionar Item</button>
     </div>
 
-    <!-- Aba Registro de Danos -->
-    <div id="danos" class="tab-content">
-      <h3>Registro de Danos</h3>
-      <table class="tabela-danos">
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Dano</th>
-            <th>Descrição</th>
-            <th>Efeitos</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="lista-danos">
-          <tr>
-            <td><input type="text" placeholder="DD/MM/AAAA"></td>
-            <td><input type="text" placeholder="Ex: -10 HP"></td>
-            <td><textarea placeholder="Como ocorreu o dano"></textarea></td>
-            <td><textarea placeholder="Efeitos/Consequências"></textarea></td>
-            <td><button class="btn-remover-dano" onclick="this.parentElement.parentElement.remove(); salvarDados();">Remover</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <button class="btn-adicionar-dano" onclick="adicionarDano()">+ Adicionar Registro</button>
+    <!-- Aba Ataques/Armas -->
+    <div id="ataques" class="tab-content">
+      <h3>Ataques e Armas</h3>
+      <p>Registre aqui os ataques, armas e seus danos:</p>
+      
+      <div class="lista-ataques" id="lista-ataques">
+        <div class="ataque-item">
+          <input type="text" placeholder="Nome (ex: Desert Eagle)" value="Desert Eagle">
+          <input type="text" placeholder="Dano (ex: 1d10+3)" value="1d10+3">
+          <input type="text" placeholder="Tipo (ex: Balístico)" value="Balístico">
+          <button class="btn-remover-ataque" onclick="this.parentElement.remove(); salvarDados();">X</button>
+        </div>
+        <div class="ataque-item">
+          <input type="text" placeholder="Nome (ex: Soco)" value="Soco">
+          <input type="text" placeholder="Dano (ex: 1d3+STR)" value="1d3+STR">
+          <input type="text" placeholder="Tipo (ex: Impacto)" value="Impacto">
+          <button class="btn-remover-ataque" onclick="this.parentElement.remove(); salvarDados();">X</button>
+        </div>
+      </div>
+      
+      <button class="btn-adicionar-ataque" onclick="adicionarAtaque()">+ Adicionar Ataque</button>
     </div>
 
     <!-- Aba Anotações -->
@@ -726,21 +725,20 @@
       document.getElementById('lista-inventario').appendChild(div);
     }
 
-    // ===== REGISTRO DE DANOS ===== //
-    function adicionarDano() {
-      const tbody = document.getElementById('lista-danos');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><input type="text" placeholder="DD/MM/AAAA"></td>
-        <td><input type="text" placeholder="Ex: -10 HP"></td>
-        <td><textarea placeholder="Como ocorreu o dano"></textarea></td>
-        <td><textarea placeholder="Efeitos/Consequências"></textarea></td>
-        <td><button class="btn-remover-dano" onclick="this.parentElement.parentElement.remove(); salvarDados();">Remover</button></td>
+    // ===== REGISTRO DE ATAQUES ===== //
+    function adicionarAtaque() {
+      const div = document.createElement('div');
+      div.className = 'ataque-item';
+      div.innerHTML = `
+        <input type="text" placeholder="Nome (ex: Desert Eagle)">
+        <input type="text" placeholder="Dano (ex: 1d10+3)">
+        <input type="text" placeholder="Tipo (ex: Balístico)">
+        <button class="btn-remover-ataque" onclick="this.parentElement.remove(); salvarDados();">X</button>
       `;
-      tbody.appendChild(tr);
+      document.getElementById('lista-ataques').appendChild(div);
       
       // Adiciona listeners para salvar automaticamente
-      tr.querySelectorAll('input, textarea').forEach(el => {
+      div.querySelectorAll('input').forEach(el => {
         el.addEventListener('input', salvarDados);
       });
     }
@@ -787,14 +785,13 @@
           };
         }),
 
-        // Danos
-        danos: Array.from(document.querySelectorAll('#lista-danos tr')).map(linha => {
-          const inputs = linha.querySelectorAll('input, textarea');
+        // Ataques
+        ataques: Array.from(document.querySelectorAll('#lista-ataques .ataque-item')).map(item => {
+          const inputs = item.querySelectorAll('input');
           return {
-            data: inputs[0].value,
+            nome: inputs[0].value,
             dano: inputs[1].value,
-            descricao: inputs[2].value,
-            efeitos: inputs[3].value
+            tipo: inputs[2].value
           };
         }),
 
@@ -865,24 +862,25 @@
         adicionarItem();
       }
 
-      // Danos
-      const listaDanos = document.getElementById('lista-danos');
-      listaDanos.innerHTML = '';
-      if (dados.danos && dados.danos.length > 0) {
-        dados.danos.forEach(dano => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><input type="text" placeholder="DD/MM/AAAA" value="${dano.data || ''}"></td>
-            <td><input type="text" placeholder="Ex: -10 HP" value="${dano.dano || ''}"></td>
-            <td><textarea placeholder="Como ocorreu o dano">${dano.descricao || ''}</textarea></td>
-            <td><textarea placeholder="Efeitos/Consequências">${dano.efeitos || ''}</textarea></td>
-            <td><button class="btn-remover-dano" onclick="this.parentElement.parentElement.remove(); salvarDados();">Remover</button></td>
+      // Ataques
+      const listaAtaques = document.getElementById('lista-ataques');
+      listaAtaques.innerHTML = '';
+      if (dados.ataques && dados.ataques.length > 0) {
+        dados.ataques.forEach(ataque => {
+          const div = document.createElement('div');
+          div.className = 'ataque-item';
+          div.innerHTML = `
+            <input type="text" placeholder="Nome (ex: Desert Eagle)" value="${ataque.nome || ''}">
+            <input type="text" placeholder="Dano (ex: 1d10+3)" value="${ataque.dano || ''}">
+            <input type="text" placeholder="Tipo (ex: Balístico)" value="${ataque.tipo || ''}">
+            <button class="btn-remover-ataque" onclick="this.parentElement.remove(); salvarDados();">X</button>
           `;
-          listaDanos.appendChild(tr);
+          listaAtaques.appendChild(div);
         });
       } else {
-        // Adiciona uma linha vazia se não houver danos salvos
-        adicionarDano();
+        // Adiciona exemplos se não houver ataques salvos
+        adicionarAtaque();
+        adicionarAtaque();
       }
 
       // Anotações
