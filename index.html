@@ -58,14 +58,15 @@
       border-radius: 8px;
       border: 2px solid #c0f7c0;
     }
-    .nome-info h1, .nome-info p {
+    .nome-info input {
+      font-size: 1.5rem;
+      background-color: #000;
       color: #c0f7c0;
-    }
-    .nome-info h1 {
-      font-size: 2rem;
-    }
-    .nome-info p {
-      font-size: 1rem;
+      border: 1px solid #ffffff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      width: 100%;
+      font-family: inherit;
     }
     input[type="text"] {
       background-color: #000;
@@ -73,13 +74,11 @@
       border: 1px solid #ffffff;
       border-radius: 6px;
       padding: 6px 10px;
-      width: 120px;
       font-family: inherit;
       font-size: 1rem;
     }
-    input:focus {
-      outline: none;
-      border: 1px solid #66ff66;
+    input::placeholder {
+      color: #777;
     }
     .atributos input {
       width: 40px;
@@ -89,7 +88,7 @@
       margin-top: 1rem;
     }
     .barra-container {
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
     .barra-label {
       display: flex;
@@ -97,38 +96,56 @@
       align-items: center;
       margin-bottom: 0.3rem;
     }
-    .barra-controls {
-      display: flex;
-      gap: 0.3rem;
-    }
-    .barra-controls button {
-      padding: 0.2rem 0.5rem;
-      background: #222;
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 4px;
-      cursor: pointer;
-    }
     .barra {
-      background-color: #222;
-      height: 24px;
-      border-radius: 4px;
-      overflow: hidden;
       position: relative;
+      background-color: #222;
+      height: 36px;
+      border-radius: 6px;
+      border: 2px solid #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .barra .preenchimento {
+    .preenchimento {
       height: 100%;
-      text-align: center;
-      line-height: 24px;
       color: white;
       font-weight: bold;
+      text-align: center;
+      line-height: 36px;
+      position: absolute;
+      left: 0;
+      top: 0;
       transition: width 0.3s;
+      width: 0;
+      z-index: 1;
     }
     .barra.vida .preenchimento {
       background: linear-gradient(to right, #ff3333, #990000);
     }
     .barra.sanidade .preenchimento {
       background: linear-gradient(to right, #9933ff, #330066);
+    }
+    .barra .barra-texto {
+      position: relative;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+    }
+    .barra .controle-lateral {
+      z-index: 3;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0 0.5rem;
+    }
+    .barra .controle-direita {
+      order: 2;
+    }
+    .barra .controle-esquerda {
+      order: 0;
     }
     .pericias {
       margin-top: 2rem;
@@ -172,15 +189,15 @@
   <div class="foto-nome">
     <img src="https://via.placeholder.com/120" alt="Foto do Personagem">
     <div class="nome-info">
-      <h1 contenteditable="true">Nome do Personagem</h1>
-      <p contenteditable="true">Jogador</p>
+      <input type="text" placeholder="Nome do Personagem">
+      <input type="text" placeholder="Nome do Jogador">
     </div>
   </div>
 
   <div class="dados-basicos">
-    <p><strong>Idade:</strong> <input type="text"></p>
-    <p><strong>Sexo:</strong> <input type="text"></p>
-    <p><strong>Data de Nascimento:</strong> <input type="text"></p>
+    <p><strong>Idade:</strong> <input type="text" placeholder="Ex: 28"></p>
+    <p><strong>Sexo:</strong> <input type="text" placeholder="Ex: Masculino"></p>
+    <p><strong>Data de Nascimento:</strong> <input type="text" placeholder="Ex: 01/01/1990"></p>
   </div>
 
   <div class="atributos">
@@ -196,32 +213,30 @@
     <div class="barra-container">
       <div class="barra-label">
         <strong>Vida</strong>
-        <input type="text" id="vida-max" placeholder="Max" style="width: 50px" oninput="atualizarBarra('vida')">
-      </div>
-      <div class="barra-controls">
-        <button onclick="alterarBarra('vida', -5)">-5</button>
-        <button onclick="alterarBarra('vida', -1)">-1</button>
-        <button onclick="alterarBarra('vida', 1)">+1</button>
-        <button onclick="alterarBarra('vida', 5)">+5</button>
+        <input type="text" id="vida-max" placeholder="Max" oninput="atualizarBarra('vida')">
       </div>
       <div class="barra vida">
+        <button class="controle-lateral controle-esquerda" onclick="alterarBarra('vida', -5)">&laquo;</button>
+        <button class="controle-lateral controle-esquerda" onclick="alterarBarra('vida', -1)">&lsaquo;</button>
         <div class="preenchimento" id="barra-vida"></div>
+        <div class="barra-texto" id="vida-texto">0 / 0</div>
+        <button class="controle-lateral controle-direita" onclick="alterarBarra('vida', 1)">&rsaquo;</button>
+        <button class="controle-lateral controle-direita" onclick="alterarBarra('vida', 5)">&raquo;</button>
       </div>
     </div>
 
     <div class="barra-container">
       <div class="barra-label">
         <strong>Sanidade</strong>
-        <input type="text" id="sanidade-max" placeholder="Max" style="width: 50px" oninput="atualizarBarra('sanidade')">
-      </div>
-      <div class="barra-controls">
-        <button onclick="alterarBarra('sanidade', -5)">-5</button>
-        <button onclick="alterarBarra('sanidade', -1)">-1</button>
-        <button onclick="alterarBarra('sanidade', 1)">+1</button>
-        <button onclick="alterarBarra('sanidade', 5)">+5</button>
+        <input type="text" id="sanidade-max" placeholder="Max" oninput="atualizarBarra('sanidade')">
       </div>
       <div class="barra sanidade">
+        <button class="controle-lateral controle-esquerda" onclick="alterarBarra('sanidade', -5)">&laquo;</button>
+        <button class="controle-lateral controle-esquerda" onclick="alterarBarra('sanidade', -1)">&lsaquo;</button>
         <div class="preenchimento" id="barra-sanidade"></div>
+        <div class="barra-texto" id="sanidade-texto">0 / 0</div>
+        <button class="controle-lateral controle-direita" onclick="alterarBarra('sanidade', 1)">&rsaquo;</button>
+        <button class="controle-lateral controle-direita" onclick="alterarBarra('sanidade', 5)">&raquo;</button>
       </div>
     </div>
   </div>
@@ -262,9 +277,8 @@
       const atual = parseInt(localStorage.getItem(${tipo}-atual)) || 0;
       const max = parseInt(document.getElementById(${tipo}-max).value) || 1;
       const percentual = Math.min(100, Math.max(0, (atual / max) * 100));
-      const barra = document.getElementById(barra-${tipo});
-      barra.style.width = percentual + '%';
-      barra.innerText = ${atual} / ${max};
+      document.getElementById(barra-${tipo}).style.width = percentual + '%';
+      document.getElementById(${tipo}-texto).innerText = ${atual} / ${max};
       salvarNoLocalStorage();
     }
 
