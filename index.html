@@ -621,24 +621,22 @@
     }
 
 // ===== EFEITOS VISUAIS INSANIDADE / MORRENDO ===== //
-document.getElementById('insanidade').addEventListener('change', function() {
-  const barra = document.getElementById('barra-sanidade');
-  if (this.checked) {
-    barra.classList.add('insano');
-  } else {
-    barra.classList.remove('insano');
-  }
-});
+window.onload = function() {
+  atualizarBarra('vida');
+  atualizarBarra('sanidade');
 
-document.getElementById('morrendo').addEventListener('change', function() {
-  const ficha = document.querySelector('.ficha-container');
-  if (this.checked) {
-    ficha.classList.add('morrendo');
-  } else {
-    ficha.classList.remove('morrendo');
-  }
-});
-    
+  // Adiciona listeners após o DOM estar pronto
+  document.getElementById('insanidade').addEventListener('change', function() {
+    const barra = document.getElementById('barra-sanidade');
+    barra.classList.toggle('insano', this.checked);
+  });
+
+  document.getElementById('morrendo').addEventListener('change', function() {
+    const ficha = document.querySelector('.ficha-container');
+    ficha.classList.toggle('morrendo', this.checked);
+  });
+};
+
     // Inicializar
     window.onload = function() {
       atualizarBarra('vida');
