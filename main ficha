@@ -25,6 +25,7 @@
     }
     .foto-nome {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 1rem;
     }
@@ -34,12 +35,14 @@
       border-radius: 50%;
       border: 3px solid #ff0044;
     }
-    .nome-info h1 {
-      font-size: 2rem;
+    .nome-info h1, .nome-info p, .dados-basicos input, .atributos input {
+      background: transparent;
+      border: none;
+      color: #f2f2f2;
+      font-size: 1rem;
     }
-    .nome-info p {
-      font-size: 0.9rem;
-      color: #ccc;
+    .nome-info h1[contenteditable], .nome-info p[contenteditable] {
+      outline: none;
     }
     .dados-basicos, .atributos, .barras, .pericias {
       margin-top: 1.5rem;
@@ -73,6 +76,15 @@
     .pericias li {
       margin-bottom: 0.5rem;
     }
+    @media (max-width: 600px) {
+      .pericias ul {
+        columns: 1;
+      }
+      .foto-nome {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
@@ -80,60 +92,95 @@
     <div class="foto-nome">
       <img src="https://via.placeholder.com/120" alt="Foto do Personagem">
       <div class="nome-info">
-        <h1>Fulano da Silva</h1>
-        <p>Jogador: Zé Ruela</p>
+        <h1 contenteditable="true">Fulano da Silva</h1>
+        <p contenteditable="true">Jogador: Zé Ruela</p>
       </div>
     </div><div class="dados-basicos">
-  <p><strong>Idade:</strong> 28</p>
-  <p><strong>Sexo:</strong> Masculino</p>
-  <p><strong>Data de Nascimento:</strong> 14/04/1997</p>
+  <p><strong>Idade:</strong> <input type="number" value="28"></p>
+  <p><strong>Sexo:</strong> <input type="text" value="Masculino"></p>
+  <p><strong>Data de Nascimento:</strong> <input type="date" value="1997-04-14"></p>
 </div>
 
 <div class="atributos">
-  <p><strong>Força:</strong> 10</p>
-  <p><strong>Destreza:</strong> 12</p>
-  <p><strong>Inteligência:</strong> 14</p>
-  <p><strong>Constituição:</strong> 9</p>
-  <p><strong>Poder:</strong> 13</p>
-  <p><strong>Presença:</strong> 15</p>
+  <p><strong>Força:</strong> <input type="number" value="10"></p>
+  <p><strong>Destreza:</strong> <input type="number" value="12"></p>
+  <p><strong>Inteligência:</strong> <input type="number" value="14"></p>
+  <p><strong>Constituição:</strong> <input type="number" value="9"></p>
+  <p><strong>Poder:</strong> <input type="number" value="13"></p>
+  <p><strong>Presença:</strong> <input type="number" value="15"></p>
 </div>
 
 <div class="barras">
   <p><strong>Vida</strong></p>
+  <input type="number" id="vida-atual" value="14" onchange="atualizarBarra('vida')"> / <input type="number" id="vida-max" value="20" onchange="atualizarBarra('vida')">
   <div class="barra">
-    <div class="preenchimento" style="width: 70%;">14 / 20</div>
+    <div class="preenchimento" id="barra-vida">14 / 20</div>
   </div>
 
   <p style="margin-top: 1rem;"><strong>Sanidade</strong></p>
+  <input type="number" id="sanidade-atual" value="25" onchange="atualizarBarra('sanidade')"> / <input type="number" id="sanidade-max" value="50" onchange="atualizarBarra('sanidade')">
   <div class="barra sanidade">
-    <div class="preenchimento" style="width: 50%;">25 / 50</div>
+    <div class="preenchimento" id="barra-sanidade">25 / 50</div>
   </div>
 </div>
 
 <div class="pericias">
   <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Perícias</h2>
   <ul>
-    <li>Atuação — 45</li>
-    <li>Ciência — 62</li>
-    <li>Disfarce — 51</li>
-    <li>Furtividade — 70</li>
-    <li>Informática — 88</li>
-    <li>Intimidação — 30</li>
-    <li>Investigação — 66</li>
-    <li>Lábia — 55</li>
-    <li>Luta — 61</li>
-    <li>Medicina — 42</li>
-    <li>Ouvir — 69</li>
-    <li>Pilotar — 35</li>
-    <li>Psicologia — 59</li>
-    <li>Reparação — 20</li>
-    <li>Rastrear — 58</li>
-    <li>Saltar — 40</li>
-    <li>Sobrevivência — 73</li>
-    <li>Tiro — 65</li>
+    <li contenteditable="true">Atuação — 45</li>
+    <li contenteditable="true">Ciência — 62</li>
+    <li contenteditable="true">Disfarce — 51</li>
+    <li contenteditable="true">Furtividade — 70</li>
+    <li contenteditable="true">Informática — 88</li>
+    <li contenteditable="true">Intimidação — 30</li>
+    <li contenteditable="true">Investigação — 66</li>
+    <li contenteditable="true">Lábia — 55</li>
+    <li contenteditable="true">Luta — 61</li>
+    <li contenteditable="true">Medicina — 42</li>
+    <li contenteditable="true">Ouvir — 69</li>
+    <li contenteditable="true">Pilotar — 35</li>
+    <li contenteditable="true">Psicologia — 59</li>
+    <li contenteditable="true">Reparação — 20</li>
+    <li contenteditable="true">Rastrear — 58</li>
+    <li contenteditable="true">Saltar — 40</li>
+    <li contenteditable="true">Sobrevivência — 73</li>
+    <li contenteditable="true">Tiro — 65</li>
   </ul>
 </div>
 
-  </div>
-</body>
+  </div>  <script>
+    function atualizarBarra(tipo) {
+      const atual = parseInt(document.getElementById(tipo + '-atual').value) || 0;
+      const max = parseInt(document.getElementById(tipo + '-max').value) || 1;
+      const percentual = Math.min(100, Math.max(0, (atual / max) * 100));
+      document.getElementById('barra-' + tipo).style.width = percentual + '%';
+      document.getElementById('barra-' + tipo).innerText = `${atual} / ${max}`;
+      salvarNoLocalStorage();
+    }
+
+    function salvarNoLocalStorage() {
+      const campos = document.querySelectorAll('input, [contenteditable=true]');
+      campos.forEach(campo => {
+        const key = campo.id || campo.innerText.slice(0, 10);
+        const value = campo.value || campo.innerText;
+        localStorage.setItem(key, value);
+      });
+    }
+
+    function carregarDoLocalStorage() {
+      const campos = document.querySelectorAll('input, [contenteditable=true]');
+      campos.forEach(campo => {
+        const key = campo.id || campo.innerText.slice(0, 10);
+        const value = localStorage.getItem(key);
+        if (value) {
+          if (campo.value !== undefined) campo.value = value;
+          else campo.innerText = value;
+        }
+      });
+      atualizarBarra('vida');
+      atualizarBarra('sanidade');
+    }
+
+    window.onload = carregarDoLocalStorage;
+  </script></body>
 </html>
