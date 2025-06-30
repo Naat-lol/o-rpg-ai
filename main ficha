@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ficha do RPG</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    body {
+      background-color: #0d0d0d;
+      color: #f2f2f2;
+      padding: 2rem;
+    }
+    .ficha-container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #1a1a1a;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #ff0044;
+    }
+    .foto-nome {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .foto-nome img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #ff0044;
+    }
+    .nome-info h1 {
+      font-size: 2rem;
+    }
+    .nome-info p {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .dados-basicos, .atributos, .barras, .pericias {
+      margin-top: 1.5rem;
+    }
+    .dados-basicos p, .atributos p {
+      margin-bottom: 0.3rem;
+    }
+    .barra {
+      background-color: #333;
+      height: 24px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .barra .preenchimento {
+      height: 100%;
+      background: linear-gradient(to right, #00ffcc, #0077ff);
+      text-align: center;
+      line-height: 24px;
+      color: black;
+      font-weight: bold;
+    }
+    .barra.sanidade .preenchimento {
+      background: linear-gradient(to right, #ff66cc, #6600cc);
+    }
+    .pericias ul {
+      list-style: none;
+      columns: 2;
+      gap: 2rem;
+    }
+    .pericias li {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="ficha-container">
+    <div class="foto-nome">
+      <img src="https://via.placeholder.com/120" alt="Foto do Personagem">
+      <div class="nome-info">
+        <h1>Fulano da Silva</h1>
+        <p>Jogador: Zé Ruela</p>
+      </div>
+    </div><div class="dados-basicos">
+  <p><strong>Idade:</strong> 28</p>
+  <p><strong>Sexo:</strong> Masculino</p>
+  <p><strong>Data de Nascimento:</strong> 14/04/1997</p>
+</div>
+
+<div class="atributos">
+  <p><strong>Força:</strong> 10</p>
+  <p><strong>Destreza:</strong> 12</p>
+  <p><strong>Inteligência:</strong> 14</p>
+  <p><strong>Constituição:</strong> 9</p>
+  <p><strong>Poder:</strong> 13</p>
+  <p><strong>Presença:</strong> 15</p>
+</div>
+
+<div class="barras">
+  <p><strong>Vida</strong></p>
+  <div class="barra">
+    <div class="preenchimento" style="width: 70%;">14 / 20</div>
+  </div>
+
+  <p style="margin-top: 1rem;"><strong>Sanidade</strong></p>
+  <div class="barra sanidade">
+    <div class="preenchimento" style="width: 50%;">25 / 50</div>
+  </div>
+</div>
+
+<div class="pericias">
+  <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Perícias</h2>
+  <ul>
+    <li>Atuação — 45</li>
+    <li>Ciência — 62</li>
+    <li>Disfarce — 51</li>
+    <li>Furtividade — 70</li>
+    <li>Informática — 88</li>
+    <li>Intimidação — 30</li>
+    <li>Investigação — 66</li>
+    <li>Lábia — 55</li>
+    <li>Luta — 61</li>
+    <li>Medicina — 42</li>
+    <li>Ouvir — 69</li>
+    <li>Pilotar — 35</li>
+    <li>Psicologia — 59</li>
+    <li>Reparação — 20</li>
+    <li>Rastrear — 58</li>
+    <li>Saltar — 40</li>
+    <li>Sobrevivência — 73</li>
+    <li>Tiro — 65</li>
+  </ul>
+</div>
+
+  </div>
+</body>
+</html>
