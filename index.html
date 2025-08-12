@@ -1162,22 +1162,312 @@ document.getElementById('lesao-grave').checked = lesaoGrave;
       });
       document.getElementById('lesao-grave').addEventListener('change', function() {
         document.querySelector('.ficha-container').classList.toggle('lesao-grave', this.checked);
+<script>
+    // ===== VARIÁVEIS GLOBAIS ===== //
+    let vidaAtual = 20;
+    let vidaMaxima = 20;
+    let sanidadeAtual = 50;
+    let sanidadeMaxima = 50;
+
+    // ===== SISTEMA DE ABAS ===== //
+    function configurarAbas() {
+      document.querySelectorAll('.tabs button').forEach(button => {
+        button.addEventListener('click', function() {
+          document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+          
+          this.classList.add('active');
+          document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+        });
+      });
+    }
+
+    // ===== SISTEMA DE BARRAS ===== //
+    function atualizarBarra(tipo) {
+      if (tipo === 'vida') {
+        // Garante que os valores estão sincronizados
+        vidaMaxima = parseInt(document.getElementById('vida-max').value) || 1;
+        vidaAtual = Math.min(vidaAtual, vidaMaxima);
+        vidaAtual = Math.max(0, vidaAtual);
+        
+        const porcentagem = (vidaAtual / vidaMaxima) * 100;
+        document.querySelector('#barra-vida .preenchimento').style.width = `${porcentagem}%`;
+        document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
+      } else {
+        // Garante que os valores estão sincronizados
+        sanidadeMaxima = parseInt(document.getElementById('sanidade-max').value) || 1;
+        sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
+        sanidadeAtual = Math.max(0, sanidadeAtual);
+        
+        const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
+        document.querySelector('#barra-sanidade .preenchimento').style.width = `${porcentagem}%`;
+        document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
+      }
+      
+      // Atualiza efeitos visuais
+      atualizarEfeitosVisuais();
+      salvarDados();
+    }
+
+    function mudarStatus(tipo, valor) {
+      if (tipo === 'vida') {
+        vidaAtual = Math.max(0, Math.min(vidaAtual + valor, vidaMaxima));
+      } else {
+        sanidadeAtual = Math.max(0, Math.min(sanidadeAtual + valor, sanidadeMaxima));
+      }
+      atualizarBarra(tipo);
+    }
+
+    function atualizarEfeitosVisuais() {
+      const fichaContainer = document.querySelector('.ficha-container');
+      const barraSanidade = document.getElementById('barra-sanidade');
+      
+      // Atualiza classe insano na barra de sanidade
+      barraSanidade.classList.toggle('insano', document.getElementById('insanidade').checked);
+      
+      // Atualiza classes de status
+      fichaContainer.classList.toggle('morrendo', document.getElementById('morrendo').checked);
+      fichaContainer.classList.toggle('inconsciente', document.getElementById('inconsciente').checked);
+      fichaContainer.classList.toggle('lesao-grave', document.getElementById('lesao-grave').checked);
+    }
+
+    // ===== INVENTÁRIO ===== //
+    function adicionarItem() {
+      const div = document.createElement('div');
+      div.className = 'inventario-item';
+      div.innerHTML = `
+        <input type="text" placeholder="Nome do item">
+        <input type="number" placeholder="Quantidade" value="1" min="1">
+        <button class="btn-remover" onclick="this.parentElement.remove(); salvarDados();">X</button>
+      `;
+      document.getElementById('lista-inventario').appendChild(div);
+    }
+
+    // ===== REGISTRO DE ATAQUES ===== //
+    function adicionarAtaque() {
+      const div = document.createElement('div');
+      div.className = 'ataque-item';
+      div.innerHTML = `
+        <input type="text" placeholder="Nome (ex: Desert Eagle)">
+        <input type="text" placeholder="Dano (ex: 1d10+3)">
+        <input type="text" placeholder="Tipo (ex: Balístico)">
+        <button class="btn-remover-ataque" onclick="this.parentElement.remove(); salvarDados();">X</button>
+      `;
+      document.getElementById('lista-ataques').appendChild(div);
+      
+      // Adiciona listeners para salvar automaticamente
+      div.querySelectorAll('input').forEach(el => {
+        el.addEventListener('input', salvarDados);
+      });
+    }
+
+    // ===== SISTEMA DE SALVAMENTO ===== //
+    function salvarDados() {
+      const dados = {
+        // Dados básicos
+        nomePersonagem: document.getElementById('nome-personagem').value,
+        nomeJogador: document.getElementById('nome-jogador').value,
+        idade: document.getElementById('idade').value,
+        sexo: document.getElementById('sexo').value,
+        nascimento: document.getElementById('nascimento').value,
+        altura: document.getElementById('altura').value,
+        peso: document.getElementById('peso').value,
+        sangue: document.getElementById('sangue').value,
+
+        // Atributos
+        forca: document.getElementById('atributo-forca').value,
+        destreza: document.getElementById('atributo-destreza').value,
+        inteligencia: document.getElementById('atributo-inteligencia').value,
+        constituicao: document.getElementById('atributo-constituicao').value,
+        poder: document.getElementById('atributo-poder').value,
+        presenca: document.getElementById('atributo-presenca').value,
+
+        // Status
+        vidaMax: vidaMaxima,
+        sanidadeMax: sanidadeMaxima,
+        vidaAtual: vidaAtual,
+        sanidadeAtual: sanidadeAtual,
+        insanidade: document.getElementById('insanidade').checked,
+        morrendo: document.getElementById('morrendo').checked,
+        inconsciente: document.getElementById('inconsciente').checked,
+        lesaoGrave: document.getElementById('lesao-grave').checked,
+
+        // Perícias
+        pericias: Array.from(document.querySelectorAll('.pericia-input')).map(el => el.value),
+
+        // Inventário
+        inventario: Array.from(document.querySelectorAll('#lista-inventario .inventario-item')).map(item => {
+          const inputs = item.querySelectorAll('input');
+          return {
+            nome: inputs[0].value,
+            quantidade: inputs[1].value
+          };
+        }),
+
+        // Ataques
+        ataques: Array.from(document.querySelectorAll('#lista-ataques .ataque-item')).map(item => {
+          const inputs = item.querySelectorAll('input');
+          return {
+            nome: inputs[0].value,
+            dano: inputs[1].value,
+            tipo: inputs[2].value
+          };
+        }),
+
+        // Anotações
+        anotacoes: document.getElementById('anotacoes-texto').value
+      };
+
+      localStorage.setItem('fichaRPG', JSON.stringify(dados));
+    }
+
+    function carregarDados() {
+      const dadosSalvos = localStorage.getItem('fichaRPG');
+      if (!dadosSalvos) {
+        // Define valores padrão se não houver dados salvos
+        document.getElementById('vida-max').value = 100;
+        document.getElementById('sanidade-max').value = 80;
+        vidaMaxima = 100;
+        sanidadeMaxima = 80;
+        vidaAtual = 100;
+        sanidadeAtual = 80;
+        atualizarBarra('vida');
+        atualizarBarra('sanidade');
+        return;
+      }
+
+      const dados = JSON.parse(dadosSalvos);
+
+      // Dados básicos
+      document.getElementById('nome-personagem').value = dados.nomePersonagem || '';
+      document.getElementById('nome-jogador').value = dados.nomeJogador || '';
+      document.getElementById('idade').value = dados.idade || '';
+      document.getElementById('sexo').value = dados.sexo || '';
+      document.getElementById('nascimento').value = dados.nascimento || '';
+      document.getElementById('altura').value = dados.altura || '';
+      document.getElementById('peso').value = dados.peso || '';
+      document.getElementById('sangue').value = dados.sangue || '';
+
+      // Atributos
+      document.getElementById('atributo-forca').value = dados.forca || 5;
+      document.getElementById('atributo-destreza').value = dados.destreza || 5;
+      document.getElementById('atributo-inteligencia').value = dados.inteligencia || 5;
+      document.getElementById('atributo-constituicao').value = dados.constituicao || 5;
+      document.getElementById('atributo-poder').value = dados.poder || 5;
+      document.getElementById('atributo-presenca').value = dados.presenca || 5;
+
+      // Status
+      vidaMaxima = parseInt(dados.vidaMax) || 100;
+      sanidadeMaxima = parseInt(dados.sanidadeMax) || 80;
+      vidaAtual = parseInt(dados.vidaAtual) || vidaMaxima;
+      sanidadeAtual = parseInt(dados.sanidadeAtual) || sanidadeMaxima;
+      
+      document.getElementById('vida-max').value = vidaMaxima;
+      document.getElementById('sanidade-max').value = sanidadeMaxima;
+      
+      document.getElementById('insanidade').checked = dados.insanidade || false;
+      document.getElementById('morrendo').checked = dados.morrendo || false;
+      document.getElementById('inconsciente').checked = dados.inconsciente || false;
+      document.getElementById('lesao-grave').checked = dados.lesaoGrave || false;
+
+      // Perícias
+      if (dados.pericias) {
+        const pericias = document.querySelectorAll('.pericia-input');
+        dados.pericias.forEach((valor, i) => {
+          if (pericias[i]) pericias[i].value = valor;
+        });
+      }
+
+      // Inventário
+      const listaInventario = document.getElementById('lista-inventario');
+      listaInventario.innerHTML = '';
+      if (dados.inventario && dados.inventario.length > 0) {
+        dados.inventario.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'inventario-item';
+          div.innerHTML = `
+            <input type="text" placeholder="Nome do item" value="${item.nome || ''}">
+            <input type="number" placeholder="Quantidade" value="${item.quantidade || 1}" min="1">
+            <button class="btn-remover" onclick="this.parentElement.remove(); salvarDados();">X</button>
+          `;
+          listaInventario.appendChild(div);
+        });
+      } else {
+        adicionarItem();
+      }
+
+      // Ataques
+      const listaAtaques = document.getElementById('lista-ataques');
+      listaAtaques.innerHTML = '';
+      if (dados.ataques && dados.ataques.length > 0) {
+        dados.taques.forEach(ataque => {
+          const div = document.createElement('div');
+          div.className = 'ataque-item';
+          div.innerHTML = `
+            <input type="text" placeholder="Nome (ex: Desert Eagle)" value="${ataque.nome || ''}">
+            <input type="text" placeholder="Dano (ex: 1d10+3)" value="${ataque.dano || ''}">
+            <input type="text" placeholder="Tipo (ex: Balístico)" value="${ataque.tipo || ''}">
+            <button class="btn-remover-ataque" onclick="this.parentElement.remove(); salvarDados();">X</button>
+          `;
+          listaAtaques.appendChild(div);
+        });
+      } else {
+        adicionarAtaque();
+        adicionarAtaque();
+      }
+
+      // Anotações
+      document.getElementById('anotacoes-texto').value = dados.anotacoes || '';
+
+      // Atualiza as barras e efeitos visuais
+      atualizarBarra('vida');
+      atualizarBarra('sanidade');
+      atualizarEfeitosVisuais();
+    }
+
+    // ===== INICIALIZAÇÃO ===== //
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configura abas
+      configurarAbas();
+
+      // Configura listeners para salvar automaticamente
+      document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.addEventListener('input', salvarDados);
+      });
+
+      // Configura listeners para checkboxes
+      document.getElementById('insanidade').addEventListener('change', function() {
+        atualizarEfeitosVisuais();
+        salvarDados();
+      });
+
+      document.getElementById('morrendo').addEventListener('change', function() {
+        atualizarEfeitosVisuais();
+        salvarDados();
+      });
+
+      document.getElementById('inconsciente').addEventListener('change', function() {
+        atualizarEfeitosVisuais();
+        salvarDados();
+      });
+
+      document.getElementById('lesao-grave').addEventListener('change', function() {
+        atualizarEfeitosVisuais();
         salvarDados();
       });
 
       // Configura listeners para os máximos das barras
+      document.getElementById('vida-max').addEventListener('change', function() {
+        vidaMaxima = parseInt(this.value) || 1;
+        vidaAtual = Math.min(vidaAtual, vidaMaxima);
+        atualizarBarra('vida');
+      });
 
-document.getElementById('vida-max').addEventListener('change', function() {
-  vidaMaxima = parseInt(this.value) || 0; // Permite zero como valor válido
-  vidaAtual = Math.min(vidaAtual, vidaMaxima);
-  atualizarBarra('vida');
-});
-
-document.getElementById('sanidade-max').addEventListener('change', function() {
-  sanidadeMaxima = parseInt(this.value) || 0; // Permite zero como valor válido
-  sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
-  atualizarBarra('sanidade');
-});
+      document.getElementById('sanidade-max').addEventListener('change', function() {
+        sanidadeMaxima = parseInt(this.value) || 1;
+        sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima);
+        atualizarBarra('sanidade');
+      });
 
       // Carrega os dados salvos
       carregarDados();
