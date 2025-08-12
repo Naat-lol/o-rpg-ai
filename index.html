@@ -1008,7 +1008,7 @@ function atualizarBarra(tipo) {
         insanidade: document.getElementById('insanidade').checked,
         morrendo: document.getElementById('morrendo').checked,
         inconsciente: document.getElementById('inconsciente').checked,
-        lesaoGrave: document.getElementById('lesaoGrave').checked,
+        lesaoGrave: document.getElementById('lesao-grave').checked,
 
         // Perícias
         pericias: Array.from(document.querySelectorAll('.pericia-input')).map(el => el.value),
@@ -1073,8 +1073,8 @@ function carregarDados() {
       document.getElementById('insanidade').checked = dados.insanidade || false;
       document.getElementById('morrendo').checked = dados.morrendo || false;
       document.getElementById('inconsciente').checked = dados.inconsciente || false;
-      document.getElementById('lesao-grave').checked = dados.lesaoGrave || false;
-
+      const lesaoGrave = dados.lesaoGrave || false;
+document.getElementById('lesao-grave').checked = lesaoGrave;
       // Perícias
       if (dados.pericias) {
         const pericias = document.querySelectorAll('.pericia-input');
@@ -1132,6 +1132,7 @@ function carregarDados() {
       document.getElementById('barra-sanidade').classList.toggle('insano', dados.insanidade);
       document.querySelector('.ficha-container').classList.toggle('morrendo', dados.morrendo);
       document.querySelector('.ficha-container').classList.toggle('inconsciente', dados.inconsciente);
+      document.querySelector('.ficha-container').classList.toggle('lesao-grave', dados.lesaoGrave);
     }
 
     // ===== INICIALIZAÇÃO ===== //
@@ -1157,6 +1158,10 @@ function carregarDados() {
 
       document.getElementById('inconsciente').addEventListener('change', function() {
         document.querySelector('.ficha-container').classList.toggle('inconsciente', this.checked);
+        salvarDados();
+      });
+      document.getElementById('lesao-grave').addEventListener('change', function() {
+        document.querySelector('.ficha-container').classList.toggle('lesao-grave', this.checked);
         salvarDados();
       });
 
