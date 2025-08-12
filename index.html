@@ -306,34 +306,43 @@
     }
 
     /* Efeitos visuais */
-    .ficha-container.morrendo {
-      animation: pulsarVermelho 1s infinite;
-      box-shadow: 0 0 15px #a00;
-      border: 2px solid #a00;
-    }
-    .ficha-container.inconsciente::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 8px;
-      pointer-events: none;
-      z-index: 1;
-    }
-    @keyframes pulsarVermelho {
-      0%, 100% { box-shadow: 0 0 10px #a00; }
-      50% { box-shadow: 0 0 25px #f00; }
-    }
-    #barra-sanidade.insano .preenchimento {
-      animation: pulsarRoxo 1s infinite;
-    }
-    @keyframes pulsarRoxo {
-      0%, 100% { background-color: #7a4fff; }
-      50% { background-color: #c0a0ff; }
-    }
+.ficha-container.morrendo {
+  animation: pulsarVermelho 1s infinite;
+  box-shadow: 0 0 15px #a00;
+  border: 2px solid #a00;
+}
+.ficha-container.lesao-grave {
+  animation: pulsarLaranja 1.5s infinite;
+  box-shadow: 0 0 15px #f90;
+  border: 2px solid #f90;
+}
+.ficha-container.inconsciente::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes pulsarVermelho {
+  0%, 100% { box-shadow: 0 0 10px #a00; }
+  50% { box-shadow: 0 0 25px #f00; }
+}
+@keyframes pulsarLaranja {
+  0%, 100% { box-shadow: 0 0 10px #f90; }
+  50% { box-shadow: 0 0 20px #fc0; }
+}
+#barra-sanidade.insano .preenchimento {
+  animation: pulsarRoxo 1s infinite;
+}
+@keyframes pulsarRoxo {
+  0%, 100% { background-color: #7a4fff; }
+  50% { background-color: #c0a0ff; }
+}
 
     /* Checkboxes */
     .status-checkboxes {
@@ -541,6 +550,10 @@
         <label>
           <input type="checkbox" id="inconsciente">
           <span>Inconsciente</span>
+        </label>
+        <label>
+          <input type="checkbox" id="lesao-grave">
+          <span>Lesão Grave</span>
         </label>
       </div>
 
@@ -995,6 +1008,7 @@ function atualizarBarra(tipo) {
         insanidade: document.getElementById('insanidade').checked,
         morrendo: document.getElementById('morrendo').checked,
         inconsciente: document.getElementById('inconsciente').checked,
+        lesaoGrave: document.getElementById('lesaoGrave').checked,
 
         // Perícias
         pericias: Array.from(document.querySelectorAll('.pericia-input')).map(el => el.value),
@@ -1059,6 +1073,7 @@ function carregarDados() {
       document.getElementById('insanidade').checked = dados.insanidade || false;
       document.getElementById('morrendo').checked = dados.morrendo || false;
       document.getElementById('inconsciente').checked = dados.inconsciente || false;
+      document.getElementById('lesao-grave').checked = dados.lesaoGrave || false;
 
       // Perícias
       if (dados.pericias) {
