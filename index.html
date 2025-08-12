@@ -907,9 +907,9 @@
   <script>
     // ===== VARIÁVEIS GLOBAIS ===== //
     let vidaAtual = 20;
-    let vidaMaxima = 20;
+    let vidaMaxima = 100;
     let sanidadeAtual = 50;
-    let sanidadeMaxima = 50;
+    let sanidadeMaxima = 80;
 
     // ===== SISTEMA DE ABAS ===== //
     function configurarAbas() {
@@ -927,13 +927,13 @@
     // ===== SISTEMA DE BARRAS ===== //
 function atualizarBarra(tipo) {
   if (tipo === 'vida') {
-    const max = vidaMaxima || 1; // Evita divisão por zero
-    const porcentagem = (vidaAtual / max) * 100;
+    vidaAtual = Math.min(vidaAtual, vidaMaxima); // Garante que não ultrapasse o máximo
+    const porcentagem = (vidaAtual / vidaMaxima) * 100;
     document.querySelector('#barra-vida .preenchimento').style.width = `${Math.min(100, Math.max(0, porcentagem))}%`;
     document.getElementById('texto-vida').textContent = `${vidaAtual} / ${vidaMaxima}`;
   } else {
-    const max = sanidadeMaxima || 1; // Evita divisão por zero
-    const porcentagem = (sanidadeAtual / max) * 100;
+    sanidadeAtual = Math.min(sanidadeAtual, sanidadeMaxima); // Garante que não ultrapasse o máximo
+    const porcentagem = (sanidadeAtual / sanidadeMaxima) * 100;
     document.querySelector('#barra-sanidade .preenchimento').style.width = `${Math.min(100, Math.max(0, porcentagem))}%`;
     document.getElementById('texto-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMaxima}`;
   }
@@ -1064,8 +1064,10 @@ function carregarDados() {
       document.getElementById('atributo-presenca').value = dados.presenca || 5;
 
       // Status
-    document.getElementById('vida-max').value = dados.vidaMax !== undefined ? dados.vidaMax : 100;
-  document.getElementById('sanidade-max').value = dados.sanidadeMax !== undefined ? dados.sanidadeMax : 80;
+  vidaMaxima = parseInt(dados.vidaMax) || 100;
+sanidadeMaxima = parseInt(dados.sanidadeMax) || 80;
+    document.getElementById('vida-max').value = vidaMax;
+  document.getElementById('sanidade-max').value = sanidadeMax;
   
   // Verifica explicitamente se os valores são números válidos
   vidaAtual = typeof dados.vidaAtual === 'number' ? dados.vidaAtual : (dados.vidaMax !== undefined ? dados.vidaMax : 100);
