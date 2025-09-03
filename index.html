@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de RPG</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="animated-background"></div>
+
+    <div class="ficha-container">
+
+        <div class="tabs">
+            <button class="active" data-tab="tab-principal">Principal</button>
+            <button data-tab="tab-pericias">Perícias</button>
+            <button data-tab="tab-ataques">Ataques</button>
+            <button data-tab="tab-inventario">Inventário</button>
+            <button data-tab="tab-dados">Dados</button>
+            <button data-tab="tab-anotacoes">Anotações</button>
+        </div>
+
+        <div id="tab-principal" class="tab-content active">
+            <div class="info-personagem">
+                <div class="foto-container" id="foto-container">
+                    <img id="foto-personagem" class="foto-personagem" src="https://via.placeholder.com/150" alt="Foto do Personagem">
+                </div>
+                <div class="dados-basicos">
+                    <label>Nome do Personagem: <input type="text" id="nome-personagem"></label>
+                    <label>Nome do Jogador: <input type="text" id="nome-jogador"></label>
+                    <label>Idade: <input type="number" id="idade"></label>
+                    <label>Gênero: <input type="text" id="sexo"></label>
+                    <label>Local de Nascimento: <input type="text" id="nascimento"></label>
+                    <label>Altura: <input type="text" id="altura"></label>
+                    <label>Peso: <input type="text" id="peso"></label>
+                    <label>Ocupação: <input type="text" id="ocupacao"></label>
+                    <div class="cor-tema-container">
+                        <label>Cor do Tema:</label>
+                        <div id="cor-picker" class="cor-picker">
+                            <div id="cor-picker-display" class="cor-picker-display"></div>
+                            <div id="cor-picker-paleta" class="cor-picker-paleta hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-fotos" class="modal-fotos">
+                <div class="modal-conteudo">
+                    <h3>Selecione as Fotos</h3>
+                    <p>Carregue uma imagem para cada status do personagem.</p>
+                    <div class="campos-fotos" id="campos-fotos"></div>
+                    <button class="btn-fechar" onclick="fecharModalFotos()">Fechar</button>
+                </div>
+            </div>
+
+            <div class="secao-atributos">
+                <h3>Atributos</h3>
+                <div class="atributos">
+                    <div class="atributo-item">
+                        <span class="atributo-nome">FOR <small>Força</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-forca" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">DES <small>Destreza</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-destreza" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">INT <small>Inteligência</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-inteligencia" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">CON <small>Constituição</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-constituicao" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">POD <small>Poder</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-poder" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">PRE <small>Presença</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-presenca" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">SOR <small>Sorte</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-sorte" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">EDU <small>Educação</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-educacao" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Vida</span>
+                    <input type="number" id="vida-max" class="barra-max" value="10">
+                </div>
+                <div class="barra" id="barra-vida">
+                    <div id="barra-vida-preenchimento" class="preenchimento"></div>
+                    <div class="barra-texto" id="texto-vida">10 / 10</div>
+                    <div class="controles-barra controles-esquerda">
+                        <button id="vida-10"><<</button>
+                        <button id="vida-1"><</button>
+                    </div>
+                    <div class="controles-barra controles-direita">
+                        <button id="vida+1">></button>
+                        <button id="vida+10">>></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Sanidade</span>
+                    <input type="number" id="sanidade-max" class="barra-max" value="10">
+                </div>
+                <div class="barra" id="barra-sanidade">
+                    <div id="barra-sanidade-preenchimento" class="preenchimento"></div>
+                    <div class="barra-texto" id="texto-sanidade">10 / 10</div>
+                    <div class="controles-barra controles-esquerda">
+                        <button id="sanidade-10"><<</button>
+                        <button id="sanidade-1"><</button>
+                    </div>
+                    <div class="controles-barra controles-direita">
+                        <button id="sanidade+1">></button>
+                        <button id="sanidade+10">>></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-checkboxes">
+                <label><input type="checkbox" id="insanidade"> Insanidade</label>
+                <label><input type="checkbox" id="em-choque"> Em Choque</label>
+                <label><input type="checkbox" id="inconsciente"> Inconsciente</label>
+                <label><input type="checkbox" id="lesao-grave"> Lesão Grave</label>
+            </div>
+                        <div id="tab-principal" class="tab-content active">
+    <button id="btn-reset" class="btn-perigo">Resetar Tudo</button>
+</div>
+        </div>
+                    
+
+        <div id="tab-pericias" class="tab-content">
+            <div class="secao-pericias">
+                <div class="sub-tabs">
+                    <button class="active" data-sub-tab="fisicas">Físicas</button>
+                    <button data-sub-tab="combate">Combate</button>
+                    <button data-sub-tab="social">Social</button>
+                    <button data-sub-tab="conhecimento">Conhecimento</button>
+                    <button data-sub-tab="tecnico">Técnico</button>
+                    <button data-sub-tab="percepcao">Percepção</button>
+                    <button data-sub-tab="furtividade-avancada">Furtividade Avançada</button>
+                </div>
+                <input type="search" id="pericia-search" placeholder="Pesquisar perícia...">
+                <div id="pericias-container"></div>
+            </div>
+        </div>
+
+        <div id="tab-ataques" class="tab-content">
+            <div class="secao-ataques">
+                <h3>Ataques</h3>
+                <div id="lista-ataques"></div>
+                <button class="btn-adicionar-ataque">Adicionar Ataque</button>
+            </div>
+        </div>
+
+        <div id="tab-inventario" class="tab-content">
+            <div class="secao-inventario">
+                <h3>Inventário</h3>
+                <div id="lista-inventario"></div>
+                <button class="btn-adicionar-item" id="btn-adicionar-item">Adicionar Item</button>
+            </div>
+        </div>
+        
+        <div id="tab-dados" class="tab-content">
+            <div class="secao-rolagem-dados">
+                <h3>Rolagem de Dados</h3>
+                <div class="botoes-dados">
+                    <button onclick="rolarDado(4)">d4</button>
+                    <button onclick="rolarDado(6)">d6</button>
+                    <button onclick="rolarDado(8)">d8</button>
+                    <button onclick="rolarDado(10)">d10</button>
+                    <button onclick="rolarDado(12)">d12</button>
+                    <button onclick="rolarDado(20)">d20</button>
+                    <button onclick="rolarDado(100)">d100</button>
+                </div>
+                <p id="resultado-dado">Resultado: -</p>
+            </div>
+        </div>
+
+        <div id="tab-anotacoes" class="tab-content">
+            <div class="secao-anotacoes">
+                <h3>Anotações</h3>
+                <textarea id="anotacoes-texto" placeholder="Escreva suas anotações aqui..."></textarea>
+            </div>
+        </div>
+    </div>
+                
+<!-- Modal 1: Primeira confirmação -->
+<div id="modal-reset-1" class="modal-reset hidden">
+  <div class="modal-reset-content">
+    <h2 class="modal-reset1">Confirmação de Reset</h2>
+    <p class="modal-paragrafo-reset1">Tem certeza que deseja resetar TUDO? Isso apagará todos os dados da ficha.</p>
+    <div class="modal-reset-buttons">
+      <button id="btn-reset-1-confirm">Sim, quero apagar</button>
+      <button id="btn-reset-1-cancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 2: Confirmação final -->
+<div id="modal-reset-2" class="modal-reset hidden">
+  <div class="modal-reset-content">
+    <h2 class="modal-reset2">❌ Confirmação Final ❌</h2>
+    <p class="modal-paragrafo-reset2">Clicar em OK apagará PERMANENTEMENTE todas as informações salvas da ficha. Não será possível recuperar. Deseja continuar?</p>
+    <div class="modal-reset-buttons">
+      <button id="btn-reset-2-confirm">OK, apagar tudo</button>
+      <button id="btn-reset-2-cancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+                
+    <script src="script.js"></script>
+</body>
+</html>
