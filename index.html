@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de RPG</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div id="confetti-container" class="confetti-hidden"></div>
+    <div class="animated-background"></div>
+
+    <div class="ficha-container">
+
+        <div class="tabs">
+            <button class="active" data-tab="tab-principal">Principal</button>
+            <button data-tab="tab-pericias">Perícias</button>
+            <button data-tab="tab-ataques">Ataques</button>
+            <button data-tab="tab-inventario">Inventário</button>
+            <button data-tab="tab-dados">Dados</button>
+            <button data-tab="tab-anotacoes">Anotações</button>
+            <button data-tab="tab-importantes">Coisas Importantes</button>
+        </div>
+
+        <div id="tab-principal" class="tab-content active">
+            <div class="info-personagem">
+                <div class="foto-container" id="foto-container">
+                    <img id="foto-personagem" class="foto-personagem" src="https://via.placeholder.com/150" alt="Foto do Personagem">
+                </div>
+                <div class="dados-basicos">
+                    <label>Nome do Personagem: <input type="text" id="nome-personagem" placeholder="Nome do personagem"></label>
+                    <label>Nome do Jogador: <input type="text" id="nome-jogador" placeholder="Nome do jogador"></label>
+                    <label>Idade: <input type="number" id="idade" placeholder="Idade do personagem"></label>
+                    <label>Gênero: <input type="text" id="sexo" placeholder="Sexo do personagem"></label>
+
+                    <div class="cor-tema-container">
+                        <label>Cor do Tema:</label>
+                        <div id="cor-picker" class="cor-picker">
+                            <div id="cor-picker-display" class="cor-picker-display"></div>
+                            <div id="cor-picker-paleta" class="cor-picker-paleta hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-fotos" class="modal-fotos">
+                <div class="modal-conteudo">
+                    <h3>Selecione as Fotos</h3>
+                    <p>Carregue uma imagem para cada status do personagem.</p>
+                    <div class="campos-fotos" id="campos-fotos"></div>
+                    <button class="btn-fechar" onclick="fecharModalFotos()">Fechar</button>
+                </div>
+            </div>
+
+            <div class="secao-atributos">
+                <h3>Atributos</h3>
+                <div class="atributos">
+                    <div class="atributo-item">
+                        <span class="atributo-nome">FOR <small>Força</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-forca" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">DES <small>Destreza</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-destreza" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">INT <small>Inteligência</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-inteligencia" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">CON <small>Constituição</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-constituicao" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">POD <small>Poder</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-poder" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">PRE <small>Presença</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-presenca" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">SOR <small>Sorte</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-sorte" value="0">
+                    </div>
+                    <div class="atributo-item">
+                        <span class="atributo-nome">EDU <small>Educação</small></span>
+                        <input type="number" class="atributo-valor" id="atributo-educacao" value="0">
+                    </div>
+                </div>
+            </div>
+            
+<div class="secao-movimento-defesa">
+    <div class="campo-deslocamento-defesa">
+        <label>Deslocamento (m/q)</label>
+        <div class="deslocamento-container">
+            <div class="deslocamento-campo">
+                <input type="number" id="deslocamento-m" max="99" maxlength="2">
+                <label for="deslocamento-m">m</label>
+            </div>
+            <div class="deslocamento-campo">
+                <input type="number" id="deslocamento-q" max="99" maxlength="2">
+                <label for="deslocamento-q">q</label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="campo-deslocamento-defesa">
+        <label for="defesa-input">Defesa</label>
+        <input type="number" id="defesa-input" max="99" maxlength="2">
+    </div>
+</div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span class="vida-barra">Vida</span>
+                    <input type="number" id="vida-Max" class="barra-max" value="10">
+                </div>
+                <div class="barra" id="barra-vida">
+                    <div id="barra-vida-preenchimento" class="preenchimento"></div>
+                    <div class="barra-texto" id="texto-vida">10 / 10</div>
+                    <div class="controles-barra controles-esquerda">
+                        <button id="vida-10"><<</button>
+                        <button id="vida-1"><</button>
+                    </div>
+                    <div class="controles-barra controles-direita">
+                        <button id="vida+1">></button>
+                        <button id="vida+10">>></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                  <span class="sanidade-barra pericia-link" id="rolar-sanidade">Sanidade</span>
+                  <input type="number" id="sanidade-Max" class="barra-max" value="10">
+                </div>
+                <div class="barra" id="barra-sanidade">
+                    <div id="barra-sanidade-preenchimento" class="preenchimento"></div>
+                    <div class="barra-texto" id="texto-sanidade">10 / 10</div>
+                    <div class="controles-barra controles-esquerda">
+                        <button id="sanidade-10"><<</button>
+                        <button id="sanidade-1"><</button>
+                    </div>
+                    <div class="controles-barra controles-direita">
+                        <button id="sanidade+1">></button>
+                        <button id="sanidade+10">>></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="secao-status">
+                <div class="status-item">
+                    <input type="checkbox" id="lesao-grave">
+                    <label for="lesao-grave">Lesão Grave</label>
+                </div>
+                <div class="status-item">
+                    <input type="checkbox" id="em-choque">
+                    <label for="em-choque">Em Choque</label>
+                </div>
+                <div class="status-item">
+                    <input type="checkbox" id="inconsciente">
+                    <label for="inconsciente">Inconsciente</label>
+                </div>
+                <div class="status-item">
+                    <input type="checkbox" id="insanidade">
+                    <label for="insanidade">Insanidade</label>
+                </div>
+            </div>
+
+            <div class="secao-controles">
+                <button class="btn-perigo" id="btn-reset">Resetar Tudo</button>
+            </div>
+        </div>
+
+    <div id="tab-pericias" class="tab-content">
+     <div class="sub-tabs">
+          <button class="active" data-sub-tab="fisicas">Físicas</button>
+          <button data-sub-tab="combate">Combate</button>
+          <button data-sub-tab="social">Social</button>
+          <button data-sub-tab="conhecimento">Conhecimento</button>
+          <button data-sub-tab="tecnico">Técnico</button>
+          <button data-sub-tab="percepcao">Percepção</button>
+          <button data-sub-tab="furtividade-avancada">Furt. Avançada</button>
+            </div>
+         <div class="pericias-header">
+           <h3>Perícias</h3>
+           <input type="text" id="pericia-search" placeholder="Pesquisar perícia...">
+          </div>
+         <div class="pericias-list-container" id="pericias-container">
+            </div>
+    </div>
+
+        <div id="tab-ataques" class="tab-content">
+            <div class="secao-ataques">
+                <h3>Ataques</h3>
+                <div class="ataques-container" id="ataques-container">
+                    </div>
+                <div class="input-ataque">
+                    <input type="text" id="ataque-nome" placeholder="Arma usada">
+                    <input type="text" id="ataque-dano" placeholder="Dano">
+                    <input type="text" id="ataque-tipo" placeholder="Tipo">
+                    <input type="text" id="ataque-alcance" placeholder="Alcance">
+                    <button class="btn-adicionar-ataque">Adicionar Ataque</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-inventario" class="tab-content">
+            <div class="secao-inventario">
+                <h3>Inventário</h3>
+                <div class="inventario-container">
+                    <div id="lista-inventario" class="lista-itens">
+                        </div>
+                    <div class="input-item">
+                        <input type="text" id="novo-item" placeholder="Novo item...">
+                        <button id="btn-adicionar-item">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-dados" class="tab-content">
+            <div class="secao-dados">
+                <h3>Rolagem de Dados</h3>
+                <div class="dado-item">
+                    <label for="dado-tipo">Tipo de Dado:</label>
+                    <select id="dado-tipo">
+                        <option value="4">d4</option>
+                        <option value="6">d6</option>
+                        <option value="8">d8</option>
+                        <option value="10">d10</option>
+                        <option value="12">d12</option>
+                        <option value="20">d20</option>
+                        <option value="100">d100</option>
+                    </select>
+                </div>
+                <div class="dado-item">
+                    <label for="dado-quantidade">Quantidade:</label>
+                    <input type="number" id="dado-quantidade" value="1" min="1" max="50">
+                </div>
+                <div class="dado-item">
+                    <label for="dado-modificador">Modificador:</label>
+                    <input type="number" id="dado-modificador" value="0" max="100">
+                </div>
+                <div class="dado-item">
+                    <button id="btn-rolar">Rolar Dado</button>
+                </div>
+                <p id="resultado-dado">Resultado: -</p>
+            </div>
+        </div>
+
+        <div id="tab-anotacoes" class="tab-content">
+            <div class="secao-anotacoes">
+                <h3>Anotações</h3>
+                <textarea id="anotacoes-texto" placeholder="Coisas uteis de se escreverem temporariamente..."></textarea>
+            </div>
+        </div>
+        
+       <div id="tab-importantes" class="tab-content">
+    <div class="secao-importantes">
+
+        <div class="dados-basicos">
+            <h3>Local de Nascimento: <input type="text" id="nascimento" placeholder="Onde o personagem nasceu"></h3>
+                    <h3>Altura: <input type="text" id="altura" placeholder="A altura do personagem"></h3>
+                    <h3>Peso: <input type="text" id="peso" placeholder="O peso do personagem"></h3>
+                    <h3>Ocupação: <input type="text" id="ocupacao" placeholder="Com oque o personagem trabalha"></h3>
+        </div>
+
+        <h3>Background</h3>
+        <textarea id="background-texto" placeholder="História do personagem..."></textarea>
+        
+        <h3>Pessoas Importantes</h3>
+        <textarea id="pessoas-importantes-texto" placeholder="Amigos, rivais, familiares..."></textarea>
+
+        <h3>Segredos</h3>
+        <textarea id="segredos-texto" placeholder="O que seu personagem esconde?"></textarea>
+
+        <h3>Traumas e Fobias</h3>
+        <div class="input-trauma-fobia">
+            <input type="text" id="trauma-fobia-input" placeholder="Novo Trauma ou Fobia...">
+            <button id="btn-adicionar-trauma-fobia">Adicionar</button>
+        </div>
+        <div id="lista-traumas-fobias" class="lista-itens">
+            </div>
+
+        <h3>Objetivo Principal</h3>
+        <textarea id="objetivo-principal-texto" placeholder="O que você precisa fazer agora?..."></textarea>
+
+        <h3>Objetivo Secundário</h3>
+        <textarea id="objetivo-secundario-texto" placeholder="O que você pode fazer antes do objetivo principal?"></textarea>
+        
+        <h3>Outras Coisas Importantes</h3>
+        <textarea id="outras-importantes-texto" placeholder="Detalhes de plot, itens chave, etc..."></textarea>
+    </div>
+</div>
+    </div>
+                
+<div id="modal-reset-1" class="modal-reset hidden">
+  <div class="modal-reset-content">
+    <h2 class="modal-reset1">Confirmação de Reset</h2>
+    <p class="modal-paragrafo-reset1">Tem certeza que deseja resetar TUDO? Isso apagará todos os dados da ficha.</p>
+    <div class="modal-reset-buttons">
+      <button id="btn-reset-1-confirm">Sim, quero apagar</button>
+      <button id="btn-reset-1-cancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-reset-2" class="modal-reset hidden">
+  <div class="modal-reset-content">
+    <h2 class="modal-reset2">❌ Confirmação Final ❌</h2>
+    <p class="modal-paragrafo-reset2">Clicar em OK apagará PERMANENTEMENTE todas as informações salvas da ficha. Não será possível recuperar. Deseja continuar?</p>
+    <div class="modal-reset-buttons">
+      <button id="btn-reset-2-confirm">Sim, apaga logo</button>
+      <button id="btn-reset-2-cancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
