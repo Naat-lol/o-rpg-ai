@@ -124,10 +124,8 @@ const fotoTipos = {
     insano: "Insano",
     choque: "Em Choque",
     "lesao-grave-em-choque": "Lesão Grave + Em Choque",
-    "lesao-grave-inconsciente": "Lesão Grave + Inconsciente",
     "lesao-grave-insano": "Lesão Grave + Insano",
     "insano-em-choque": "Insano + Em Choque",
-    "insano-inconsciente": "Insano + Inconsciente"
 };
 
 // ===== INICIALIZAÇÃO ===== //
@@ -162,6 +160,66 @@ function inicializarAbas() {
             mostrarPericias(subTabId);
             salvarDados();
         });
+    });
+}
+
+function rolarAtributo(nome, valor) {
+    const resultadoDado = Math.floor(Math.random() * 100) + 1;
+    let resultadoTexto = "";
+    let classeResultado = "";
+    
+    // Para atributos, usamos a mesma lógica das perícias
+    const umTerco = Math.floor(valor / 3);
+    const doisTercos = Math.floor(valor * 2 / 3);
+    const desastreValor = 100;
+
+    // Referência ao contêiner de confete
+    const confetti = document.getElementById('confetti-container');
+    confetti.classList.remove('show-confetti');
+
+    if (resultadoDado <= umTerco) {
+        resultadoTexto = "EXTREMO";
+        classeResultado = "extremo";
+        
+        // Confete para sucesso extremo
+        confetti.classList.add('show-confetti');
+        setTimeout(() => {
+            confetti.classList.remove('show-confetti');
+        }, 3000);
+        
+    } else if (resultadoDado <= doisTercos) {
+        resultadoTexto = "ÓTIMO";
+        classeResultado = "otimo";
+    } else if (resultadoDado <= valor) {
+        resultadoTexto = "NORMAL";
+        classeResultado = "normal";
+    } else if (resultadoDado >= desastreValor) {
+        resultadoTexto = "DESASTRE";
+        classeResultado = "desastre";
+    } else if (resultadoDado > valor) {
+         resultadoTexto = "FALHA";
+         classeResultado = "falha";
+    }
+    
+    // Cria o overlay e o modal
+    const overlay = document.createElement('div');
+    overlay.className = 'rolagem-overlay';
+    
+    const modal = document.createElement('div');
+    modal.className = 'rolagem-modal';
+    
+    modal.innerHTML = `
+        <span class="rolagem-titulo">${nome}</span>
+        <span class="rolagem-resultado ${classeResultado}">${resultadoTexto}</span>
+        <span class="rolagem-dados">1d100 = ${resultadoDado} (Meta: ${valor})</span>
+    `;
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+        confetti.classList.remove('show-confetti');
     });
 }
 
@@ -416,9 +474,6 @@ function atualizarBarra(tipo) {
     aplicarEfeitosVisuais();
 }
 
-
-
-
 function mudarStatus(tipo, quantidade) {
     if (tipo === 'vida') {
         vidaAtual = Math.min(Math.max(0, vidaAtual + quantidade), vidaMaxima);
@@ -436,22 +491,56 @@ function abrirModalFotos() {
     const modal = document.getElementById('modal-fotos');
     const campos = document.getElementById('campos-fotos');
     campos.innerHTML = '';
+    
     for (const key in fotoTipos) {
         const div = document.createElement('div');
         div.className = 'campo-foto-item';
+        
+        // Verifica se já existe uma foto salva para este tipo
+        const temFotoSalva = fotosSalvas[key];
+        
         div.innerHTML = `
             <label>${fotoTipos[key]}:</label>
             <input type="file" id="input-foto-${key}" accept="image/*">
+            ${temFotoSalva ? '<span class="foto-carregada">✓ Foto carregada</span>' : ''}
         `;
         campos.appendChild(div);
-        document.getElementById(`input-foto-${key}`).addEventListener('change', function(event) {
+        
+        // Configurar o event listener para cada input de arquivo
+        const input = document.getElementById(`input-foto-${key}`);
+        
+        // Se já tem foto salva, mostra um preview (opcional)
+        if (temFotoSalva) {
+            console.log(`📸 Foto já carregada para: ${key}`);
+        }
+        
+        input.addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    // **CORREÇÃO: Garante que o objeto fotosSalvas está sendo atualizado**
                     fotosSalvas[key] = e.target.result;
-                    atualizarFotoEstado();
+                    console.log(`✅ Foto salva para: ${key}`, fotosSalvas[key] ? 'COM dados' : 'SEM dados');
+                    
+                    // Atualiza a interface para mostrar que a foto foi carregada
+                    const parentDiv = input.parentElement;
+                    let checkmark = parentDiv.querySelector('.foto-carregada');
+                    if (!checkmark) {
+                        checkmark = document.createElement('span');
+                        checkmark.className = 'foto-carregada';
+                        parentDiv.appendChild(checkmark);
+                    }
+                    checkmark.textContent = ' ✓ Foto carregada';
+                    
+                    // **CORREÇÃO: Salva os dados IMEDIATAMENTE após carregar a foto**
                     salvarDados();
+                    
+                    // Atualiza a foto do personagem
+                    atualizarFotoEstado();
+                };
+                reader.onerror = function() {
+                    console.error(`❌ Erro ao carregar foto para: ${key}`);
                 };
                 reader.readAsDataURL(file);
             }
@@ -473,13 +562,8 @@ function atualizarFotoEstado() {
     
     let fotoSelecionada = fotosSalvas.normal || 'https://via.placeholder.com/150';
 
-    if (vidaAtual <= vidaMaxima / 2 && sanidadeAtual <= sanidadeMaxima / 2 && fotosSalvas.metadeVidaEmetadeSanidade) { // Linha adicionada
-        fotoSelecionada = fotosSalvas.metadeVidaEmetadeSanidade;
-    } else if (inconsciente && lesaoGrave && fotosSalvas['lesao-grave-inconsciente']) {
-        fotoSelecionada = fotosSalvas['lesao-grave-inconsciente'];
-    } else if (inconsciente && insano && fotosSalvas['insano-inconsciente']) {
-        fotoSelecionada = fotosSalvas['insano-inconsciente'];
-    } else if (inconsciente && fotosSalvas.inconsciente) {
+    // Ordem de prioridade para as fotos (do mais específico para o mais geral)
+    if (inconsciente && fotosSalvas.inconsciente) {
         fotoSelecionada = fotosSalvas.inconsciente;
     } else if (lesaoGrave && emChoque && fotosSalvas['lesao-grave-em-choque']) {
         fotoSelecionada = fotosSalvas['lesao-grave-em-choque'];
@@ -493,12 +577,16 @@ function atualizarFotoEstado() {
         fotoSelecionada = fotosSalvas.choque;
     } else if (insano && fotosSalvas.insano) {
         fotoSelecionada = fotosSalvas.insano;
+    } else if (vidaAtual <= vidaMaxima / 2 && sanidadeAtual <= sanidadeMaxima / 2 && fotosSalvas.metadeVidaEmetadeSanidade) {
+        fotoSelecionada = fotosSalvas.metadeVidaEmetadeSanidade;
     } else if (vidaAtual <= vidaMaxima / 2 && fotosSalvas.metadeVida) {
         fotoSelecionada = fotosSalvas.metadeVida;
     } else if (sanidadeAtual <= sanidadeMaxima / 2 && fotosSalvas.metadeSanidade) {
         fotoSelecionada = fotosSalvas.metadeSanidade;
     }
 
+    console.log("🔄 Atualizando foto para:", fotoSelecionada.substring(0, 50) + "...");
+    console.log("📸 Fotos disponíveis:", Object.keys(fotosSalvas));
     fotoElemento.src = fotoSelecionada;
 }
 
@@ -743,7 +831,7 @@ function salvarDados() {
         corTema: document.documentElement.style.getPropertyValue('--dominant-color'),
         
         // Fotos
-        fotosSalvas: window.fotosSalvas,
+        fotosSalvas: fotosSalvas,
         
         // Nova aba "Coisas Importantes"
         backgroundTexto: document.getElementById('background-texto')?.value || '',
@@ -761,7 +849,11 @@ function salvarDados() {
     });
     
     localStorage.setItem('fichaRPG', JSON.stringify(dados));
-    console.log("✅ Dados salvos - Vida:", vidaAtual, "/", vidaMaxima, "Sanidade:", sanidadeAtual, "/", sanidadeMaxima);
+    console.log("✅ Dados salvos - Fotos:", Object.keys(fotosSalvas).length);
+      console.log("💾 Salvando fotos:", Object.keys(fotosSalvas).length, "fotos");
+    if (Object.keys(fotosSalvas).length > 0) {
+        console.log("📸 Chaves das fotos salvas:", Object.keys(fotosSalvas));
+    }
 }
 
 function carregarDados() {
@@ -858,8 +950,12 @@ function carregarDados() {
             });
         }
         
-        // Fotos
+        //fotos
         fotosSalvas = dadosSalvos.fotosSalvas || {};
+        console.log("📸 Fotos carregadas:", Object.keys(fotosSalvas).length, "fotos");
+        if (Object.keys(fotosSalvas).length > 0) {
+            console.log("📸 Chaves das fotos carregadas:", Object.keys(fotosSalvas));
+        }
 
         // Nova aba "Coisas Importantes"
         document.getElementById('background-texto').value = dadosSalvos.backgroundTexto || '';
@@ -871,6 +967,9 @@ function carregarDados() {
         document.getElementById('objetivo-secundario-texto').value = dadosSalvos.objetivoSecundarioTexto || '';
         document.getElementById('outras-importantes-texto').value = dadosSalvos.outrasImportantesTexto || '';
         
+        setTimeout(() => {
+            atualizarFotoEstado();
+        }, 100);
     } else {
         // SE NÃO HÁ DADOS SALVOS, usa os valores dos campos HTML
         console.log("Nenhum dado salvo encontrado, usando valores padrão");
@@ -878,6 +977,9 @@ function carregarDados() {
         sanidadeMaxima = parseInt(document.getElementById('sanidade-Max').value) || 10;
         vidaAtual = vidaMaxima;
         sanidadeAtual = sanidadeMaxima;
+        
+        // **CORREÇÃO: Inicializa o objeto de fotos vazio**
+        fotosSalvas = {};
     }
     
     // Atualizar barras de vida e sanidade após o carregamento
@@ -979,6 +1081,15 @@ function configurarEventListeners() {
         }
     });
 
+      document.querySelectorAll('.atributo-nome.pericia-link').forEach(link => {
+        link.addEventListener('click', function() {
+            const nomeAtributo = this.getAttribute('data-nome-atributo');
+            const inputAtributo = this.parentElement.querySelector('.atributo-valor');
+            const valorAtributo = parseInt(inputAtributo.value) || 0;
+            rolarAtributo(nomeAtributo, valorAtributo);
+        });
+    });
+
     document.getElementById('btn-reset').addEventListener('click', resetTotal);
     document.getElementById('btn-reset-1-confirm').addEventListener('click', () => {
         document.getElementById('modal-reset-1').classList.add('hidden');
@@ -1016,4 +1127,7 @@ document.getElementById('sanidade-Max').addEventListener('input', (event) => {
     document.getElementById('deslocamento-q').addEventListener('input', salvarDados);
     document.getElementById('defesa-input').addEventListener('input', salvarDados);
     document.getElementById('rolar-sanidade').addEventListener('click', rolarSanidade);
+    document.getElementById('btn-portrait').addEventListener('click', () => {
+    window.open('portrait.html', '_blank');
+});
 }
