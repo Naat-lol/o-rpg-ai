@@ -1127,7 +1127,33 @@ document.getElementById('sanidade-Max').addEventListener('input', (event) => {
     document.getElementById('deslocamento-q').addEventListener('input', salvarDados);
     document.getElementById('defesa-input').addEventListener('input', salvarDados);
     document.getElementById('rolar-sanidade').addEventListener('click', rolarSanidade);
-    document.getElementById('btn-portrait').addEventListener('click', () => {
-    window.open('portrait.html', '_blank');
+document.getElementById('btn-portrait').addEventListener('click', () => {
+    // Prepara os dados para a URL
+    const nomePersonagem = encodeURIComponent(document.getElementById('nome-personagem').value || 'Personagem');
+    const vidaAtual = vidaAtual;
+    const vidaMax = vidaMaxima;
+    const sanidadeAtual = sanidadeAtual;
+    const sanidadeMax = sanidadeMaxima;
+    const corTema = document.documentElement.style.getPropertyValue('--dominant-color').replace('#', '');
+    
+    // Pega a foto atual
+    const fotoAtual = document.getElementById('foto-personagem').src;
+    const fotoEncoded = encodeURIComponent(fotoAtual);
+
+    // Cria a URL com parâmetros
+    const urlParams = new URLSearchParams({
+        nome: nomePersonagem,
+        vida: vidaAtual,
+        vidaMax: vidaMax,
+        sanidade: sanidadeAtual,
+        sanidadeMax: sanidadeMax,
+        cor: corTema,
+        foto: fotoEncoded
+    });
+
+    const portraitUrl = `portrait.html?${urlParams.toString()}`;
+    
+    // Abre em nova aba
+    window.open(portraitUrl, '_blank');
 });
 }
