@@ -93,69 +93,52 @@
     </div>
 
 <script>
-    // Função para ler parâmetros da URL
-    function getParametroURL(nome) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(nome);
-    }
-
-    // Função para carregar dados da URL
-    function carregarDadosDaURL() {
-        let nome, vida, sanidade, cor, foto;
-
-        // Tenta primeiro pegar da URL
-        nome = decodeURIComponent(getParametroURL('nome') || 'Personagem');
-        vida = getParametroURL('vida') || '0/0';
-        sanidade = getParametroURL('sanidade') || '0/0';
-        cor = getParametroURL('cor') || '#44aaff';
-        foto = decodeURIComponent(getParametroURL('foto') || 'https://via.placeholder.com/150');
-
-        // Se não tem dados na URL, tenta pegar do localStorage
-        if (nome === 'Personagem' && vida === '0/0') {
-            console.log("🔍 Tentando carregar do localStorage...");
-            try {
-                const dadosSalvos = JSON.parse(localStorage.getItem('fichaRPG'));
-                if (dadosSalvos) {
-                    nome = dadosSalvos.nomePersonagem || 'Personagem';
-                    vida = `${dadosSalvos.vidaAtual || 0}/${dadosSalvos.vidaMax || 0}`;
-                    sanidade = `${dadosSalvos.sanidadeAtual || 0}/${dadosSalvos.sanidadeMax || 0}`;
-                    cor = dadosSalvos.corTema || '#44aaff';
-                    foto = (dadosSalvos.fotosSalvas && dadosSalvos.fotosSalvas.normal) || 'https://via.placeholder.com/150';
-                    console.log("✅ Dados carregados do localStorage");
-                }
-            } catch (error) {
-                console.log("❌ Erro ao carregar do localStorage:", error);
-            }
-        }
-
-        // Atualiza a interface
-        document.getElementById('portrait-nome-personagem').textContent = nome;
-        document.getElementById('portrait-vida').textContent = vida;
-        document.getElementById('portrait-sanidade').textContent = sanidade;
-        document.getElementById('portrait-foto').src = foto;
+    // Função para carregar dados do portrait
+    function carregarDadosPortrait() {
+        console.log("🔄 Tentando carregar dados do portrait...");
         
-        // Aplica a cor
-        document.documentElement.style.setProperty('--cor-dominante', cor);
-
-        console.log("✅ Dados carregados:", { nome, vida, sanidade, cor });
+        try {
+            // Tenta carregar do localStorage simples
+            const portraitData = JSON.parse(localStorage.getItem('portraitData'));
+            
+            if (portraitData) {
+                console.log("✅ Dados encontrados:", portraitData);
+                
+                // Atualiza a interface
+                document.getElementById('portrait-nome-personagem').textContent = portraitData.nome;
+                document.getElementById('portrait-vida').textContent = portraitData.vida;
+                document.getElementById('portrait-sanidade').textContent = portraitData.sanidade;
+                document.getElementById('portrait-foto').src = portraitData.foto;
+                
+                // Aplica a cor
+                document.documentElement.style.setProperty('--cor-dominante', portraitData.cor);
+                
+            } else {
+                console.log("❌ Nenhum dado encontrado no portraitData");
+                document.getElementById('portrait-nome-personagem').textContent = 'Sem dados';
+                document.getElementById('portrait-vida').textContent = '0/0';
+                document.getElementById('portrait-sanidade').textContent = '0/0';
+            }
+        } catch (error) {
+            console.log("❌ Erro ao carregar dados:", error);
+            document.getElementById('portrait-nome-personagem').textContent = 'Erro';
+        }
     }
 
     // Carrega os dados quando a página abre
     document.addEventListener('DOMContentLoaded', function() {
         console.log("🚀 Portrait carregado!");
-        console.log("📋 URL atual:", window.location.href);
-        console.log("📋 Parâmetros da URL:", window.location.search);
-        carregarDadosDaURL();
+        carregarDadosPortrait();
         
-        // Atualiza a cada 3 segundos (lê a URL novamente)
-        setInterval(carregarDadosDaURL, 3000);
+        // Atualiza a cada 2 segundos
+        setInterval(carregarDadosPortrait, 2000);
     });
 
     // Escuta por mudanças no localStorage
     window.addEventListener('storage', function(e) {
-        if (e.key === 'fichaRPG' || e.key === 'portraitURL') {
+        if (e.key === 'portraitData') {
             console.log("📦 Dados atualizados via storage event");
-            carregarDadosDaURL();
+            carregarDadosPortrait();
         }
     });
 </script>
