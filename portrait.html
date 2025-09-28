@@ -42,11 +42,11 @@
             gap: 8px;
         }
 
-        #portrait-nome-personagem {
+        .portrait-nome-personagem {
             font-size: 1.8em;
             font-weight: bold;
-            text-shadow: 0 0 12px var(--cor-dominante, #44aaff), 0 0 25px var(--cor-dominante, #44aaff);
-            color: var(--cor-dominante, #44aaff);
+            text-shadow: 0 0 12px #44aaff, 0 0 25px #44aaff;
+            color: #44aaff;
             white-space: nowrap;
             letter-spacing: 1px;
             margin-bottom: 5px;
@@ -62,86 +62,66 @@
             text-shadow: 0 0 8px currentColor;
         }
 
-        #portrait-vida {
+        .portrait-vida {
             color: #ff5555;
             text-shadow: 0 0 8px #ff5555, 0 0 15px #ff5555;
         }
 
-        #portrait-sanidade {
+        .portrait-sanidade {
             color: #8a4dff;
             text-shadow: 0 0 8px #8a4dff, 0 0 15px #8a4dff;
         }
 
-        #portrait-foto {
+        .portrait-foto {
             width: 140px;
             height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--cor-dominante, #44aaff);
-            box-shadow: 0 0 20px var(--cor-dominante, #44aaff);
+            border: 4px solid #44aaff;
+            box-shadow: 0 0 20px #44aaff;
         }
     </style>
 </head>
 <body>
     <div class="portrait-container">
-        <img id="portrait-foto" src="" alt="Foto do Personagem">
+        <img class="portrait-foto" src="https://via.placeholder.com/150" alt="Foto do Personagem">
         <div class="portrait-info">
-            <h2 id="portrait-nome-personagem">Carregando...</h2>
-            <p id="portrait-vida" class="status-text">- / -</p>
-            <p id="portrait-sanidade" class="status-text">- / -</p>
+            <h2 class="portrait-nome-personagem">Personagem</h2>
+            <p class="status-text portrait-vida">10/10</p>
+            <p class="status-text portrait-sanidade">10/10</p>
         </div>
     </div>
 
-<script>
-    // Função para carregar dados do portrait
-    function carregarDadosPortrait() {
-        console.log("🔄 Tentando carregar dados do portrait...");
-        
-        try {
-            // Tenta carregar do localStorage simples
-            const portraitData = JSON.parse(localStorage.getItem('portraitData'));
-            
-            if (portraitData) {
-                console.log("✅ Dados encontrados:", portraitData);
-                
-                // Atualiza a interface
-                document.getElementById('portrait-nome-personagem').textContent = portraitData.nome;
-                document.getElementById('portrait-vida').textContent = portraitData.vida;
-                document.getElementById('portrait-sanidade').textContent = portraitData.sanidade;
-                document.getElementById('portrait-foto').src = portraitData.foto;
-                
-                // Aplica a cor
-                document.documentElement.style.setProperty('--cor-dominante', portraitData.cor);
-                
-            } else {
-                console.log("❌ Nenhum dado encontrado no portraitData");
-                document.getElementById('portrait-nome-personagem').textContent = 'Sem dados';
-                document.getElementById('portrait-vida').textContent = '0/0';
-                document.getElementById('portrait-sanidade').textContent = '0/0';
+    <script>
+        // Este script só atualiza a página quando aberta no navegador
+        // No OBS, vai mostrar os dados estáticos acima
+        function carregarDados() {
+            try {
+                const dados = JSON.parse(localStorage.getItem('portraitData'));
+                if (dados) {
+                    document.querySelector('.portrait-nome-personagem').textContent = dados.nome;
+                    document.querySelector('.portrait-vida').textContent = dados.vida;
+                    document.querySelector('.portrait-sanidade').textContent = dados.sanidade;
+                    document.querySelector('.portrait-foto').src = dados.foto;
+                    
+                    // Aplica a cor
+                    document.documentElement.style.setProperty('--cor-dominante', dados.cor);
+                    document.querySelector('.portrait-container').style.borderColor = dados.cor;
+                    document.querySelector('.portrait-nome-personagem').style.color = dados.cor;
+                    document.querySelector('.portrait-nome-personagem').style.textShadow = `0 0 12px ${dados.cor}, 0 0 25px ${dados.cor}`;
+                    document.querySelector('.portrait-foto').style.borderColor = dados.cor;
+                    document.querySelector('.portrait-foto').style.boxShadow = `0 0 20px ${dados.cor}`;
+                }
+            } catch (error) {
+                console.log("Erro ao carregar dados:", error);
             }
-        } catch (error) {
-            console.log("❌ Erro ao carregar dados:", error);
-            document.getElementById('portrait-nome-personagem').textContent = 'Erro';
         }
-    }
 
-    // Carrega os dados quando a página abre
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log("🚀 Portrait carregado!");
-        carregarDadosPortrait();
-        
-        // Atualiza a cada 2 segundos
-        setInterval(carregarDadosPortrait, 2000);
-    });
-
-    // Escuta por mudanças no localStorage
-    window.addEventListener('storage', function(e) {
-        if (e.key === 'portraitData') {
-            console.log("📦 Dados atualizados via storage event");
-            carregarDadosPortrait();
+        // Só executa no navegador, não no OBS
+        if (window.location.href.indexOf('file://') === -1) {
+            document.addEventListener('DOMContentLoaded', carregarDados);
+            setInterval(carregarDados, 2000);
         }
-    });
-</script>
+    </script>
 </body>
-<script src="portrait-data.js"></script>
 </html>
