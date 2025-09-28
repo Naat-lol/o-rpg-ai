@@ -425,6 +425,35 @@ function rolarSanidade() {
 /*
 
 */
+
+// ===== FUNÇÃO PARA GERAR URL DO PORTRAIT ===== //
+function gerarURLPortrait() {
+    const dados = {
+        nome: document.getElementById('nome-personagem')?.value || 'Personagem',
+        vidaAtual: vidaAtual,
+        vidaMax: vidaMaxima,
+        sanidadeAtual: sanidadeAtual,
+        sanidadeMax: sanidadeMaxima,
+        corTema: document.documentElement.style.getPropertyValue('--dominant-color') || '#44aaff',
+        foto: fotosSalvas.normal || 'https://via.placeholder.com/150'
+    };
+    const params = new URLSearchParams();
+    params.set('nome', encodeURIComponent(dados.nome));
+    params.set('vida', `${dados.vidaAtual}/${dados.vidaMax}`);
+    params.set('sanidade', `${dados.sanidadeAtual}/${dados.sanidadeMax}`);
+    params.set('cor', dados.corTema);
+    params.set('foto', encodeURIComponent(dados.foto));
+
+    return `portrait.html?${params.toString()}`;
+}
+
+// ===== ATUALIZAR PORTRAIT AUTOMATICAMENTE ===== //
+function atualizarPortrait() {
+    const novaURL = gerarURLPortrait();
+    console.log("🎯 URL do Portrait atualizada:", novaURL);
+    return novaURL;
+}
+
 // ===== FUNÇÃO SIMPLIFICADA PARA ATUALIZAR ESCURECIMENTO ===== //
 function atualizarEscurecimentoBarra(tipo) {
     const preenchimento = tipo === 'vida' ? 
@@ -854,6 +883,8 @@ function salvarDados() {
     if (Object.keys(fotosSalvas).length > 0) {
         console.log("📸 Chaves das fotos salvas:", Object.keys(fotosSalvas));
     }
+
+    atualizarPortrait();
 }
 
 function carregarDados() {
