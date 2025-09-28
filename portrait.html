@@ -31,11 +31,8 @@
             display: flex;
             align-items: center;
             gap: 25px;
-            background: rgba(10, 10, 20, 0.95);
+            background: transparent;
             padding: 25px;
-            border-radius: 15px;
-            border: 2px solid var(--cor-dominante, #44aaff);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
         }
 
         .portrait-info {
@@ -61,7 +58,7 @@
             margin: 2px 0;
             padding: 5px 10px;
             border-radius: 5px;
-            background: rgba(255, 255, 255, 0.15);
+            background: transparent;
             text-shadow: 0 0 8px currentColor;
         }
 
@@ -95,41 +92,73 @@
         </div>
     </div>
 
-    <script>
-        // Função para ler parâmetros da URL
-        function getParametroURL(nome) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(nome);
+<script>
+    // Função para ler parâmetros da URL
+    function getParametroURL(nome) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(nome);
+    }
+
+    // Função para carregar dados da URL
+    function carregarDadosDaURL() {
+        let nome, vida, sanidade, cor, foto;
+
+        // Tenta primeiro pegar da URL
+        nome = decodeURIComponent(getParametroURL('nome') || 'Personagem');
+        vida = getParametroURL('vida') || '0/0';
+        sanidade = getParametroURL('sanidade') || '0/0';
+        cor = getParametroURL('cor') || '#44aaff';
+        foto = decodeURIComponent(getParametroURL('foto') || 'https://via.placeholder.com/150');
+
+        // Se não tem dados na URL, tenta pegar do localStorage
+        if (nome === 'Personagem' && vida === '0/0') {
+            console.log("🔍 Tentando carregar do localStorage...");
+            try {
+                const dadosSalvos = JSON.parse(localStorage.getItem('fichaRPG'));
+                if (dadosSalvos) {
+                    nome = dadosSalvos.nomePersonagem || 'Personagem';
+                    vida = `${dadosSalvos.vidaAtual || 0}/${dadosSalvos.vidaMax || 0}`;
+                    sanidade = `${dadosSalvos.sanidadeAtual || 0}/${dadosSalvos.sanidadeMax || 0}`;
+                    cor = dadosSalvos.corTema || '#44aaff';
+                    foto = (dadosSalvos.fotosSalvas && dadosSalvos.fotosSalvas.normal) || 'https://via.placeholder.com/150';
+                    console.log("✅ Dados carregados do localStorage");
+                }
+            } catch (error) {
+                console.log("❌ Erro ao carregar do localStorage:", error);
+            }
         }
 
-        // Função para carregar dados da URL
-        function carregarDadosDaURL() {
-            const nome = decodeURIComponent(getParametroURL('nome') || 'Personagem');
-            const vida = getParametroURL('vida') || '0/0';
-            const sanidade = getParametroURL('sanidade') || '0/0';
-            const cor = getParametroURL('cor') || '#44aaff';
-            const foto = decodeURIComponent(getParametroURL('foto') || 'https://via.placeholder.com/150');
+        // Atualiza a interface
+        document.getElementById('portrait-nome-personagem').textContent = nome;
+        document.getElementById('portrait-vida').textContent = vida;
+        document.getElementById('portrait-sanidade').textContent = sanidade;
+        document.getElementById('portrait-foto').src = foto;
+        
+        // Aplica a cor
+        document.documentElement.style.setProperty('--cor-dominante', cor);
 
-            // Atualiza a interface
-            document.getElementById('portrait-nome-personagem').textContent = nome;
-            document.getElementById('portrait-vida').textContent = vida;
-            document.getElementById('portrait-sanidade').textContent = sanidade;
-            document.getElementById('portrait-foto').src = foto;
-            
-            // Aplica a cor
-            document.documentElement.style.setProperty('--cor-dominante', cor);
+        console.log("✅ Dados carregados:", { nome, vida, sanidade, cor });
+    }
 
-            console.log("✅ Dados carregados da URL:", { nome, vida, sanidade, cor });
-        }
+    // Carrega os dados quando a página abre
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("🚀 Portrait carregado!");
+        console.log("📋 URL atual:", window.location.href);
+        console.log("📋 Parâmetros da URL:", window.location.search);
+        carregarDadosDaURL();
+        
+        // Atualiza a cada 3 segundos (lê a URL novamente)
+        setInterval(carregarDadosDaURL, 3000);
+    });
 
-        // Carrega os dados quando a página abre
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("🚀 Portrait carregado!");
+    // Escuta por mudanças no localStorage
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'fichaRPG' || e.key === 'portraitURL') {
+            console.log("📦 Dados atualizados via storage event");
             carregarDadosDaURL();
-            
-            // Atualiza a cada 3 segundos (lê a URL novamente)
-            setInterval(carregarDadosDaURL, 3000);
-        });
-    </script>
+        }
+    });
+</script>
 </body>
+<script src="portrait-data.js"></script>
 </html>
