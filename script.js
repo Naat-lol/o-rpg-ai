@@ -1127,10 +1127,8 @@ document.getElementById('sanidade-Max').addEventListener('input', (event) => {
     document.getElementById('deslocamento-q').addEventListener('input', salvarDados);
     document.getElementById('defesa-input').addEventListener('input', salvarDados);
     document.getElementById('rolar-sanidade').addEventListener('click', rolarSanidade);
-    document.getElementById('btn-portrait').addEventListener('click', () => {
-    // Versão simples - só abre o portrait sem parâmetros
-    const portraitUrl = 'portrait.html';
-    console.log("🔗 Abrindo portrait simples");
-    window.open(portraitUrl, '_blank');
+    document.getElementById('btn-portrait').addEventListener('click', function() {
+    console.log("🎯 Botão portrait clicado!");
+    window.open('portrait.html', '_blank');
 });
 }
