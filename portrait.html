@@ -3,125 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portrait - Ficha de RPG</title>
+    <title>Retrato do Personagem</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: transparent !important;
-            font-family: 'Share Tech Mono', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            padding: 20px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .portrait-container {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            background: transparent;
-            padding: 25px;
-        }
-
-        .portrait-info {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .portrait-nome-personagem {
-            font-size: 1.8em;
-            font-weight: bold;
-            text-shadow: 0 0 12px #44aaff, 0 0 25px #44aaff;
-            color: #44aaff;
-            white-space: nowrap;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .status-text {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin: 2px 0;
-            padding: 5px 10px;
-            border-radius: 5px;
-            background: transparent;
-            text-shadow: 0 0 8px currentColor;
-        }
-
-        .portrait-vida {
-            color: #ff5555;
-            text-shadow: 0 0 8px #ff5555, 0 0 15px #ff5555;
-        }
-
-        .portrait-sanidade {
-            color: #8a4dff;
-            text-shadow: 0 0 8px #8a4dff, 0 0 15px #8a4dff;
-        }
-
-        .portrait-foto {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #44aaff;
-            box-shadow: 0 0 20px #44aaff;
-        }
-    </style>
 </head>
-<body>
+<body class="portrait-mode">
     <div class="portrait-container">
-        <img class="portrait-foto" src="https://via.placeholder.com/150" alt="Foto do Personagem">
+        <img id="portrait-foto" src="" alt="Foto do Personagem">
         <div class="portrait-info">
-            <h2 class="portrait-nome-personagem">Personagem</h2>
-            <p class="status-text portrait-vida">10/10</p>
-            <p class="status-text portrait-sanidade">10/10</p>
+            <h2 id="portrait-nome-personagem"></h2>
+            <p id="portrait-vida" class="status-text"></p>
+            <p id="portrait-sanidade" class="status-text"></p>
         </div>
     </div>
 
+    <style>
+    body {
+        background-color: transparent;
+        font-family: 'Share Tech Mono', monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    .portrait-container {
+        display: flex;
+        align-items: center; /* Alinha verticalmente os itens no centro */
+        gap: 20px; /* Adiciona espaçamento entre a foto e as informações */
+        background: rgba(0, 0, 0, 0); /* Fundo semi-transparente para a caixa do retrato */
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .portrait-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Alinha o texto à esquerda */
+    }
+
+    #portrait-nome-personagem {
+        font-size: 1.5em; /* Ajuste o tamanho para caber melhor */
+        text-shadow: 0 0 10px var(--dominant-color), 0 0 20px var(--dominant-color);
+        color: var(--dominant-color);
+        margin-bottom: 5px;
+        white-space: nowrap; /* Impede quebras de linha no nome */
+    }
+
+    .status-text {
+        font-size: 1.2em;
+        color: white;
+        margin: 5px 0;
+    }
+
+    #portrait-foto {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--dominant-color);
+        box-shadow: 0 0 10px var(--dominant-color);
+    }
+    
+    #portrait-vida {
+        text-shadow: 0 0 5px red, 0 0 10px red;
+    }
+
+    #portrait-sanidade {
+        text-shadow: 0 0 5px purple, 0 0 10px purple;
+    }
+    </style>
+    
     <script>
-        // Este script só atualiza a página quando aberta no navegador
-        // No OBS, vai mostrar os dados estáticos acima
-        function carregarDados() {
-            try {
-                const dados = JSON.parse(localStorage.getItem('portraitData'));
-                if (dados) {
-                    document.querySelector('.portrait-nome-personagem').textContent = dados.nome;
-                    document.querySelector('.portrait-vida').textContent = dados.vida;
-                    document.querySelector('.portrait-sanidade').textContent = dados.sanidade;
-                    document.querySelector('.portrait-foto').src = dados.foto;
-                    
-                    // Aplica a cor
-                    document.documentElement.style.setProperty('--cor-dominante', dados.cor);
-                    document.querySelector('.portrait-container').style.borderColor = dados.cor;
-                    document.querySelector('.portrait-nome-personagem').style.color = dados.cor;
-                    document.querySelector('.portrait-nome-personagem').style.textShadow = `0 0 12px ${dados.cor}, 0 0 25px ${dados.cor}`;
-                    document.querySelector('.portrait-foto').style.borderColor = dados.cor;
-                    document.querySelector('.portrait-foto').style.boxShadow = `0 0 20px ${dados.cor}`;
-                }
-            } catch (error) {
-                console.log("Erro ao carregar dados:", error);
+        // Funções para carregar e atualizar os dados
+        function carregarDadosPortrait() {
+            const dadosSalvos = JSON.parse(localStorage.getItem('fichaRPG'));
+
+            if (dadosSalvos) {
+                // Atualiza a cor dominante
+                document.documentElement.style.setProperty('--dominant-color', dadosSalvos.corTema || '#44aaff');
+                
+                // Atualiza a foto usando a mesma lógica da ficha principal
+                atualizarFotoPortrait(dadosSalvos);
+                
+                // Atualiza o nome, vida e sanidade
+                document.getElementById('portrait-nome-personagem').textContent = dadosSalvos.nomePersonagem || 'Nome do Personagem';
+                document.getElementById('portrait-vida').textContent = `${dadosSalvos.vidaAtual || 0} / ${dadosSalvos.vidaMax || 0}`;
+                document.getElementById('portrait-sanidade').textContent = `${dadosSalvos.sanidadeAtual || 0} / ${dadosSalvos.sanidadeMax || 0}`;
             }
         }
 
-        // Só executa no navegador, não no OBS
-        if (window.location.href.indexOf('file://') === -1) {
-            document.addEventListener('DOMContentLoaded', carregarDados);
-            setInterval(carregarDados, 2000);
+        // Nova função para determinar qual foto usar no portrait (mesma lógica da ficha principal)
+        function atualizarFotoPortrait(dados) {
+            const fotoElement = document.getElementById('portrait-foto');
+            const fotosSalvas = dados.fotosSalvas || {};
+            
+            const vidaAtual = dados.vidaAtual || 0;
+            const vidaMax = dados.vidaMax || 1;
+            const sanidadeAtual = dados.sanidadeAtual || 0;
+            const sanidadeMax = dados.sanidadeMax || 1;
+            
+            const lesaoGrave = dados.lesaoGrave || false;
+            const emChoque = dados.emChoque || false;
+            const inconsciente = dados.inconsciente || false;
+            const insano = dados.insanidade || false;
+            
+            let fotoSelecionada = fotosSalvas.normal || 'https://via.placeholder.com/150';
+
+            // Mesma lógica de prioridade da ficha principal
+            if (inconsciente && fotosSalvas.inconsciente) {
+                fotoSelecionada = fotosSalvas.inconsciente;
+            } else if (lesaoGrave && emChoque && fotosSalvas['lesao-grave-em-choque']) {
+                fotoSelecionada = fotosSalvas['lesao-grave-em-choque'];
+            } else if (lesaoGrave && insano && fotosSalvas['lesao-grave-insano']) {
+                fotoSelecionada = fotosSalvas['lesao-grave-insano'];
+            } else if (emChoque && insano && fotosSalvas['insano-em-choque']) {
+                fotoSelecionada = fotosSalvas['insano-em-choque'];
+            } else if (lesaoGrave && fotosSalvas.lesaoGrave) {
+                fotoSelecionada = fotosSalvas.lesaoGrave;
+            } else if (emChoque && fotosSalvas.choque) {
+                fotoSelecionada = fotosSalvas.choque;
+            } else if (insano && fotosSalvas.insano) {
+                fotoSelecionada = fotosSalvas.insano;
+            } else if (vidaAtual <= vidaMax / 2 && sanidadeAtual <= sanidadeMax / 2 && fotosSalvas.metadeVidaEmetadeSanidade) {
+                fotoSelecionada = fotosSalvas.metadeVidaEmetadeSanidade;
+            } else if (vidaAtual <= vidaMax / 2 && fotosSalvas.metadeVida) {
+                fotoSelecionada = fotosSalvas.metadeVida;
+            } else if (sanidadeAtual <= sanidadeMax / 2 && fotosSalvas.metadeSanidade) {
+                fotoSelecionada = fotosSalvas.metadeSanidade;
+            }
+
+            console.log("🔄 Portrait - Atualizando foto para:", fotoSelecionada.substring(0, 50) + "...");
+            fotoElement.src = fotoSelecionada;
         }
+
+        // Atualiza a cada segundo para sincronizar com a ficha principal
+        setInterval(carregarDadosPortrait, 1000);
+
+        // Adiciona um ouvinte de evento para a comunicação entre as abas
+        window.addEventListener('storage', carregarDadosPortrait);
+
+        // Carrega os dados na primeira vez que a página abre
+        carregarDadosPortrait();
     </script>
 </body>
 </html>
