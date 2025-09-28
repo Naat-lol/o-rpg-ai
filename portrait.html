@@ -31,10 +31,11 @@
             display: flex;
             align-items: center;
             gap: 25px;
-            background: transparent;
+            background: rgba(10, 10, 20, 0.95);
             padding: 25px;
             border-radius: 15px;
-            background: transparent;
+            border: 2px solid var(--cor-dominante, #44aaff);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
         }
 
         .portrait-info {
@@ -58,9 +59,9 @@
             font-size: 1.3em;
             font-weight: bold;
             margin: 2px 0;
-            padding: 3px 8px;
+            padding: 5px 10px;
             border-radius: 5px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             text-shadow: 0 0 8px currentColor;
         }
 
@@ -80,21 +81,13 @@
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid var(--cor-dominante, #44aaff);
-            box-shadow: 
-                0 0 20px var(--cor-dominante, #44aaff),
-                0 0 40px rgba(68, 170, 255, 0.3);
-        }
-
-        /* Garantir que tudo seja visível e com bom contraste */
-        .portrait-container * {
-            opacity: 1 !important;
-            visibility: visible !important;
+            box-shadow: 0 0 20px var(--cor-dominante, #44aaff);
         }
     </style>
 </head>
 <body>
     <div class="portrait-container">
-        <img id="portrait-foto" src="https://via.placeholder.com/150" alt="Foto do Personagem">
+        <img id="portrait-foto" src="" alt="Foto do Personagem">
         <div class="portrait-info">
             <h2 id="portrait-nome-personagem">Carregando...</h2>
             <p id="portrait-vida" class="status-text">- / -</p>
@@ -103,103 +96,40 @@
     </div>
 
     <script>
-        // Função para carregar dados do localStorage
-        function carregarDadosPortrait() {
-            console.log("🔄 Carregando dados do portrait...");
-            
-            try {
-                const dadosSalvos = JSON.parse(localStorage.getItem('fichaRPG'));
-                
-                if (dadosSalvos) {
-                    console.log("✅ Dados encontrados:", dadosSalvos);
-                    
-                    // Atualiza nome
-                    const nome = dadosSalvos.nomePersonagem || 'Personagem';
-                    document.getElementById('portrait-nome-personagem').textContent = nome;
-                    
-                    // Atualiza vida
-                    const vidaAtual = dadosSalvos.vidaAtual || 0;
-                    const vidaMax = dadosSalvos.vidaMax || 0;
-                    document.getElementById('portrait-vida').textContent = `${vidaAtual} / ${vidaMax}`;
-                    
-                    // Atualiza sanidade
-                    const sanidadeAtual = dadosSalvos.sanidadeAtual || 0;
-                    const sanidadeMax = dadosSalvos.sanidadeMax || 0;
-                    document.getElementById('portrait-sanidade').textContent = `${sanidadeAtual} / ${sanidadeMax}`;
-                    
-                    // Atualiza cor dominante
-                    atualizarCorDominante(dadosSalvos.corTema);
-                    
-                    // Atualiza foto
-                    atualizarFotoPortrait(dadosSalvos);
-                    
-                    console.log("📊 Dados carregados:", { nome, vida: `${vidaAtual}/${vidaMax}`, sanidade: `${sanidadeAtual}/${sanidadeMax}` });
-                    
-                } else {
-                    console.log("❌ Nenhum dado salvo encontrado");
-                    document.getElementById('portrait-nome-personagem').textContent = 'Sem dados';
-                    document.getElementById('portrait-vida').textContent = '0 / 0';
-                    document.getElementById('portrait-sanidade').textContent = '0 / 0';
-                }
-            } catch (error) {
-                console.log("❌ Erro ao carregar dados:", error);
-                document.getElementById('portrait-nome-personagem').textContent = 'Erro ao carregar';
-            }
+        // Função para ler parâmetros da URL
+        function getParametroURL(nome) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nome);
         }
 
-        function atualizarCorDominante(cor) {
-            if (cor) {
-                document.documentElement.style.setProperty('--cor-dominante', cor);
-                console.log("🎨 Cor dominante aplicada:", cor);
-            } else {
-                document.documentElement.style.setProperty('--cor-dominante', '#44aaff');
-            }
-        }
+        // Função para carregar dados da URL
+        function carregarDadosDaURL() {
+            const nome = decodeURIComponent(getParametroURL('nome') || 'Personagem');
+            const vida = getParametroURL('vida') || '0/0';
+            const sanidade = getParametroURL('sanidade') || '0/0';
+            const cor = getParametroURL('cor') || '#44aaff';
+            const foto = decodeURIComponent(getParametroURL('foto') || 'https://via.placeholder.com/150');
 
-        function atualizarFotoPortrait(dados) {
-            const fotoElement = document.getElementById('portrait-foto');
-            const fotosSalvas = dados.fotosSalvas || {};
+            // Atualiza a interface
+            document.getElementById('portrait-nome-personagem').textContent = nome;
+            document.getElementById('portrait-vida').textContent = vida;
+            document.getElementById('portrait-sanidade').textContent = sanidade;
+            document.getElementById('portrait-foto').src = foto;
             
-            let fotoSelecionada = fotosSalvas.normal || 'https://via.placeholder.com/150';
-            
-            // Lógica para selecionar foto baseada no status
-            if (dados.inconsciente && fotosSalvas.inconsciente) {
-                fotoSelecionada = fotosSalvas.inconsciente;
-            } else if (dados.lesaoGrave && fotosSalvas.lesaoGrave) {
-                fotoSelecionada = fotosSalvas.lesaoGrave;
-            } else if (dados.insanidade && fotosSalvas.insano) {
-                fotoSelecionada = fotosSalvas.insano;
-            } else if (dados.emChoque && fotosSalvas.choque) {
-                fotoSelecionada = fotosSalvas.choque;
-            }
-            
-            console.log("📸 Foto carregada");
-            fotoElement.src = fotoSelecionada;
+            // Aplica a cor
+            document.documentElement.style.setProperty('--cor-dominante', cor);
+
+            console.log("✅ Dados carregados da URL:", { nome, vida, sanidade, cor });
         }
 
         // Carrega os dados quando a página abre
         document.addEventListener('DOMContentLoaded', function() {
             console.log("🚀 Portrait carregado!");
-            carregarDadosPortrait();
+            carregarDadosDaURL();
             
-            // Atualiza a cada 2 segundos (mais rápido)
-            setInterval(carregarDadosPortrait, 2000);
+            // Atualiza a cada 3 segundos (lê a URL novamente)
+            setInterval(carregarDadosDaURL, 3000);
         });
-
-        // Escuta por mudanças no localStorage
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'fichaRPG') {
-                console.log("📦 Dados atualizados via storage event");
-                carregarDadosPortrait();
-            }
-        });
-
-        // Força um redraw a cada segundo para garantir visibilidade
-        setInterval(() => {
-            document.body.style.display = 'none';
-            document.body.offsetHeight;
-            document.body.style.display = 'flex';
-        }, 1000);
     </script>
 </body>
 </html>
