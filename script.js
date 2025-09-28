@@ -460,22 +460,108 @@ function gerarURLPortrait() {
     return urlCompleta;
 }
 
-// ===== FUNÇÃO SIMPLES PARA ATUALIZAR PORTRAIT ===== //
-function atualizarPortrait() {
-    // Cria um objeto simples com os dados essenciais
-    const portraitData = {
+function gerarPortraitEstatico() {
+    const dados = {
         nome: document.getElementById('nome-personagem')?.value || 'Personagem',
         vida: `${vidaAtual}/${vidaMaxima}`,
         sanidade: `${sanidadeAtual}/${sanidadeMaxima}`,
         cor: document.documentElement.style.getPropertyValue('--dominant-color') || '#44aaff',
         foto: fotosSalvas.normal || 'https://via.placeholder.com/150'
     };
+
+    // Cria um HTML estático com os dados atuais
+    const htmlEstatico = `
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portrait - Ficha de RPG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: transparent !important;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+        .portrait-container {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            background: transparent;
+            padding: 25px;
+        }
+        .portrait-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .portrait-nome-personagem {
+            font-size: 1.8em;
+            font-weight: bold;
+            text-shadow: 0 0 12px ${dados.cor}, 0 0 25px ${dados.cor};
+            color: ${dados.cor};
+            white-space: nowrap;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .status-text {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 2px 0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: transparent;
+            text-shadow: 0 0 8px currentColor;
+        }
+        .portrait-vida {
+            color: #ff5555;
+            text-shadow: 0 0 8px #ff5555, 0 0 15px #ff5555;
+        }
+        .portrait-sanidade {
+            color: #8a4dff;
+            text-shadow: 0 0 8px #8a4dff, 0 0 15px #8a4dff;
+        }
+        .portrait-foto {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid ${dados.cor};
+            box-shadow: 0 0 20px ${dados.cor};
+        }
+    </style>
+</head>
+<body>
+    <div class="portrait-container">
+        <img class="portrait-foto" src="${dados.foto}" alt="Foto do Personagem">
+        <div class="portrait-info">
+            <h2 class="portrait-nome-personagem">${dados.nome}</h2>
+            <p class="status-text portrait-vida">${dados.vida}</p>
+            <p class="status-text portrait-sanidade">${dados.sanidade}</p>
+        </div>
+    </div>
+</body>
+</html>`;
+
+    // Abre uma nova janela com o HTML estático
+    const novaJanela = window.open('', '_blank');
+    novaJanela.document.write(htmlEstatico);
+    novaJanela.document.close();
     
-    // Salva em um localStorage separado e simples
-    localStorage.setItem('portraitData', JSON.stringify(portraitData));
-    console.log("✅ Portrait atualizado:", portraitData);
+    console.log("🎯 Portrait estático gerado!");
     
-    return portraitData;
+    return htmlEstatico;
 }
 
 // ===== FUNÇÃO SIMPLIFICADA PARA ATUALIZAR ESCURECIMENTO ===== //
@@ -1183,7 +1269,7 @@ document.getElementById('sanidade-Max').addEventListener('input', (event) => {
     document.getElementById('defesa-input').addEventListener('input', salvarDados);
     document.getElementById('rolar-sanidade').addEventListener('click', rolarSanidade);
     document.getElementById('btn-portrait').addEventListener('click', function() {
-    console.log("🎯 Botão portrait clicado!");
-    window.open('portrait.html', '_blank');
+    console.log("🎯 Gerando portrait estático...");
+    gerarPortraitEstatico();
 });
 }
