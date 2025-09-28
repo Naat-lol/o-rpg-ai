@@ -1127,7 +1127,7 @@ document.getElementById('sanidade-Max').addEventListener('input', (event) => {
     document.getElementById('deslocamento-q').addEventListener('input', salvarDados);
     document.getElementById('defesa-input').addEventListener('input', salvarDados);
     document.getElementById('rolar-sanidade').addEventListener('click', rolarSanidade);
-    document.getElementById('btn-portrait').addEventListener('click', () => {
+    /*document.getElementById('btn-portrait').addEventListener('click', () => {
     window.open('portrait.html', '_blank');
-});
+});*/
 }
