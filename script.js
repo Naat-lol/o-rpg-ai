@@ -460,15 +460,22 @@ function gerarURLPortrait() {
     return urlCompleta;
 }
 
-// ===== ATUALIZAR PORTRAIT AUTOMATICAMENTE ===== //
+// ===== FUNÇÃO SIMPLES PARA ATUALIZAR PORTRAIT ===== //
 function atualizarPortrait() {
-    const novaURL = gerarURLPortrait();
-    console.log("🎯 URL do Portrait atualizada:", novaURL);
+    // Cria um objeto simples com os dados essenciais
+    const portraitData = {
+        nome: document.getElementById('nome-personagem')?.value || 'Personagem',
+        vida: `${vidaAtual}/${vidaMaxima}`,
+        sanidade: `${sanidadeAtual}/${sanidadeMaxima}`,
+        cor: document.documentElement.style.getPropertyValue('--dominant-color') || '#44aaff',
+        foto: fotosSalvas.normal || 'https://via.placeholder.com/150'
+    };
     
-    // Salva a URL atual no localStorage para referência
-    localStorage.setItem('portraitURL', novaURL);
+    // Salva em um localStorage separado e simples
+    localStorage.setItem('portraitData', JSON.stringify(portraitData));
+    console.log("✅ Portrait atualizado:", portraitData);
     
-    return novaURL;
+    return portraitData;
 }
 
 // ===== FUNÇÃO SIMPLIFICADA PARA ATUALIZAR ESCURECIMENTO ===== //
