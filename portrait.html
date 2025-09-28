@@ -148,6 +148,14 @@
             // Atualiza a cada 3 segundos
             setInterval(carregarDadosPortrait, 3000);
         });
+
+        // Também escuta por mudanças no localStorage de outras abas
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'fichaRPG') {
+                console.log("📦 Dados atualizados via storage event");
+                carregarDadosPortrait();
+            }
+        });
     </script>
 </body>
 </html>
