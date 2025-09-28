@@ -437,6 +437,8 @@ function gerarURLPortrait() {
         corTema: document.documentElement.style.getPropertyValue('--dominant-color') || '#44aaff',
         foto: fotosSalvas.normal || 'https://via.placeholder.com/150'
     };
+
+    // Cria uma URL com os dados como parâmetros
     const params = new URLSearchParams();
     params.set('nome', encodeURIComponent(dados.nome));
     params.set('vida', `${dados.vidaAtual}/${dados.vidaMax}`);
@@ -444,13 +446,28 @@ function gerarURLPortrait() {
     params.set('cor', dados.corTema);
     params.set('foto', encodeURIComponent(dados.foto));
 
-    return `portrait.html?${params.toString()}`;
+    // Gera a URL completa
+    const urlCompleta = `portrait.html?${params.toString()}`;
+    
+    // Atualiza o link do botão portrait
+    const btnPortrait = document.getElementById('btn-portrait');
+    if (btnPortrait) {
+        btnPortrait.onclick = function() {
+            window.open(urlCompleta, '_blank');
+        };
+    }
+    
+    return urlCompleta;
 }
 
 // ===== ATUALIZAR PORTRAIT AUTOMATICAMENTE ===== //
 function atualizarPortrait() {
     const novaURL = gerarURLPortrait();
     console.log("🎯 URL do Portrait atualizada:", novaURL);
+    
+    // Salva a URL atual no localStorage para referência
+    localStorage.setItem('portraitURL', novaURL);
+    
     return novaURL;
 }
 
