@@ -1,0 +1,10 @@
+name = "rpg-ficha-share"
+compatibility_date = "2023-10-01"
+
+[[kv_namespaces]]
+binding = "LS_STORE"
+id = "seu-kv-namespace-id" # Substitua pelo ID real do seu KV
+preview_id = "seu-kv-preview-id" # Para desenvolvimento local
+
+[env.production]
+# Configurações específicas para produção
