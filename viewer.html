@@ -31,15 +31,16 @@
 
         <div id="error-message" class="error-container hidden">
             <h2>Erro ao carregar ficha</h2>
-            <p id="error-text">A ficha solicitada não foi encontrada ou expirou.</p>
+            <p id="error-text">A ficha solicitada não foi encontrada ou está corrompida.</p>
             <button id="btn-retry" class="btn-primary">Tentar novamente</button>
+            <button id="btn-home" class="btn-secondary">Voltar para Ficha Principal</button>
         </div>
     </div>
 
     <script>
-        // Obter ID da URL
+        // Obter dados da URL
         const urlParams = new URLSearchParams(window.location.search);
-        const fichaId = urlParams.get('id');
+        const compressedData = urlParams.get('data');
 
         // Elementos da interface
         const loadingMessage = document.getElementById('loading-message');
@@ -47,37 +48,57 @@
         const errorMessage = document.getElementById('error-message');
         const errorText = document.getElementById('error-text');
         const btnRetry = document.getElementById('btn-retry');
+        const btnHome = document.getElementById('btn-home');
         const btnImportLocal = document.getElementById('btn-import-local');
         const btnNewFicha = document.getElementById('btn-new-ficha');
 
         let fichaData = null;
 
+        // Funções de compressão/decompressão
+        function compressData(data) {
+            try {
+                const jsonString = JSON.stringify(data);
+                return btoa(unescape(encodeURIComponent(jsonString)));
+            } catch (error) {
+                console.error('Erro ao comprimir dados:', error);
+                return null;
+            }
+        }
+
+        function decompressData(compressed) {
+            try {
+                const jsonString = decodeURIComponent(escape(atob(compressed)));
+                return JSON.parse(jsonString);
+            } catch (error) {
+                console.error('Erro ao descomprimir dados:', error);
+                return null;
+            }
+        }
+
         // Carregar ficha ao abrir a página
         document.addEventListener('DOMContentLoaded', function() {
-            if (fichaId) {
-                loadFicha(fichaId);
+            if (compressedData) {
+                loadFicha(compressedData);
             } else {
-                showError('ID da ficha não especificado na URL.');
+                showError('Dados da ficha não encontrados na URL.');
             }
         });
 
-        // Função para carregar ficha da API
-        async function loadFicha(id) {
+        // Função para carregar ficha dos dados comprimidos
+        function loadFicha(compressed) {
             try {
-                const response = await fetch(`/api/get?id=${id}`);
-                const result = await response.json();
+                fichaData = decompressData(compressed);
                 
-                if (result.success && result.data) {
-                    fichaData = result.data;
+                if (fichaData) {
                     renderFicha(fichaData);
                     loadingMessage.classList.add('hidden');
                     fichaContent.classList.remove('hidden');
                 } else {
-                    showError(result.message || 'Ficha não encontrada.');
+                    showError('Não foi possível decodificar os dados da ficha.');
                 }
             } catch (error) {
                 console.error('Erro ao carregar ficha:', error);
-                showError('Erro de conexão. Verifique sua internet e tente novamente.');
+                showError('Erro ao processar os dados da ficha.');
             }
         }
 
@@ -145,12 +166,33 @@
                         </div>
                     </div>
 
+                    <div class="secao-movimento-defesa">
+                        <div class="campo-deslocamento-defesa">
+                            <label>Deslocamento</label>
+                            <div class="deslocamento-container">
+                                <div class="deslocamento-campo">
+                                    <div class="deslocamento-valor">${data.deslocamentoM || '0'}</div>
+                                    <label>m</label>
+                                </div>
+                                <div class="deslocamento-campo">
+                                    <div class="deslocamento-valor">${data.deslocamentoQ || '0'}</div>
+                                    <label>q</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="campo-deslocamento-defesa">
+                            <label>Defesa</label>
+                            <div class="defesa-valor">${data.defesa || '0'}</div>
+                        </div>
+                    </div>
+
                     <div class="barra-container">
                         <div class="barra-label">
                             <span class="vida-barra">Vida</span>
                         </div>
                         <div class="barra">
-                            <div class="preenchimento" style="width: ${(data.vidaAtual / data.vidaMax) * 100 || 0}%"></div>
+                            <div class="preenchimento" style="width: ${Math.max(0, Math.min(100, ((data.vidaAtual || 0) / (data.vidaMax || 1)) * 100))}%"></div>
                             <div class="barra-texto">${data.vidaAtual || 0} / ${data.vidaMax || 0}</div>
                         </div>
                     </div>
@@ -160,10 +202,22 @@
                             <span class="sanidade-barra">Sanidade</span>
                         </div>
                         <div class="barra">
-                            <div class="preenchimento" style="width: ${(data.sanidadeAtual / data.sanidadeMax) * 100 || 0}%"></div>
+                            <div class="preenchimento" style="width: ${Math.max(0, Math.min(100, ((data.sanidadeAtual || 0) / (data.sanidadeMax || 1)) * 100))}%"></div>
                             <div class="barra-texto">${data.sanidadeAtual || 0} / ${data.sanidadeMax || 0}</div>
                         </div>
                     </div>
+
+                    ${data.lesaoGrave || data.emChoque || data.inconsciente || data.insanidade ? `
+                    <div class="secao-status-viewer">
+                        <h3>Status</h3>
+                        <div class="status-list">
+                            ${data.lesaoGrave ? '<span class="status-badge status-lesao">Lesão Grave</span>' : ''}
+                            ${data.emChoque ? '<span class="status-badge status-choque">Em Choque</span>' : ''}
+                            ${data.inconsciente ? '<span class="status-badge status-inconsciente">Inconsciente</span>' : ''}
+                            ${data.insanidade ? '<span class="status-badge status-insano">Insano</span>' : ''}
+                        </div>
+                    </div>
+                    ` : ''}
 
                     ${data.anotacoes ? `
                     <div class="secao-anotacoes">
@@ -184,6 +238,22 @@
                         </div>
                     </div>
                     ` : ''}
+
+                    ${data.ataques && data.ataques.length > 0 ? `
+                    <div class="secao-ataques">
+                        <h3>Ataques</h3>
+                        <div class="ataques-container">
+                            ${data.ataques.map(ataque => `
+                                <div class="ataque-item">
+                                    <h4>${ataque.nome}</h4>
+                                    <p>Dano: <span>${ataque.dano || '-'}</span></p>
+                                    <p>Tipo: <span>${ataque.tipo || '-'}</span></p>
+                                    <p>Alcance: <span>${ataque.alcance || '-'}</span></p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
                 </div>
             `;
         }
@@ -197,14 +267,24 @@
 
         // Event Listeners
         btnRetry.addEventListener('click', function() {
-            errorMessage.classList.add('hidden');
-            loadingMessage.classList.remove('hidden');
-            loadFicha(fichaId);
+            location.reload();
+        });
+
+        btnHome.addEventListener('click', function() {
+            window.location.href = 'index.html';
         });
 
         btnImportLocal.addEventListener('click', function() {
             if (fichaData) {
-                localStorage.setItem('fichaRPG', JSON.stringify(fichaData));
+                // Remove fotos muito grandes para evitar problemas de localStorage
+                const dataToImport = {...fichaData};
+                if (dataToImport.fotosSalvas) {
+                    // Mantém apenas a foto normal para economizar espaço
+                    const normalFoto = dataToImport.fotosSalvas.normal;
+                    dataToImport.fotosSalvas = {normal: normalFoto};
+                }
+                
+                localStorage.setItem('fichaRPG', JSON.stringify(dataToImport));
                 alert('Ficha importada com sucesso! Você será redirecionado para a ficha principal.');
                 window.location.href = 'index.html';
             }
@@ -226,11 +306,14 @@
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 2px solid var(--dominant-color);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .viewer-controls {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .btn-primary {
@@ -241,6 +324,12 @@
             border-radius: 6px;
             cursor: pointer;
             font-family: 'Share Tech Mono', monospace;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #fff;
+            color: #0c0c0e;
         }
 
         .btn-secondary {
@@ -251,11 +340,23 @@
             border-radius: 6px;
             cursor: pointer;
             font-family: 'Share Tech Mono', monospace;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #666;
         }
 
         .loading-container, .error-container {
             text-align: center;
             padding: 40px;
+        }
+
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
         }
 
         .atributo-valor-viewer {
@@ -270,6 +371,14 @@
             padding: 8px;
         }
 
+        .deslocamento-valor, .defesa-valor {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            color: var(--dominant-color);
+            padding: 5px;
+        }
+
         .anotacoes-viewer {
             background: #1a1a1e;
             color: #ececec;
@@ -280,8 +389,61 @@
             white-space: pre-wrap;
         }
 
+        .secao-status-viewer {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(42, 42, 46, 0.9);
+            border-radius: 8px;
+            border: 1px solid #333333;
+        }
+
+        .status-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .status-lesao {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .status-choque {
+            background-color: var(--dominant-color);
+            color: white;
+        }
+
+        .status-inconsciente {
+            background-color: #666;
+            color: white;
+        }
+
+        .status-insano {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
         .hidden {
             display: none;
+        }
+
+        @media (max-width: 768px) {
+            .viewer-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .viewer-controls {
+                justify-content: center;
+            }
         }
     </style>
 </body>
