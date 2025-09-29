@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Ficha Compartilhada</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="animated-background"></div>
+
+    <div class="ficha-container">
+        <div class="viewer-header">
+            <h1>Ficha Compartilhada</h1>
+            <div class="viewer-controls">
+                <button id="btn-import-local" class="btn-secondary">Importar para minha ficha</button>
+                <button id="btn-new-ficha" class="btn-primary">Criar nova ficha</button>
+            </div>
+        </div>
+
+        <div id="loading-message" class="loading-container">
+            <p>Carregando ficha...</p>
+        </div>
+
+        <div id="ficha-content" class="hidden">
+            <!-- Conteúdo da ficha será carregado aqui dinamicamente -->
+        </div>
+
+        <div id="error-message" class="error-container hidden">
+            <h2>Erro ao carregar ficha</h2>
+            <p id="error-text">A ficha solicitada não foi encontrada ou expirou.</p>
+            <button id="btn-retry" class="btn-primary">Tentar novamente</button>
+        </div>
+    </div>
+
+    <script>
+        // Obter ID da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const fichaId = urlParams.get('id');
+
+        // Elementos da interface
+        const loadingMessage = document.getElementById('loading-message');
+        const fichaContent = document.getElementById('ficha-content');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const btnRetry = document.getElementById('btn-retry');
+        const btnImportLocal = document.getElementById('btn-import-local');
+        const btnNewFicha = document.getElementById('btn-new-ficha');
+
+        let fichaData = null;
+
+        // Carregar ficha ao abrir a página
+        document.addEventListener('DOMContentLoaded', function() {
+            if (fichaId) {
+                loadFicha(fichaId);
+            } else {
+                showError('ID da ficha não especificado na URL.');
+            }
+        });
+
+        // Função para carregar ficha da API
+        async function loadFicha(id) {
+            try {
+                const response = await fetch(`/api/get?id=${id}`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    fichaData = result.data;
+                    renderFicha(fichaData);
+                    loadingMessage.classList.add('hidden');
+                    fichaContent.classList.remove('hidden');
+                } else {
+                    showError(result.message || 'Ficha não encontrada.');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar ficha:', error);
+                showError('Erro de conexão. Verifique sua internet e tente novamente.');
+            }
+        }
+
+        // Função para renderizar a ficha
+        function renderFicha(data) {
+            // Renderizar informações básicas
+            fichaContent.innerHTML = `
+                <div class="tab-content active">
+                    <div class="info-personagem">
+                        <div class="foto-container">
+                            <img id="foto-personagem" class="foto-personagem" src="${data.fotosSalvas?.normal || 'https://via.placeholder.com/150'}" alt="Foto do Personagem">
+                        </div>
+                        <div class="dados-basicos">
+                            <h2>${data.nomePersonagem || 'Nome não informado'}</h2>
+                            <p><strong>Jogador:</strong> ${data.nomeJogador || 'Não informado'}</p>
+                            <p><strong>Idade:</strong> ${data.idade || 'Não informada'}</p>
+                            <p><strong>Gênero:</strong> ${data.sexo || 'Não informado'}</p>
+                            <p><strong>Ocupação:</strong> ${data.ocupacao || 'Não informada'}</p>
+                        </div>
+                    </div>
+
+                    <div class="secao-atributos">
+                        <h3>Atributos</h3>
+                        <div class="atributos">
+                            <div class="atributo-item">
+                                <span class="atributo-nome">FOR</span>
+                                <span class="atributo-nome"><small>Força</small></span>
+                                <div class="atributo-valor-viewer">${data.forca || 0}</div>
+                            </div>
+                            <div class="atributo-item">
+                                <span class="atributo-nome">DES</span>
+                                <span class="atributo-nome"><small>Destreza</small></span>
+                                <div class="atributo-valor-viewer">${data.destreza || 0}</div>
+                            </div>
+                            <div class="atributo-item">
+                                <span class="atributo-nome">INT</span>
+                                <span class="atributo-nome"><small>Inteligência</small></span>
+                                <div class="atributo-valor-viewer">${data.inteligencia || 0}</div>
+                            </div>
+                            <div class="atributo-item">
+                                <span class="atributo-nome">CON</span>
+                                <span class="atributo-nome"><small>Constituição</small></span>
+                                <div class="atributo-valor-viewer">${data.constituicao || 0}</div>
+                            </div>
+                            <div class="atributo-item">
+                                <span class="atributo-nome">POD</span>
+                                <span class="atributo-nome"><small>Poder</small></span>
+                                <div class="atributo-valor-viewer">${data.poder || 0}</div>
+                            </div>
+                            <div class="atributo-item">
+                                <span class="atributo-nome">PRE</span>
+                                <span class="atributo-nome"><small>Presença</small></span>
+                                <div class="atributo-valor-viewer">${data.presenca || 0}</div>
+                            </div>
+                            <div class="atributo-item">
+                                <span class="atributo-nome">SOR</span>
+                                <span class="atributo-nome"><small>Sorte</small></span>
+                                <div class="atributo-valor-viewer">${data.sorte || 0}</div>
+                            </div>
+                            <div class="atributo-item">
+                                <span class="atributo-nome">EDU</span>
+                                <span class="atributo-nome"><small>Educação</small></span>
+                                <div class="atributo-valor-viewer">${data.educacao || 0}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="barra-container">
+                        <div class="barra-label">
+                            <span class="vida-barra">Vida</span>
+                        </div>
+                        <div class="barra">
+                            <div class="preenchimento" style="width: ${(data.vidaAtual / data.vidaMax) * 100 || 0}%"></div>
+                            <div class="barra-texto">${data.vidaAtual || 0} / ${data.vidaMax || 0}</div>
+                        </div>
+                    </div>
+
+                    <div class="barra-container">
+                        <div class="barra-label">
+                            <span class="sanidade-barra">Sanidade</span>
+                        </div>
+                        <div class="barra">
+                            <div class="preenchimento" style="width: ${(data.sanidadeAtual / data.sanidadeMax) * 100 || 0}%"></div>
+                            <div class="barra-texto">${data.sanidadeAtual || 0} / ${data.sanidadeMax || 0}</div>
+                        </div>
+                    </div>
+
+                    ${data.anotacoes ? `
+                    <div class="secao-anotacoes">
+                        <h3>Anotações</h3>
+                        <div class="anotacoes-viewer">${data.anotacoes}</div>
+                    </div>
+                    ` : ''}
+
+                    ${data.inventario && data.inventario.length > 0 ? `
+                    <div class="secao-inventario">
+                        <h3>Inventário</h3>
+                        <div class="lista-itens">
+                            ${data.inventario.map(item => `
+                                <div class="item-inventario">
+                                    <span>${item}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Função para mostrar erro
+        function showError(message) {
+            loadingMessage.classList.add('hidden');
+            errorText.textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+
+        // Event Listeners
+        btnRetry.addEventListener('click', function() {
+            errorMessage.classList.add('hidden');
+            loadingMessage.classList.remove('hidden');
+            loadFicha(fichaId);
+        });
+
+        btnImportLocal.addEventListener('click', function() {
+            if (fichaData) {
+                localStorage.setItem('fichaRPG', JSON.stringify(fichaData));
+                alert('Ficha importada com sucesso! Você será redirecionado para a ficha principal.');
+                window.location.href = 'index.html';
+            }
+        });
+
+        btnNewFicha.addEventListener('click', function() {
+            if (confirm('Isso irá limpar qualquer ficha existente. Continuar?')) {
+                localStorage.removeItem('fichaRPG');
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+
+    <style>
+        .viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--dominant-color);
+        }
+
+        .viewer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--dominant-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .btn-secondary {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .loading-container, .error-container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .atributo-valor-viewer {
+            font-size: 28px;
+            font-weight: bold;
+            width: 70px;
+            text-align: center;
+            background: #1a1a1e;
+            color: #ececec;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            padding: 8px;
+        }
+
+        .anotacoes-viewer {
+            background: #1a1a1e;
+            color: #ececec;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            padding: 15px;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</body>
+</html>
