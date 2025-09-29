@@ -1135,9 +1135,9 @@ function configurarEventListeners() {
     // Sistema de compartilhamento
     document.getElementById('btn-gerar-link').addEventListener('click', gerarLinkCompartilhamento);
     document.getElementById('btn-copiar-link').addEventListener('click', copiarLink);
-    /*document.getElementById('btn-portrait').addEventListener('click', () => {
+    document.getElementById('btn-portrait').addEventListener('click', () => {
     window.open('portrait.html', '_blank');
-});*/
+});
 }
 
 // ===== SISTEMA DE COMPARTILHAMENTO (SEM BACKEND) ===== //
