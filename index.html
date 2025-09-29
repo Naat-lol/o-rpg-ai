@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+8<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -332,6 +332,22 @@
       <button id="btn-reset-2-cancel">Cancelar</button>
     </div>
   </div>
+</div>
+
+<!-- Seção de Compartilhamento -->
+<div class="secao-compartilhamento">
+    <h3>Compartilhar Ficha</h3>
+    <div class="compartilhamento-container">
+        <button id="btn-gerar-link" class="btn-compartilhar">Gerar Link de Compartilhamento</button>
+        <div id="link-container" class="hidden">
+            <p>Link para compartilhar:</p>
+            <div class="link-display">
+                <input type="text" id="link-compartilhamento" readonly>
+                <button id="btn-copiar-link" class="btn-copiar">Copiar</button>
+            </div>
+            <p class="link-info">Este link expira em 30 dias</p>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
