@@ -1127,7 +1127,89 @@ document.getElementById('sanidade-Max').addEventListener('input', (event) => {
     document.getElementById('deslocamento-q').addEventListener('input', salvarDados);
     document.getElementById('defesa-input').addEventListener('input', salvarDados);
     document.getElementById('rolar-sanidade').addEventListener('click', rolarSanidade);
+        // Sistema de compartilhamento
+    document.getElementById('btn-gerar-link').addEventListener('click', gerarLinkCompartilhamento);
+    document.getElementById('btn-copiar-link').addEventListener('click', copiarLink);
     /*document.getElementById('btn-portrait').addEventListener('click', () => {
     window.open('portrait.html', '_blank');
 });*/
+}
+
+// ===== SISTEMA DE COMPARTILHAMENTO ===== //
+
+function gerarLinkCompartilhamento() {
+    const btnGerar = document.getElementById('btn-gerar-link');
+    const linkContainer = document.getElementById('link-container');
+    
+    btnGerar.textContent = 'Gerando...';
+    btnGerar.disabled = true;
+
+    // Primeiro salva os dados atuais
+    salvarDados();
+    
+    // Recupera os dados salvos
+    const dadosSalvos = JSON.parse(localStorage.getItem('fichaRPG'));
+    
+    if (!dadosSalvos) {
+        alert('Erro: Nenhum dado encontrado para compartilhar.');
+        btnGerar.textContent = 'Gerar Link de Compartilhamento';
+        btnGerar.disabled = false;
+        return;
+    }
+
+    // Envia para a API
+    fetch('/api/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dadosSalvos)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            const linkCompleto = `${window.location.origin}/viewer.html?id=${result.id}`;
+            document.getElementById('link-compartilhamento').value = linkCompleto;
+            linkContainer.classList.remove('hidden');
+            
+            // Rola a página para mostrar o link
+            linkContainer.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            alert('Erro ao gerar link: ' + (result.message || 'Erro desconhecido'));
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro de conexão. Tente novamente.');
+    })
+    .finally(() => {
+        btnGerar.textContent = 'Gerar Link de Compartilhamento';
+        btnGerar.disabled = false;
+    });
+}
+
+function copiarLink() {
+    const linkInput = document.getElementById('link-compartilhamento');
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999); // Para mobile
+    
+    try {
+        navigator.clipboard.writeText(linkInput.value).then(() => {
+            const btnCopiar = document.getElementById('btn-copiar-link');
+            const originalText = btnCopiar.textContent;
+            btnCopiar.textContent = 'Copiado!';
+            setTimeout(() => {
+                btnCopiar.textContent = originalText;
+            }, 2000);
+        });
+    } catch (err) {
+        // Fallback para navegadores antigos
+        document.execCommand('copy');
+        const btnCopiar = document.getElementById('btn-copiar-link');
+        const originalText = btnCopiar.textContent;
+        btnCopiar.textContent = 'Copiado!';
+        setTimeout(() => {
+            btnCopiar.textContent = originalText;
+        }, 2000);
+    }
 }
