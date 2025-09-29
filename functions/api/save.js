@@ -1,22 +1,39 @@
-// /functions/api/save.js
-export async function onRequestPost({ request, env }) {
-  // pega o JSON enviado pelo frontend
-  const body = await request.json().catch(() => null);
-  if (!body) return new Response(JSON.stringify({ error: 'invalid json' }), { status: 400 });
-
-  // gera ID curto aleatório
-  const id = cryptoRandomId();
-
-  // salva no KV
-  await env.LS_STORE.put(id, JSON.stringify(body));
-
-  // retorna o ID pro frontend
-  return new Response(JSON.stringify({ id }), { headers: { 'Content-Type': 'application/json' } });
+export async function onRequestPost(context) {
+    const { request, env } = context;
+    
+    try {
+        const dados = await request.json();
+        
+        // Gera ID único curto
+        const id = generateId();
+        
+        // Salva no KV Store
+        await env.LS_STORE.put(id, JSON.stringify({
+            dados: dados,
+            created: new Date().toISOString()
+        }), {
+            expirationTtl: 60 * 60 * 24 * 7 // Expira em 7 dias
+        });
+        
+        return new Response(JSON.stringify({
+            success: true,
+            id: id,
+            message: 'Dados salvos com sucesso'
+        }), {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+    } catch (error) {
+        return new Response(JSON.stringify({
+            success: false,
+            error: error.message
+        }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
 }
 
-// função para gerar ID curto aleatório
-function cryptoRandomId(len = 8) {
-  const a = new Uint8Array(len);
-  crypto.getRandomValues(a);
-  return Array.from(a).map(b => ('0' + (b % 36).toString(36)).slice(-1)).join('');
+function generateId() {
+    return Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 8);
 }
