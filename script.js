@@ -1128,6 +1128,11 @@ document.getElementById('sanidade-Max').addEventListener('input', (event) => {
     document.getElementById('defesa-input').addEventListener('input', salvarDados);
     document.getElementById('rolar-sanidade').addEventListener('click', rolarSanidade);
         // Sistema de compartilhamento
+    // Adicione ao final da função configurarEventListeners():
+function configurarEventListeners() {
+    // ... código existente ...
+    
+    // Sistema de compartilhamento
     document.getElementById('btn-gerar-link').addEventListener('click', gerarLinkCompartilhamento);
     document.getElementById('btn-copiar-link').addEventListener('click', copiarLink);
     /*document.getElementById('btn-portrait').addEventListener('click', () => {
@@ -1135,11 +1140,42 @@ document.getElementById('sanidade-Max').addEventListener('input', (event) => {
 });*/
 }
 
-// ===== SISTEMA DE COMPARTILHAMENTO ===== //
+// ===== SISTEMA DE COMPARTILHAMENTO (SEM BACKEND) ===== //
+
+// Funções de compressão/decompressão
+function compressData(data) {
+    try {
+        // Remove fotos para reduzir tamanho (opcional)
+        const dataToCompress = {...data};
+        if (dataToCompress.fotosSalvas) {
+            // Mantém apenas a foto normal para economizar espaço
+            const normalFoto = dataToCompress.fotosSalvas.normal;
+            dataToCompress.fotosSalvas = {normal: normalFoto};
+        }
+        
+        const jsonString = JSON.stringify(dataToCompress);
+        const compressed = btoa(unescape(encodeURIComponent(jsonString)));
+        return compressed;
+    } catch (error) {
+        console.error('Erro ao comprimir dados:', error);
+        return null;
+    }
+}
+
+function decompressData(compressed) {
+    try {
+        const jsonString = decodeURIComponent(escape(atob(compressed)));
+        return JSON.parse(jsonString);
+    } catch (error) {
+        console.error('Erro ao descomprimir dados:', error);
+        return null;
+    }
+}
 
 function gerarLinkCompartilhamento() {
     const btnGerar = document.getElementById('btn-gerar-link');
     const linkContainer = document.getElementById('link-container');
+    const dataSizeElement = document.getElementById('data-size');
     
     btnGerar.textContent = 'Gerando...';
     btnGerar.disabled = true;
@@ -1157,35 +1193,40 @@ function gerarLinkCompartilhamento() {
         return;
     }
 
-    // Envia para a API
-    fetch('/api/save', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosSalvos)
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            const linkCompleto = `${window.location.origin}/viewer.html?id=${result.id}`;
-            document.getElementById('link-compartilhamento').value = linkCompleto;
-            linkContainer.classList.remove('hidden');
-            
-            // Rola a página para mostrar o link
-            linkContainer.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            alert('Erro ao gerar link: ' + (result.message || 'Erro desconhecido'));
+    try {
+        // Comprime os dados
+        const compressedData = compressData(dadosSalvos);
+        
+        if (!compressedData) {
+            throw new Error('Falha ao comprimir dados');
         }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        alert('Erro de conexão. Tente novamente.');
-    })
-    .finally(() => {
+
+        // Calcula tamanho dos dados
+        const dataSize = new Blob([compressedData]).size;
+        dataSizeElement.textContent = `Tamanho dos dados: ${(dataSize / 1024).toFixed(2)} KB`;
+        
+        // Gera a URL
+        const baseUrl = window.location.origin + window.location.pathname.replace('index.html', 'viewer.html');
+        const linkCompleto = `${baseUrl}?data=${encodeURIComponent(compressedData)}`;
+        
+        // Verifica se a URL é muito longa
+        if (linkCompleto.length > 2000) {
+            dataSizeElement.innerHTML += '<br><span style="color: var(--danger-color)">⚠️ Link muito longo! Pode não funcionar em alguns navegadores</span>';
+        }
+        
+        document.getElementById('link-compartilhamento').value = linkCompleto;
+        linkContainer.classList.remove('hidden');
+        
+        // Rola a página para mostrar o link
+        linkContainer.scrollIntoView({ behavior: 'smooth' });
+        
+    } catch (error) {
+        console.error('Erro ao gerar link:', error);
+        alert('Erro ao gerar link: ' + error.message);
+    } finally {
         btnGerar.textContent = 'Gerar Link de Compartilhamento';
         btnGerar.disabled = false;
-    });
+    }
 }
 
 function copiarLink() {
