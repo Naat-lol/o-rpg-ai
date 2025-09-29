@@ -1,36 +1,91 @@
-export async function onRequestGet(context) {
-    const { request, env } = context;
-    const url = new URL(request.url);
-    const id = url.searchParams.get('id');
-    
-    if (!id) {
-        return new Response(JSON.stringify({
-            success: false,
-            error: 'ID não fornecido'
-        }), {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' }
+export async function onRequest(context) {
+    // Configurar CORS
+    const corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+    };
+
+    // Responder a requisições OPTIONS para CORS
+    if (context.request.method === 'OPTIONS') {
+        return new Response(null, {
+            headers: corsHeaders,
         });
     }
-    
+
+    if (context.request.method !== 'GET') {
+        return new Response(JSON.stringify({
+            success: false,
+            message: 'Método não permitido'
+        }), {
+            status: 405,
+            headers: {
+                'Content-Type': 'application/json',
+                ...corsHeaders
+            }
+        });
+    }
+
     try {
-        const dados = await env.LS_STORE.get(id);
+        const { env, request } = context;
+        const url = new URL(request.url);
+        const id = url.searchParams.get('id');
         
-        if (!dados) {
+        if (!id) {
             return new Response(JSON.stringify({
                 success: false,
-                error: 'Dados não encontrados'
+                message: 'ID não especificado'
             }), {
-                status: 404,
-                headers: { 'Content-Type': 'application/json' }
+                status: 400,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...corsHeaders
+                }
             });
         }
         
-        const parsed = JSON.parse(dados);
+        // Buscar dados do KV
+        const data = await env.LS_STORE.get(id);
+        
+        if (!data) {
+            return new Response(JSON.stringify({
+                success: false,
+                message: 'Ficha não encontrada ou expirada'
+            }), {
+                status: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...corsHeaders
+                }
+            });
+        }
+        
+        const parsedData = JSON.parse(data);
+        
+        // Remover campo interno de timestamp antes de retornar
+        delete parsedData._timestamp;
         
         return new Response(JSON.stringify({
             success: true,
-            dados: parsed.dados,
-            created: parsed.created
+            data: parsedData
         }), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                ...corsHeaders
+            }
+        });
+        
+    } catch (error) {
+        console.error('Erro ao buscar ficha:', error);
+        return new Response(JSON.stringify({
+            success: false,
+            message: 'Erro interno do servidor'
+        }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+                ...corsHeaders
+            }
+        });
+    }
+}
