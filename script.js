@@ -5,6 +5,32 @@ function login() {
         .catch(err => console.error(err));
 }
 
+let uid = null;
+
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        uid = user.uid;
+        console.log("Logado como:", uid);
+    }
+});
+
+function criarFicha(id, dados) {
+    firebase.database().ref("fichas/" + id).set({
+        dono: uid,
+        ...dados
+    });
+}
+
+firebase.database().ref("fichas/" + id).update({
+    vida: novaVida,
+    sanidade: novaSanidade
+});
+
+firebase.database().ref("fichas/" + id).on("value", snap => {
+    const dados = snap.val();
+    // atualiza portrait
+});
+
 // ===== VARIÁVEIS GLOBAIS E CÓDIGO EXISTENTE ===== //
 let vidaAtual = 0;
 let vidaMaxima = 0;
