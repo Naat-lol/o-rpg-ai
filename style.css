@@ -2411,3 +2411,117 @@ body {
         justify-content: space-between;
     }
 }
+
+/* ================================== */
+/* ESTILOS DO SISTEMA DE LOGIN */
+/* ================================== */
+
+.login-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(26, 26, 30, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--dominant-color);
+    border-radius: 10px;
+    padding: 12px 18px;
+    min-width: 220px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.login-status, .user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.login-status span {
+    color: #ececec;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn-login {
+    background: linear-gradient(145deg, var(--dominant-color), #2a8aff);
+    color: #0c0c0e;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+.btn-login:hover {
+    background: linear-gradient(145deg, #fff, var(--dominant-color));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.btn-login:active {
+    transform: translateY(-1px);
+}
+
+.user-info {
+    text-align: center;
+}
+
+.user-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--dominant-color);
+    box-shadow: 0 0 10px var(--dominant-color);
+}
+
+.user-name {
+    color: var(--dominant-color);
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--dominant-color);
+    margin: 5px 0;
+}
+
+.btn-logout {
+    background: linear-gradient(145deg, var(--danger-color), #ff3333);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+.btn-logout:hover {
+    background: linear-gradient(145deg, #ff3333, #ff0000);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Para telas pequenas */
+@media (max-width: 768px) {
+    .login-container {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        min-width: auto;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
