@@ -1,3 +1,7 @@
+// ===== CONFIGURAÇÃO DO FIREBASE ===== //
+let usuarioUID = null;
+let foiEuQueSalvei = false;
+
 // ===== VARIÁVEIS GLOBAIS E CÓDIGO EXISTENTE ===== //
 let vidaAtual = 0;
 let vidaMaxima = 0;
@@ -1426,7 +1430,21 @@ function salvarDados() {
         outrasImportantesTexto: document.getElementById('outras-importantes-texto')?.value || '',
         habilidadesTexto: document.getElementById('habilidades-texto')?.value || '',
     };
-
+    
+    // Marcar que fomos nós que salvamos
+    foiEuQueSalvei = true;
+    
+    // Salvar no Firebase se disponível
+    if (typeof salvarFichaNoFirebase === 'function') {
+        salvarFichaNoFirebase(dados);
+    } else {
+        // Fallback para localStorage
+        localStorage.setItem('fichaRPG', JSON.stringify(dados));
+    }
+    
+    console.log("💾 Dados salvos" + (usuarioUID ? " no Firebase" : " localmente"));
+                                                        }
+    
     // Salvar valores das perícias
     document.querySelectorAll('.pericia-input').forEach(input => {
         dados.pericias[input.dataset.nome] = input.value;
