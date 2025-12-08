@@ -437,6 +437,25 @@
     <span></span>
 </button>
 
+<!-- Container de Login (adicionar após o config-toggle) -->
+<div id="login-container" class="login-container">
+    <div id="login-status" class="login-status">
+        <span>🔒 Não logado</span>
+        <button id="btn-login" class="btn-login">Entrar com Google</button>
+    </div>
+    <div id="user-info" class="user-info hidden">
+        <img id="user-photo" class="user-photo" src="" alt="Foto">
+        <span id="user-name" class="user-name"></span>
+        <button id="btn-logout" class="btn-logout">Sair</button>
+    </div>
+</div>
+
+<!-- Scripts do Firebase (ADICIONE ESTE ARQUIVO) -->
+<script type="module" src="firebase-config.js"></script>
+
+<!-- Seu script principal (DEVE VIR DEPOIS do Firebase) -->
+<script src="script.js"></script>
+                            
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
