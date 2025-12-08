@@ -1,3 +1,10 @@
+const provider = new firebase.auth.GoogleAuthProvider();
+
+function login() {
+    firebase.auth().signInWithPopup(provider)
+        .catch(err => console.error(err));
+}
+
 // ===== VARIÁVEIS GLOBAIS E CÓDIGO EXISTENTE ===== //
 let vidaAtual = 0;
 let vidaMaxima = 0;
