@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Ficha RPG - Informações</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components/atributos.css">
+    <link rel="stylesheet" href="css/components/barras.css">
+    <link rel="stylesheet" href="css/components/botoes.css">
+    <link rel="stylesheet" href="css/components/inputs.css">
+    <link rel="stylesheet" href="css/components/modais.css">
+    <link rel="stylesheet" href="css/components/menu-abas.css">
+    <link rel="stylesheet" href="css/components/configuracoes.css">
+    <link rel="stylesheet" href="css/effects/condicoes.css">
+    <link rel="stylesheet" href="css/effects/mensagens.css">
+    <link rel="stylesheet" href="css/abas/pericias.css">
+    <link rel="stylesheet" href="css/abas/dados.css">
+    <link rel="stylesheet" href="css/abas/inventario.css">
+    <link rel="stylesheet" href="css/abas/trilhas-perks.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="ficha-container">
+
+<div id="aba-informacoes" class="conteudo-aba ativa">
+    <section class="info-personagem">
+        <div class="foto-container" id="foto-container">
+            <img class="foto-personagem" id="foto-personagem">
+            
+            <div class="foto-overlay" id="foto-overlay">
+                <button class="foto-btn foto-btn-substituir" id="foto-substituir">
+                    <span class="foto-btn-text">Substituir</span>
+                </button>
+                <button class="foto-btn foto-btn-remover" id="foto-remover">
+                    <span class="foto-btn-text">Remover</span>
+                </button>
+            </div>
+            
+            <input type="file" id="upload-foto" accept="image/*" style="display: none;">
+        </div>
+
+        <div class="dados-basicos">
+            <input type="text" placeholder="Nome do personagem">
+            <input type="text" placeholder="Nome do jogador">
+            <input type="number" placeholder="Idade">
+            <input type="text" placeholder="Gênero">
+            
+            <div class="campo-trilha-estatico">
+                <span class="campo-trilha-label">Trilha:</span>
+                <span class="campo-trilha-valor" id="trilha-principal"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="atributos">
+        <div class="atributo-item">
+            <span class="atributo-sigla texto-clicavel">FOR</span>
+            <span class="atributo-nome">Força</span>
+            <input type="number" value="1">
+        </div>
+        
+        <div class="atributo-item">
+            <span class="atributo-sigla texto-clicavel">DES</span>
+            <span class="atributo-nome">Destreza</span>
+            <input type="number" value="1">
+        </div>
+        
+        <div class="atributo-item">
+            <span class="atributo-sigla texto-clicavel">INT</span>
+            <span class="atributo-nome">Inteligência</span>
+            <input type="number" value="1">
+        </div>
+        
+        <div class="atributo-item">
+            <span class="atributo-sigla texto-clicavel">CON</span>
+            <span class="atributo-nome">Constituição</span>
+            <input type="number" value="1">
+        </div>
+        
+        <div class="atributo-item">
+            <span class="atributo-sigla texto-clicavel">POD</span>
+            <span class="atributo-nome">Poder</span>
+            <input type="number" value="1">
+        </div>
+        
+        <div class="atributo-item">
+            <span class="atributo-sigla texto-clicavel">PRE</span>
+            <span class="atributo-nome">Presença</span>
+            <input type="number" value="1">
+        </div>
+        
+        <div class="atributo-item">
+            <span class="atributo-sigla texto-clicavel">SOR</span>
+            <span class="atributo-nome">Sorte</span>
+            <input type="number" value="1">
+        </div>
+        
+        <div class="atributo-item">
+            <span class="atributo-sigla">TAM</span>
+            <span class="atributo-nome">Tamanho</span>
+            <input type="number" value="0">
+        </div>
+
+        <div class="atributo-item">
+            <span class="atributo-sigla">EXP</span>
+            <span class="atributo-nome">Exposição</span>
+            <div class="input-porcentagem">
+                <input type="number" min="0" max="100" value="0">
+                <span class="porcentagem">%</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="movimento-defesa">
+        <div class="campo-md">
+            <label>Movimento</label>
+            <input type="number" value="0">
+        </div>
+        <div class="campo-md">
+            <label>Defesa</label>
+            <input type="number" value="0">
+        </div>
+    </section>
+
+    <section class="barras">
+        <div class="barra-container vida">
+            <span class="barra-titulo">Vida</span>
+            <div class="barra">
+                <div class="barra-botoes-esquerda">
+                    <button>&lt;&lt;</button>
+                    <button>&lt;</button>
+                </div>
+                <div class="barra-preenchimento vermelho"></div>
+                <div class="barra-valores">
+                    <span class="barra-atual">0</span>
+                    <span class="barra-separador"> / </span>
+                    <input type="number" class="barra-maximo" value="0" min="0">
+                </div>
+                <div class="barra-botoes-direita">
+                    <button>&gt;</button>
+                    <button>&gt;&gt;</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="barra-container sanidade">
+            <span class="barra-titulo texto-clicavel">Sanidade</span>
+            <div class="barra">
+                <div class="barra-botoes-esquerda">
+                    <button>&lt;&lt;</button>
+                    <button>&lt;</button>
+                </div>
+                <div class="barra-preenchimento roxo"></div>
+                <div class="barra-valores">
+                    <span class="barra-atual">0</span>
+                    <span class="barra-separador"> / </span>
+                    <input type="number" class="barra-maximo" value="0" min="0">
+                </div>
+                <div class="barra-botoes-direita">
+                    <button>&gt;</button>
+                    <button>&gt;&gt;</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="barra-container desejo">
+            <span class="barra-titulo">Desejo</span>
+            <div class="barra">
+                <div class="barra-botoes-esquerda">
+                    <button>&lt;&lt;</button>
+                    <button>&lt;</button>
+                </div>
+                <div class="barra-preenchimento verde"></div>
+                <div class="barra-valores">
+                    <span class="barra-atual">0</span>
+                    <span class="barra-separador"> / </span>
+                    <input type="number" class="barra-maximo" value="0" min="0">
+                </div>
+                <div class="barra-botoes-direita">
+                    <button>&gt;</button>
+                    <button>&gt;&gt;</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="status">
+        <label><input type="checkbox"> Lesão Grave</label>
+        <label><input type="checkbox"> Em Choque</label>
+        <label><input type="checkbox"> Inconsciente</label>
+        <label><input type="checkbox"> Insanidade</label>
+    </section>
+</div>
+
+<!-- ABA PERÍCIAS -->
+<div id="aba-pericias" class="conteudo-aba">
+    <div class="pericias-container">
+        <h1 class="titulo-pericias">PERÍCIAS</h1>
+        <div class="pericias-pesquisa">
+            <input type="text" id="pericias-busca" placeholder="Buscar perícia...">
+        </div>
+        <div class="pericias-markers">
+            <span class="marker-pericia">Perícia</span>
+            <span class="marker-dados">Dados</span>
+            <span class="marker-capacidade">Cap.</span>
+            <span class="marker-treino">Treino</span>
+        </div>
+        <div class="pericias-lista" id="pericias-lista"></div>
+        <footer class="pericias-extra">Cap: Capacidade.</footer>
+    </div>
+</div>
+
+<!-- ABA DADOS -->
+<div id="aba-dados" class="conteudo-aba">
+    <div class="dados-container">
+        <h1 class="titulo-dados">ROLAGEM DE DADOS</h1>
+        <div class="dados-configuracao">
+            <div class="config-secao">
+                <h3>Tipo de Dados</h3>
+                <div class="dados-tipos" id="dados-tipos"></div>
+            </div>
+            
+            <div class="config-secao">
+                <h3>Quantidade/Modificador</h3>
+                <div class="config-campos">
+                    <div class="config-campo">
+                        <label for="dados-quantidade">Quantidade:</label>
+                        <input type="number" id="dados-quantidade" min="1" max="20" value="1">
+                    </div>
+                    <div class="config-campo">
+                        <label for="dados-modificador">Modificador:</label>
+                        <input type="number" id="dados-modificador" value="0">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="config-secao">
+                <h3>Tipo de Rolagem</h3>
+                <div class="rolagem-tipos">
+                    <label class="rolagem-tipo">
+                        <input type="radio" name="tipo-rolagem" value="normal" checked>
+                        <span>Normal</span>
+                    </label>
+                    <label class="rolagem-tipo">
+                        <input type="radio" name="tipo-rolagem" value="vantagem">
+                        <span>Vantagem</span>
+                    </label>
+                    <label class="rolagem-tipo">
+                        <input type="radio" name="tipo-rolagem" value="desvantagem">
+                        <span>Desvantagem</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="config-secao" id="vantagem-desvantagem-container" style="display: none;">
+                <h3>Nível de Vantagem/Desvantagem</h3>
+                <div class="vantagem-desvantagem">
+                    <button class="vd-btn" data-action="decrease">-</button>
+                    <input type="number" id="vd-nivel" min="1" max="5" value="1" readonly>
+                    <button class="vd-btn" data-action="increase">+</button>
+                    <span class="vd-label">nível(s)</span>
+                </div>
+            </div>
+            
+            <div class="config-secao config-secao-exibicao">
+                <h3>Mostrar Resultados</h3>
+                <select id="dados-exibicao" style="display: none;">
+                    <option value="somente-somado">Somente Somado</option>
+                    <option value="separado">Resultados Separados</option>
+                    <option value="separado-e-somado">Separado e Somado</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="dados-botao-container">
+            <button id="rolar-dados" class="botao-rolar">ROLAR DADOS</button>
+        </div>
+        
+        <div class="dados-historico">
+            <div class="historico-cabecalho">
+                <h3>Histórico de Rolagens</h3>
+                <button id="limpar-historico" class="botao-limpar">Limpar</button>
+            </div>
+            <div class="historico-lista" id="historico-lista"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ABA INVENTÁRIO -->
+<div id="aba-inventario" class="conteudo-aba">
+    <div class="inventario-container">
+        <h1 class="titulo-inventario">INVENTÁRIO</h1>
+        <div class="inventario-resumo">
+            <div class="resumo-item">
+                <span class="resumo-valor" id="total-itens">0</span>
+                <span class="resumo-label">Itens</span>
+            </div>
+            <div class="resumo-item">
+                <span class="resumo-valor" id="peso-total">0</span>
+                <span class="resumo-label">kg</span>
+            </div>
+            <div class="resumo-item">
+                <input type="number" class="resumo-valor" id="peso-maximo" value="0" max="999">
+                <span class="resumo-label">Capacidade (Kg)</span>
+            </div>
+            <div class="resumo-item">
+                <div class="barra-peso">
+                    <div class="barra-peso-preenchimento" id="barra-peso"></div>
+                </div>
+                <span class="resumo-label">Carga</span>
+            </div>
+        </div>
+        
+        <div class="inventario-controles">
+            <button id="adicionar-item" class="botao-inventario">
+                <span>+</span> Adicionar Item
+            </button>
+            <div class="controles-busca">
+                <input type="text" id="inventario-busca" placeholder="Buscar item...">
+            </div>
+        </div>
+        
+        <div class="inventario-filtros" id="inventario-filtros"></div>
+        <div class="inventario-lista" id="inventario-lista"></div>
+        
+        <div class="modal-inventario-overlay" id="modal-inventario">
+            <div class="modal-inventario">
+                <div class="modal-cabecalho">
+                    <h2 id="modal-titulo">Novo Item</h2>
+                    <button id="fechar-modal" class="botao-fechar-modal">×</button>
+                </div>
+                <div class="modal-conteudo">
+                    <div class="modal-campo">
+                        <label for="item-nome">Nome do Item:</label>
+                        <input type="text" id="item-nome" placeholder="Ex: Poção de Cura">
+                    </div>
+                    <div class="modal-campo">
+                        <label for="item-tipo">Tipo:</label>
+                        <select id="item-tipo"></select>
+                    </div>
+                    <div class="modal-campo-duplo">
+                        <div class="modal-campo">
+                            <label for="item-quantidade">Quantidade:</label>
+                            <div class="controle-quantidade">
+                                <button type="button" class="btn-quantidade" data-acao="diminuir">-</button>
+                                <input type="number" id="item-quantidade" min="0" value="1">
+                                <button type="button" class="btn-quantidade" data-acao="aumentar">+</button>
+                            </div>
+                        </div>
+                        <div class="modal-campo">
+                            <label for="item-peso">Peso (kg):</label>
+                            <input type="number" id="item-peso" min="0" step="0.1" value="0">
+                        </div>
+                    </div>
+                    <div class="modal-campo">
+                        <label for="item-descricao">Descrição:</label>
+                        <textarea id="item-descricao" placeholder="Detalhes, efeitos, observações..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-rodape">
+                    <button id="cancelar-item" class="botao-cancelar">Cancelar</button>
+                    <button id="salvar-item" class="botao-salvar-item">Salvar Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ABA TRILHAS E PERKS -->
+<div id="aba-trilhas-perks" class="conteudo-aba">
+    <div class="trilhas-perks-container">
+        <div class="trilha-ativa-container">
+            <div class="trilha-ativa-bloco" id="trilha-ativa-bloco"></div>
+        </div>
+
+        <div class="perks-container">
+            <div class="perks-cabecalho">
+                <h2 class="perks-titulo">PERKS</h2>
+                <button id="adicionar-perk" class="botao-adicionar-perk">
+                    <span>Adicionar Perk</span>
+                </button>
+            </div>
+            <div class="perks-lista" id="perks-lista">
+                <div class="perks-vazia" id="perks-vazia">
+                    <h3>Nenhuma perk selecionada</h3>
+                    <p>Clique em "Adicionar Perk" para escolher suas habilidades.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-trilhas-overlay" id="modal-trilhas">
+        <div class="modal-trilhas">
+            <div class="modal-trilhas-cabecalho">
+                <h2>Selecionar Trilha</h2>
+                <button id="fechar-modal-trilhas" class="botao-fechar-modal">×</button>
+            </div>
+            <div class="modal-trilhas-conteudo">
+                <div class="trilhas-pesquisa">
+                    <input type="text" id="trilhas-busca" placeholder="Buscar trilhas...">
+                </div>
+                <div class="trilhas-disponiveis-lista" id="trilhas-disponiveis-lista"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-perks-overlay" id="modal-perks">
+        <div class="modal-perks">
+            <div class="modal-perks-cabecalho">
+                <h2>Selecionar Perk</h2>
+                <button id="fechar-modal-perks" class="botao-fechar-modal">×</button>
+            </div>
+            <div class="modal-perks-conteudo">
+                <div class="perks-pesquisa">
+                    <input type="text" id="perks-busca" placeholder="Buscar perks...">
+                </div>
+                <div class="perks-disponiveis-lista" id="perks-disponiveis-lista"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- Importar o JavaScript -->
+<script type="module" src="js/ficha.js"></script>
+<script type="module" src="js/modules/modal-confirmacao.js"></script>
+<script src="js/modules/salvamento.js"></script>
+
+</body>
+</html>
