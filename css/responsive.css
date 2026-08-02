@@ -1,0 +1,570 @@
+@media (max-width: 768px) {
+    .modal-dados {
+        padding: 40px 30px;
+        margin: 20px;
+        min-width: 280px;
+        max-width: 90%;
+    }
+    
+    .modal-titulo {
+        font-size: 36px;
+        letter-spacing: 2px;
+    }
+    
+    .modal-subtitulo {
+        font-size: 18px;
+        padding: 8px 16px;
+    }
+    
+    .modal-valor {
+        font-size: 70px;
+    }
+    
+    .modal-valor-container {
+        padding: 15px;
+        margin: 20px 0 40px;
+    }
+    
+    .pericias-markers {
+        padding: 6px 0;
+        font-size: 12px;
+        justify-content: space-between;
+    }
+    
+    .pericias-markers .marker-pericia {
+        padding-left: 0;
+        flex: 1;
+        text-align: left;
+        margin-left: 10px;
+    }
+    
+    .pericias-markers .marker-dados {
+        margin-right: 0;
+        width: auto;
+        flex: 0 0 40px;
+        text-align: center;
+    }
+    
+    .pericias-markers .marker-capacidade {
+        margin-right: 0;
+        width: auto;
+        flex: 0 0 50px;
+        text-align: center;
+    }
+    
+    .pericias-markers .marker-treino {
+        margin-right: 10px;
+        width: auto;
+        flex: 0 0 70px;
+        text-align: center;
+    }
+    
+    .pericia-item {
+        padding: 5px 0;
+        min-height: 28px;
+        justify-content: space-between;
+    }
+    
+    .pericia-nome {
+        font-size: 14px;
+        padding-left: 10px;
+        margin-bottom: 0;
+        flex: 1;
+        text-align: left;
+    }
+    
+    .pericia-atributo {
+        font-size: 12px;
+        margin-right: 0;
+        width: auto;
+        margin-bottom: 0;
+        flex: 0 0 40px;
+        text-align: center;
+    }
+    
+    .pericia-capacidade {
+        font-size: 14px;
+        margin-right: 0;
+        width: auto;
+        margin-bottom: 0;
+        flex: 0 0 50px;
+        text-align: center;
+    }
+    
+    .pericia-valor {
+        width: 60px;
+        height: 26px;
+        font-size: 14px;
+        padding: 0 6px;
+        margin-right: 10px;
+        margin-bottom: 0;
+        flex: 0 0 70px;
+    }
+    
+    .pericia-valor-container {
+        flex: 0 0 70px;
+        justify-content: center;
+    }
+    
+    .dados-configuracao {
+        padding: 20px;
+    }
+    
+    .config-campos {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .config-campo {
+        min-width: 100%;
+    }
+    
+    .rolagem-tipos {
+        flex-direction: column;
+    }
+    
+    .rolagem-tipo {
+        min-width: 100%;
+    }
+    
+    .botao-rolar {
+        padding: 15px 30px;
+        font-size: 18px;
+    }
+    
+    .historico-item {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto auto;
+        gap: 10px;
+    }
+    
+    .historico-tipo {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+    }
+    
+    .historico-info {
+        grid-column: 1;
+        grid-row: 2;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .historico-resultado {
+        grid-column: 1;
+        grid-row: 3;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding-top: 10px;
+    }
+    
+    .historico-hora {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+    }
+    
+    .inventario-resumo {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 15px;
+    }
+    
+    .inventario-controles {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .controles-busca {
+        max-width: 100%;
+    }
+    
+    .inventario-filtros {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 10px;
+        gap: 8px;
+    }
+    
+    .filtro-tipo {
+        flex-shrink: 0;
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .item-inventario {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .item-nome {
+        font-size: 15px;
+        padding-bottom: 5px;
+    }
+    
+    .item-tipo {
+        justify-self: start;
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+    
+    .item-quantidade {
+        justify-self: start;
+    }
+    
+    .item-peso {
+        justify-self: start;
+        text-align: left;
+    }
+    
+    .item-acoes {
+        justify-self: end;
+        margin-top: 5px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .modal-inventario-overlay {
+        padding: 10px;
+        align-items: center;
+    }
+    
+    .modal-inventario {
+        max-height: 85vh;
+        border-radius: 12px;
+    }
+    
+    .modal-cabecalho {
+        padding: 16px;
+    }
+    
+    .modal-conteudo {
+        padding: 16px;
+    }
+    
+    .modal-campo-duplo {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .modal-campo input,
+    .modal-campo select,
+    .modal-campo textarea {
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+    
+    .modal-rodape {
+        padding: 16px;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .botao-cancelar,
+    .botao-salvar-item {
+        width: 100%;
+        min-width: auto;
+        padding: 14px;
+    }
+    
+    .btn-quantidade {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .trilhas-cabecalho {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .titulo-trilhas-perks {
+        text-align: center;
+    }
+    
+    .botao-adicionar-trilha {
+        align-self: flex-end;
+    }
+    
+    .trilha-cabecalho {
+        padding: 12px;
+    }
+    
+    .trilha-foto {
+        width: 50px;
+        height: 50px;
+        margin-right: 12px;
+    }
+    
+    .trilha-nome {
+        font-size: 16px;
+    }
+    
+    .modal-trilhas {
+        max-width: 90%;
+        max-height: 90vh;
+    }
+    
+    .trilha-conteudo-interno,
+    .trilha-disponivel-conteudo-interno {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-dados {
+        padding: 30px 20px;
+    }
+    
+    .modal-titulo {
+        font-size: 28px;
+    }
+    
+    .modal-subtitulo {
+        font-size: 16px;
+    }
+    
+    .modal-valor {
+        font-size: 60px;
+    }
+    
+    #pericias-busca {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .pericias-markers {
+        font-size: 11px;
+    }
+    
+    .pericias-markers .marker-pericia {
+        margin-left: 5px;
+        font-size: 11px;
+    }
+    
+    .pericias-markers .marker-dados {
+        margin-right: 8px;
+        flex: 0 0 35px;
+        font-size: 11px;
+    }
+    
+    .pericias-markers .marker-capacidade {
+        margin-right: 2px;
+        flex: 0 0 45px;
+        font-size: 11px;
+    }
+    
+    .pericias-markers .marker-treino {
+        flex: 0 0 60px;
+        font-size: 11px;
+        margin-right: 6px;
+    }
+    
+    .pericia-item {
+        padding: 8px 0;
+    }
+    
+    .pericia-nome {
+        font-size: 12px;
+        padding-left: 5px;
+        min-width: 100px;
+    }
+    
+    .pericia-atributo {
+        flex: 0 0 35px;
+        font-size: 11px;
+    }
+    
+    .pericia-capacidade {
+        flex: 0 0 45px;
+        font-size: 17px;
+    }
+    
+    .pericia-valor-container {
+        flex: 0 0 10px;
+    }
+    
+    .pericia-valor {
+        width: 5px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+    
+    .dados-tipos {
+        justify-content: center;
+    }
+    
+    .tipo-dado-btn {
+        min-width: 60px;
+        padding: 10px 15px;
+        font-size: 16px;
+    }
+    
+    .botao-rolar {
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .dados-historico {
+        padding: 15px;
+    }
+    
+    .historico-detalhe {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+    
+    .historico-valor {
+        font-size: 20px;
+    }
+    
+    #menu-hamburguer {
+        top: 15px;
+        left: 15px;
+    }
+    
+    #config-botao {
+        top: 15px;
+        right: 15px;
+    }
+    
+    @media (max-width: 400px) {
+        #config-botao {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+        
+        #menu-hamburguer {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+    }
+    
+    .titulo-inventario {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    
+    .inventario-resumo {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .resumo-valor {
+        font-size: 20px;
+    }
+    
+    .botao-inventario {
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+    }
+    
+    .controle-quantidade-item input {
+        width: 50px;
+        padding: 6px;
+    }
+    
+    .controle-quantidade-item button {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .botao-acao {
+        width: 70px;
+        height: 32px;
+        font-size: 12px;
+    }
+    
+    .modal-cabecalho h2 {
+        font-size: 18px;
+    }
+    
+    .botao-fechar-modal {
+        font-size: 28px;
+        width: 36px;
+        height: 36px;
+    }
+    
+    .modal-campo label {
+        font-size: 13px;
+    }
+    
+    .controle-quantidade input {
+        padding: 12px 8px;
+        font-size: 15px;
+    }
+    
+    .btn-quantidade {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+    
+    .titulo-trilhas-perks {
+        font-size: 20px;
+    }
+    
+    .botao-adicionar-trilha {
+        width: 70px;
+        height: 36px;
+        font-size: 10px;
+    }
+    
+    .trilha-foto {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+        font-size: 18px;
+    }
+    
+    .trilha-nome {
+        font-size: 14px;
+    }
+    
+    .botao-trilha-acao,
+    .botao-seguir-trilha {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .vazia-icon {
+        font-size: 48px;
+    }
+    
+    .trilhas-vazia h3 {
+        font-size: 16px;
+    }
+    
+    .trilhas-vazia p {
+        font-size: 13px;
+    }
+    
+    .modal-trilhas-cabecalho h2 {
+        font-size: 18px;
+    }
+    
+    .trilha-disponivel-foto {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .trilha-disponivel-nome {
+        font-size: 14px;
+    }
+    
+    .trilha-conteudo-interno,
+    .trilha-disponivel-conteudo-interno {
+        max-height: 250px;
+    }
+}
