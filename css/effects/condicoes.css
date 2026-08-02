@@ -1,0 +1,100 @@
+/* Efeitos visuais para condições de status */
+/* Lesão Grave */
+.fundo-avermelhado-piscando {
+    animation: piscar-avermelhado 2s infinite ease-in-out;
+}
+
+@keyframes piscar-avermelhado {
+    0%, 100% { background-color: rgba(255, 59, 59, 0.1); }
+    50% { background-color: rgba(255, 59, 59, 0.3); }
+}
+
+.piscando-vermelho {
+    animation: piscar-vermelho 1.5s infinite ease-in-out;
+}
+
+@keyframes piscar-vermelho {
+    0%, 100% { color: #ff3b3b; text-shadow: 0 0 8px rgba(255,59,59,0.7); }
+    50% { color: #ff5555; text-shadow: 0 0 12px rgba(255,59,59,0.9); }
+}
+
+.tremor-leve {
+    animation: tremor 0.1s infinite alternate;
+}
+
+@keyframes tremor {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(1px); }
+}
+
+/* Em Choque */
+.fundo-azulado-piscando {
+    animation: piscar-azulado 3s infinite ease-in-out;
+}
+
+@keyframes piscar-azulado {
+    0%, 100% { background-color: rgba(68, 170, 255, 0.1); }
+    50% { background-color: rgba(68, 170, 255, 0.2); }
+}
+
+.tremor-sincronizado {
+    animation: tremor-sinc 0.2s infinite alternate;
+}
+
+@keyframes tremor-sinc {
+    0% { transform: translateX(-1px); }
+    100% { transform: translateX(1px); }
+}
+
+/* Inconsciente */
+.tela-escura {
+    filter: brightness(0.7);
+    transition: filter 0.5s ease;
+}
+
+/* Insanidade */
+.insanidade-texto {
+    animation: arco-iris 5s infinite linear;
+}
+
+@keyframes arco-iris {
+    0% { color: #ff0000; }
+    14% { color: #ff7f00; }
+    28% { color: #ffff00; }
+    42% { color: #00ff00; }
+    57% { color: #0000ff; }
+    71% { color: #4b0082; }
+    85% { color: #9400d3; }
+    100% { color: #ff0000; }
+}
+
+/* Combinações */
+.tremor-intenso {
+    animation: tremor-intenso 0.05s infinite alternate !important;
+}
+
+@keyframes tremor-intenso {
+    0% { transform: translateX(-2px); }
+    100% { transform: translateX(2px); }
+}
+
+.tela-muito-escura {
+    filter: brightness(0.5) !important;
+}
+
+.insanidade-lenta {
+    animation-duration: 10s !important;
+}
+
+.fundo-azulado-escuro {
+    animation: piscar-azulado-escuro 3s infinite ease-in-out;
+}
+
+@keyframes piscar-azulado-escuro {
+    0%, 100% { background-color: rgba(0, 0, 139, 0.2); }
+    50% { background-color: rgba(0, 0, 139, 0.4); }
+}
+
+.tremor-lento {
+    animation-duration: 0.4s !important;
+}
