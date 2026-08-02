@@ -1,0 +1,34 @@
+.botao-rolar,
+.subaba-item.ativa,
+.tipo-dado-btn.selecionado,
+.vd-btn:hover,
+.botao-inventario,
+.botao-salvar-item {
+    color: var(--button-text-color) !important;
+}
+
+.botao-rolar {
+    background: linear-gradient(135deg, var(--primary), var(--primary)) !important;
+}
+
+.botao-limpar:hover {
+    background: var(--danger) !important;
+    border-color: var(--danger) !important;
+}
+
+.tipo-dado-btn.selecionado {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.status label input[type="checkbox"]:checked + span {
+    border-color: var(--primary) !important;
+}
+
+.atributo-sigla.texto-clicavel:hover {
+    color: var(--button-text-color) !important;
+}
+
+.barra-container.sanidade .barra-titulo.texto-clicavel:hover {
+    color: var(--button-text-color) !important;
+}

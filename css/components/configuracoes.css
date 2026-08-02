@@ -1,0 +1,151 @@
+.config-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 19, 0.9);
+    backdrop-filter: blur(5px);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.config-overlay.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.config-painel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(145deg, #1a1a22, #14141a);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 2000;
+}
+
+.config-painel h2 {
+    color: var(--primary);
+    margin-top: 0;
+    text-align: center;
+}
+
+.config-cores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.cor-item {
+    text-align: center;
+}
+
+.cor-item label {
+    display: block;
+    margin-bottom: 5px;
+    color: #aaa;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cor-input {
+    width: 100%;
+    height: 40px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.config-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.config-botao {
+    padding: 10px 20px;
+    border: 2px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.config-botao:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.config-botao:active {
+    transform: translateY(0);
+}
+
+.seletor-cor-opcoes {
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    position: absolute !important;
+    top: calc(100% + 5px) !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 10 !important;
+    background: rgba(20, 20, 26, 0.98) !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.cor-opcao {
+    padding: 8px 12px !important;
+    gap: 10px !important;
+}
+
+.cor-opcao-visual {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.cor-opcao-nome {
+    font-size: 13px !important;
+}
+
+.cor-opcao-hex {
+    font-size: 11px !important;
+}
+
+#botoes-salvar {
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+@media (max-width: 768px) {
+    .seletor-cor-opcoes {
+        max-height: 150px !important;
+    }
+    
+    .cor-opcao {
+        padding: 6px 10px !important;
+        gap: 8px !important;
+    }
+    
+    .cor-opcao-visual {
+        width: 20px !important;
+        height: 20px !important;
+    }
+}

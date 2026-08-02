@@ -1,0 +1,55 @@
+.dados-basicos input {
+    width: 220px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 11px;
+    color: #fff;
+}
+
+.campo-md {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.campo-md label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 6px;
+    color: #aaa;
+}
+
+.campo-md input {
+    width: 60px;
+    background: #111;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #fff;
+    padding: 6px;
+    text-align: center;
+}
+
+.status label {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.status label:hover {
+    border-color: var(--primary);
+}
+
+.status input[type="checkbox"] {
+    margin: 0;
+    accent-color: var(--primary);
+}

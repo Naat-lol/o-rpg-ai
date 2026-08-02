@@ -1,0 +1,96 @@
+.atributos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+    justify-items: center;
+}
+
+.atributo-item {
+    width: 100%;
+    max-width: 140px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.atributo-sigla {
+    font-size: 18px;
+    color: var(--primary);
+    text-shadow:
+        0 0 6px var(--primary),
+        0 0 12px var(--primary),
+        0 0 18px var(--primary);
+}
+
+.atributo-sigla.texto-clicavel {
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 4px;
+    margin-bottom: 2px;
+    transition: all 0.2s ease;
+}
+
+.atributo-sigla.texto-clicavel:hover {
+    color: #fff;
+    text-shadow:
+        0 0 8px var(--primary),
+        0 0 16px var(--primary),
+        0 0 24px var(--primary);
+}
+
+.atributo-sigla.texto-clicavel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary);
+    border-radius: 1px;
+    transition: all 0.2s ease;
+}
+
+.atributo-sigla.texto-clicavel:hover::after {
+    background-color: #fff;
+    box-shadow: 0 0 8px var(--primary);
+}
+
+.atributo-item:nth-child(10) .atributo-sigla {
+    position: static;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    cursor: default;
+}
+
+.atributo-item:nth-child(10) .atributo-sigla::after {
+    content: none;
+}
+
+.atributo-nome {
+    font-size: 11px;
+    margin: 2px 0 6px;
+    color: #9aa0aa;
+}
+
+.atributo-item input {
+    width: 48px;
+    background: #111;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+}
+
+.porcentagem {
+    font-size: 13px;
+    color: #b0b0c0;
+}
