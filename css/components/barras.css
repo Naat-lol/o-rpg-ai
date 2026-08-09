@@ -1,0 +1,202 @@
+.barras {
+    margin-bottom: 30px;
+}
+
+.barra-container {
+    margin-bottom: 18px;
+}
+
+.barra-titulo {
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: default;
+}
+
+.barra-container.vida .barra-titulo {
+    color: #ff3b3b;
+    text-shadow: 0 0 8px rgba(255,59,59,0.7);
+}
+
+.barra-container.sanidade .barra-titulo {
+    color: #b36bff;
+    text-shadow: 0 0 8px rgba(179,107,255,0.7);
+}
+
+.barra-container.desejo .barra-titulo {
+    color: #3bff9a;
+    text-shadow: 0 0 8px rgba(59,255,154,0.7);
+}
+
+.barra-container.sanidade .barra-titulo.texto-clicavel {
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 4px;
+    transition: all 0.2s ease;
+}
+
+.barra-container.sanidade .barra-titulo.texto-clicavel:hover {
+    color: #fff;
+    text-shadow:
+        0 0 8px rgba(179,107,255,0.9),
+        0 0 16px rgba(179,107,255,0.8),
+        0 0 24px rgba(179,107,255,0.6);
+}
+
+.barra-container.sanidade .barra-titulo.texto-clicavel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #b36bff;
+    border-radius: 1px;
+    transition: all 0.2s ease;
+}
+
+.barra-container.sanidade .barra-titulo.texto-clicavel:hover::after {
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(255,255,255,0.7);
+}
+
+.barra {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    background: #111;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.barra-botoes-esquerda {
+    display: flex;
+    position: absolute;
+    left: 0;
+    z-index: 2;
+    opacity: 90%;
+}
+
+.barra-botoes-direita {
+    display: flex;
+    position: absolute;
+    right: 0;
+    z-index: 2;
+    opacity: 90%;
+}
+
+.barra button {
+    width: 26px;
+    height: 30px;
+    background: #1a1a1f;
+    border: 1px solid var(--border);
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.barra-botoes-esquerda button:not(:last-child),
+.barra-botoes-direita button:not(:last-child) {
+    border-right: none;
+}
+
+.barra-preenchimento {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: all 0.3s ease;
+}
+
+.vermelho { 
+    background: linear-gradient(to right, #ff3b3b, #ff5555);
+    box-shadow: 0 0 10px rgba(255, 59, 59, 0.5);
+}
+.roxo { 
+    background: linear-gradient(to right, #8b3bff, #9a4dff);
+    box-shadow: 0 0 10px rgba(139, 59, 255, 0.5);
+}
+.verde { 
+    background: linear-gradient(to right, #3bff9a, #4dffaa);
+    box-shadow: 0 0 10px rgba(59, 255, 154, 0.5);
+}
+
+.barra-preenchimento.baixa {
+    filter: brightness(0.7);
+}
+
+.barra-preenchimento.muito-baixa {
+    filter: brightness(0.5);
+}
+
+.barra-preenchimento.critica {
+    animation: piscar 1s infinite;
+    filter: brightness(1.2) saturate(1.5);
+}
+
+.barra-valores {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    z-index: 1;
+    pointer-events: none;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 6px rgba(0,0,0,0.9);
+}
+
+.barra-atual, .barra-separador {
+    pointer-events: none;
+    user-select: none;
+}
+
+.barra-maximo {
+    width: 45px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    padding: 1px 3px;
+    outline: none;
+    pointer-events: auto;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 6px rgba(0,0,0,0.9);
+}
+
+.barra-maximo:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.barra-maximo:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 0 5px rgba(68, 170, 255, 0.5);
+}
+
+.barra-maximo::-webkit-inner-spin-button,
+.barra-maximo::-webkit-outer-spin-button {
+    height: auto;
+}
+
+.barra-atual.ultrapassado {
+    color: #ffcc00;
+    text-shadow: 
+        0 0 8px rgba(0, 0, 0, 0.9),
+        0 0 16px rgba(0, 0, 0, 0.8),
+        0 0 24px rgba(0, 0, 0, 0.6),
+        0 0 4px rgba(255, 204, 0, 0.3);
+}
